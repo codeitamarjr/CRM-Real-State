@@ -16,7 +16,7 @@ if (getAutomail($property_code, 'automail_denied') == 1) {
 }
 //Loading time and calendly from the DB
 $getting_email_time = getAutomail($property_code, 'getting_email_time');
-$getting_calendly = propertyGetData($property_code,'property_calendly');
+$getting_calendly = propertyGetData($property_code, 'property_calendly');
 
 //Check if the users clicked on any option by checking the hidden form if get by POST
 if (isset($_POST['save'])) {
@@ -51,7 +51,7 @@ if (isset($_POST['save'])) {
     }
     if (isset($_POST['calendly'])) {
         $getting_calendly = $_POST['calendly'];
-        propertySetData($property_code,'property_calendly',$getting_calendly);
+        propertySetData($property_code, 'property_calendly', $getting_calendly);
     }
 }
 
@@ -64,8 +64,9 @@ if (isset($_POST['save'])) {
             <form name="settings" method="POST">
                 <input type="hidden" name="save" value="save">
                 <div class="my-4">
-                    <h5 class="mb-0 mt-5">Attention</h5>
-                    <p>Do not change any settings withouth contacting your IT Departament</p>
+                    <div class="alert alert-warning" role="alert">
+                        <p>Do not change any settings withouth contacting your IT Departament or checking the documentation / developer.</p>
+                    </div>
                     <hr class="my-4" />
                     <!-- Start of Section -->
                     <strong class="mb-0">Automail</strong>
@@ -162,7 +163,7 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <input class="form-control" type="text" name=calendly value ="<?php echo $getting_calendly;?>" >
+                                    <input class="form-control" type="text" name=calendly value="<?php echo $getting_calendly; ?>">
                                 </div>
                             </div>
 

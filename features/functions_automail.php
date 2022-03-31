@@ -65,6 +65,7 @@ function getAutomailExternal($property_code,$automailOption){
 
 function createAutomailTemplate($automail_id){
     $message_automail = emailPrintMessage('','',$automail_id);
+    $message_automail = preg_replace("/'/i", '\'', $message_automail);
     $Title_file = "$automail_id";
     $uniqid="features/automail_generated_messsage_".$Title_file.".php";    
     $file = fopen($uniqid,"w");

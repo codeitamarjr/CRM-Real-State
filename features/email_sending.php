@@ -46,9 +46,12 @@ try {
     $mail->AltBody = 'This message was design for HTML content.';
 
     $mail->send();
-    echo '<h1><span style="color: #339966;"><center>Email message sent with success.</center></span></h1>';
+    echo '<center><div class="alert alert-success" role="alert">
+    Email message sent with success.
+    </div></center>';
 } catch (Exception $e) {
-    echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
+    echo '<div class="alert alert-danger" role="alert">
+    Error in sending email. Mailer Error: '.$mail->ErrorInfo.'
+    </div>';
 }
 mysqli_close($link);
-?>

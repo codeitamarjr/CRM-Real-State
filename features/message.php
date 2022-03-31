@@ -4,6 +4,20 @@ require "functions_automail.php";
 // Include config file
 require "config/config.php";
 
+//select all data from the mail_income sql
+$query = "SELECT * FROM messages WHERE message_id = '$message_id'";
+$result = mysqli_query($link, $query);
+while ($row = mysqli_fetch_array($result)) {
+    //Creates a loop to loop through results
+    $from = $row['messages_email'];
+    $phone = $row['message_phone_number'];
+    $date = $row['message_date'];
+    $message = $row['message_body'];
+    $status = $row['status'];
+    $hash = $row['message_hash'];
+    $name = $row['message_sender_name'];
+}
+
 $message_id = $_GET['message_id'];
 
 //Check if there's a status to change on this message
@@ -45,21 +59,15 @@ if (!isset($_GET['outcome'])) {
     } else {
         echo "Error: " . $sql . "<br>" . $link->error;
     }
-}
-
-
-//select all data from the mail_income sql
-$query = "SELECT * FROM messages WHERE message_id = '$message_id'";
-$result = mysqli_query($link, $query);
-
-while ($row = mysqli_fetch_array($result)) {
-    //Creates a loop to loop through results
-    $from = $row['messages_email'];
-    $phone = $row['message_phone_number'];
-    $date = $row['message_date'];
-    $message = $row['message_body'];
-    $status = $row['status'];
-    $hash = $row['message_hash'];
+} else if ($_GET['outcome'] == 'SendEmail') {
+    $key = $hash;
+    $prospect_name = $name;
+    include 'automail_generated_messsage_3.php';
+    $subject = '' . getAutomailTitle(3) . '';
+    $email_adress = $from;
+    $message_sender_name = $from;
+    require 'email_sending.php';
+    die;
 }
 ?>
 
@@ -75,6 +83,8 @@ while ($row = mysqli_fetch_array($result)) {
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">&nbsp;Delete</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#sendModal">&nbsp;Send Welcome E-mail</a>
                 </div>
             </div>
         </div>
@@ -193,6 +203,29 @@ while ($row = mysqli_fetch_array($result)) {
     </div>
 </div>
 
+<!-- Send Welcome E-mail Modal -->
+<div class="modal fade" id="sendModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Send the Welcome E-mail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want to send the welcome e-mail based on the Automail template for <?php echo $from; ?>? <br>
+            </div>
+            <div class="modal-footer">
+                <form method="GET" action="<?=$_SERVER['PHP_SELF'];?>">
+                    <input type="hidden" name="access" value="message">
+                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
+                    <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php
 //check if the HASH is inside prospect if so include details
@@ -207,4 +240,3 @@ while ($row_prospect = mysqli_fetch_array($result)) {
 
 
 mysqli_close($link);
-?>
