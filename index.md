@@ -1,6 +1,9 @@
-## Welcome to GitHub Pages
+## Real Enquiries - Customer Relationship Management
 
-You can use the [editor on GitHub](https://github.com/codeitamarjr/CRM-Real-State/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This is a CRM for Property Management bussiness to deal with inquiries from Daft.
+It's a web-based application with the front-end designed with Bootstrap,Javascript and JQuery and the back-end runing on Apache, PHP, and SQL, the test enviorement is running in an EC2 by AWS.
+
+You can visit the live project [Here](http://ec2-63-34-20-196.eu-west-1.compute.amazonaws.com/propertymanagement/index.php)
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
