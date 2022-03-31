@@ -42,9 +42,11 @@ MySQL or MariaDB
 
 In linux the command line below will install the required module:
 
+```markdown
 sudo apt-get install php-imap #To install imap modules
 
 sudo phpenmod imap
+```
 
 ### Menu Features
 
