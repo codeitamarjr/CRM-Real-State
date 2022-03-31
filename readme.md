@@ -16,7 +16,7 @@ Automail: This feature enables the user to change the template of the email that
 
 Calendly: This feature enables the user to access a third party service to manage an agenda with the appointements for a view;
 
-Extra:
+# Extra:
 
 Profile: Manages the users profile such a name and picture in the CRM;
 
