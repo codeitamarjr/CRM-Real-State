@@ -64,4 +64,13 @@ sudo phpenmod imap
 
 ### Screens
 
-![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/automail-page.png?raw=true "Login Page")
+![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/wemcome-page.png?raw=true "Login Page")
+![Dashboard Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/dashboard-page.png?raw=true "Dashboard Page")
+![Enquiries Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/enquiries-page.png?raw=true "Enquiries Page")
+![Reports Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/reports-page.png?raw=true "Reports Page")
+![Automail Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/automail-page.png?raw=true "Automail Page")
+![Calendly Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/calendly-page.png?raw=true "Calendly Page")
+
+![User Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/profile-page.png?raw=true "User Page")
+![Settings Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/system-settings-page.png?raw=true "Settings Page")
+
