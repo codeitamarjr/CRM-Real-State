@@ -1,7 +1,6 @@
 <?php
 
 function messagesDATA($message_id, $colum){
-    //This function will retrieve a data from a colum of a specific message_id
     require "config/config.php";
     $query = "SELECT * FROM messages WHERE message_id = '$message_id'";
     $result = mysqli_query($link, $query);

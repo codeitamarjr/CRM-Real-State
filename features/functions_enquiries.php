@@ -12,15 +12,15 @@ function enquiriesQueue($property_code){
     return mysqli_num_rows($result);
     mysqli_close($link);
 }
-function enquiriesApproved($property_code){
+function enquiriesApproved(){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT * FROM messages WHERE status = 'Approved' AND property_code = '$property_code'");
+    $result = mysqli_query($link, "SELECT * FROM messages WHERE status = 'Approved'");
     return mysqli_num_rows($result);
     mysqli_close($link);
 }
-function enquiriesDenied($property_code){
+function enquiriesDenied(){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT * FROM messages WHERE status = 'Denied' AND property_code = '$property_code'");
+    $result = mysqli_query($link, "SELECT * FROM messages WHERE status = 'Denied'");
     return mysqli_num_rows($result);
     mysqli_close($link);
 }
