@@ -22,7 +22,7 @@ Profile: Manages the users profile such a name and picture in the CRM;
 
 Settings: All the settings from the CRM
 
-Automail: Enable os disable automail messages from a new enquiry, approved and denied ones;
+Automail: Enable or disable automail messages from a new enquiry, approved and denied ones;
 
 Getting E-mails: Set the time to fecth new enquiries;
 
@@ -73,4 +73,3 @@ sudo phpenmod imap
 
 ![User Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/profile-page.png?raw=true "User Page")
 ![Settings Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/system-settings-page.png?raw=true "Settings Page")
-

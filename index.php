@@ -95,12 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Login - Real Enquiries</title>
     <meta name="description" content="Customer Relationship Management for Real State Agents">
+    <link rel="icon" type="image/x-icon" href="assets/img/fav_logo_size_invert.jpg">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=093230e10e41709a7a3d6ba7f3b3b116">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=37efe7e508357f382d0a5b2b73cd47ee">
 </head>
 
 <?php
@@ -147,8 +144,6 @@ if (!empty($login_err)) {
             For more information, please see our <a href="policy.html" target="_blank">Cookie Policy</a>.</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/theme.js?h=79f403485707cf2617c5bc5a2d386bb0"></script>
 </body>
 
 </html>
