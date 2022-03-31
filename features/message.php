@@ -72,13 +72,9 @@ while ($row = mysqli_fetch_array($result)) {
             <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center"><strong>Change Status</strong></h6>
-                    <a class="dropdown-item" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Approved">&nbsp;Approve</a>
-                    <a class="dropdown-item" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Denied">&nbsp;Denied</a>
-                    <a class="dropdown-item" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delete</a>
-                    <div class="dropdown-divider"></div>
-                    <h6 class="dropdown-header text-center"><strong>Automail</strong></h6>
-                    <!-- Button trigger modal -->
-                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-default">Future Feature</button>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">&nbsp;Delete</a>
                 </div>
             </div>
         </div>
@@ -139,26 +135,64 @@ while ($row = mysqli_fetch_array($result)) {
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Approve -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Future Feature</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <?php
-                //emailSend("Property Name :D",$from, $from, 3);
-                //echo emailPrintMessage("Property Name","email from",1);
-                ?>
+                Approve the enquirie from <?php echo $from; ?>?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Approved">&nbsp;Approve</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Deny -->
+<div class="modal fade" id="denyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Deny</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deny the enquirie from <?php echo $from; ?>? <br>
+                If the settings are set to auto send an email, this will be sent to this applicant.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Denied">&nbsp;Deny</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Delet this Enquirie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Delete the enquirie from <?php echo $from; ?>? <br>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" href="dashboardv2.php?access=message&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delet</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php
 //check if the HASH is inside prospect if so include details

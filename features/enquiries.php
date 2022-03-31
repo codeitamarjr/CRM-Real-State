@@ -37,6 +37,8 @@ $query = "SELECT * FROM messages WHERE property_code = $property_code ORDER BY m
 $result = mysqli_query($link, $query);
 
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 
 <div class="container-fluid">
     <h3 class="text-dark mb-4">Enquiries</h3>
@@ -48,12 +50,12 @@ $result = mysqli_query($link, $query);
             <div class="row">
                 <div class="col-md-6 text-nowrap">
                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;
-                        <select class="d-inline-block form-select form-select-sm" onchange="javascript:handleSelect(this)">
-                                <option value="&show=10" selected=""><?php echo $results_per_page;?> </option>
+                            <select class="d-inline-block form-select form-select-sm" onchange="javascript:handleSelect(this)">
+                                <option value="&show=10" selected=""><?php echo $results_per_page; ?> </option>
                                 <option value="&show=25">25</option>
                                 <option value="&show=50">50</option>
                                 <option value="&show=100">100</option>
-                        </select>&nbsp;</label></div>
+                            </select>&nbsp;</label></div>
                 </div>
                 <div class="col-md-6">
                 </div>
@@ -85,11 +87,11 @@ $result = mysqli_query($link, $query);
                             while ($row_prospect = mysqli_fetch_array($result_prospect)) {
                                 $hash = $row_prospect['hash'];
                                 if (!empty($hash)) {
-                                    echo '<a href="dashboardv2.php?access=prospect_details&key=' . $hash . '"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
+                                    echo '<a data-toggle="tooltip" title="This applicant has submited his data already" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
                                 }
                             };
 
-echo "</td>
+                            echo "</td>
     <td>" . htmlspecialchars($row['message_date']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
 </tr>";  //$row['index'] the index here is a field name
@@ -114,15 +116,15 @@ echo "</td>
 
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to <?php echo $results_per_page;?> of <?php echo enquiriesTotal($_SESSION["property_code"]); ?></p>
+                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?> of <?php echo enquiriesTotal($_SESSION["property_code"]); ?></p>
                 </div>
                 <div class="col-md-6">
                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
                             <?php
                             //display the link of the pages in URL  
-                            for ($page = 1; $page <= $number_of_page; ) {
-                                echo '<li class="page-item"><a class="page-link" href="dashboardv2.php?access=enquiries&show='.$results_per_page.'&page=' . $page . '">' . $page . ' </a></li>';
+                            for ($page = 1; $page <= $number_of_page;) {
+                                echo '<li class="page-item"><a class="page-link" href="dashboardv2.php?access=enquiries&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
                                 $page++;
                             }
                             //Close SQL connection
@@ -137,9 +139,17 @@ echo "</td>
     </div>
 </div>
 
+<script>
+    //Function to handle the select box
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+
+
 <script type="text/javascript">
-  function handleSelect(elm)
-  {
-     window.location = "dashboardv2.php?access=enquiries&"+elm.value;
-  }
+    function handleSelect(elm) {
+        window.location = "dashboardv2.php?access=enquiries&" + elm.value;
+    }
 </script>
