@@ -16,7 +16,7 @@ Automail: This feature enables the user to change the template of the email that
 
 Calendly: This feature enables the user to access a third party service to manage an agenda with the appointements for a view;
 
-## Extra:
+## Extra
 
 Profile: Manages the users profile such a name and picture in the CRM;
 
@@ -42,7 +42,7 @@ MySQL or MariaDB
 
 In linux the command line below will install the required module:
 
-```
+```comand
 sudo apt-get install php-imap #To install imap modules
 
 sudo phpenmod imap #To enable on PHP
