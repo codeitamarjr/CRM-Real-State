@@ -1,4 +1,4 @@
-# Customer Relationship Management Property Management - Real Enquiries CRM
+# Customer Relationship Management Property Management - Real Enquiries
 
 This is a CRM for a Property Management to deal with enquiries from Daft.ie;
 
