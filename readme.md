@@ -61,3 +61,7 @@ sudo phpenmod imap
 - Logout
 
 ### Tables on MySQL
+
+### Screens
+
+![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/automail-page.png?raw=true "Login Page")
