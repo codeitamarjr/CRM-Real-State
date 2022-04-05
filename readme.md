@@ -66,6 +66,7 @@ sudo phpenmod imap #To enable on PHP
 
 ### Screens
 
+Welcome and Loginn Screen:
 ![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/wemcome-page.png?raw=true "Login Page")
 ![Dashboard Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/dashboard-page.png?raw=true "Dashboard Page")
 ![Enquiries Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/enquiries-page.png?raw=true "Enquiries Page")
