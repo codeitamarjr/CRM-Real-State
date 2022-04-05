@@ -1,3 +1,5 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Dashboard</h3>
@@ -68,7 +70,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-start-warning py-2">
                 <div class="card-body">
@@ -87,16 +88,45 @@
             </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-lg-7 col-xl-12 offset-xl-0">
-            <div class="card shadow mb-4">
-
-            
-
+        <div class="col-md">
+            <div class="card shadow border-start-primary py-2">
+                <div class="card-body">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col me-2">
+                            <div class="col"><canvas id="enquiriesChart" width="450" height="60"></canvas></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col"></div>
-    </div>
 </div>
+<script>
+    new Chart(document.getElementById("enquiriesChart"), {
+        type: 'bar',
+        data: {
+            labels: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [{
+                label: "Total Enquiries",
+                backgroundColor: "rgb(78, 115, 223)",
+                data: [<?php echo enquiriesTotal($_SESSION["property_code"]); ?>, 5]
+            }, {
+                label: "Queue",
+                backgroundColor: "rgb(54, 185, 204)",
+                data: [<?php echo enquiriesQueue($_SESSION["property_code"]); ?>, 4]
+            }, {
+                label: "Approved",
+                backgroundColor: "rgb(28, 200, 138)",
+                data: [<?php echo enquiriesApproved($_SESSION["property_code"]); ?>, 1]
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Population growth (millions)'
+            }
+        }
+    });
+</script>
