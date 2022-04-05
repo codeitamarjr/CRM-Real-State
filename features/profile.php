@@ -8,14 +8,10 @@ if (isset($_GET['pic_address'])) {
     echo '<h1><span style="color: #339966;"><center>Your name was updated with success!</center></span></h1>';
 } if (isset($_GET['namePRS'])) {
     setPRSData($_SESSION["agent_prs_code"],'prs_name',$_GET['namePRS']);
-    echo '<center><div class="alert alert-success" role="alert">
-    The PRS name was updated with success!
-  </div></center>';
 } if (isset($_GET['emailPRS'])) {
     setPRSData($_SESSION["agent_prs_code"],'prs_email',$_GET['emailPRS']);
-    echo '<center><div class="alert alert-success" role="alert">
-    The PRS email was updated with success!
-  </div></center>';
+} if (isset($_GET['addressPRS'])) {
+    setPRSData($_SESSION["agent_prs_code"],'prs_full_address',$_GET['addressPRS']);
 } 
 
 
@@ -85,11 +81,16 @@ if (isset($_GET['pic_address'])) {
                                             <input class="form-control" type="text" value="<?php echo getPRSData($_SESSION["agent_prs_code"],'prs_name'); ?>" name="namePRS">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col">
                                         <div class="mb-3"><label class="form-label"><strong>PRS Email</strong></label>
                                             <input class="form-control" type="text" value="<?php echo getPRSData($_SESSION["agent_prs_code"],'prs_email'); ?>" name="emailPRS">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col">
+                                        <div class="mb-3"><label class="form-label"><strong>PRS Address</strong></label>
+                                            <input class="form-control" type="text" value="<?php echo getPRSData($_SESSION["agent_prs_code"],'prs_full_address'); ?>" name="addressPRS">
                                         </div>
                                     </div>
                                 </div>

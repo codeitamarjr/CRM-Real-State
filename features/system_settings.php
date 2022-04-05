@@ -1,57 +1,74 @@
 <?php
 require "features/functions_automail.php";
+require "features/functions_property.php";
 
 
 $property_code = $_SESSION["property_code"];
 
 //Set the checked box from the DB
-if (getAutomail($property_code, 'automail_new') == 1) {
+if (getPropertyData($property_code, 'automail_new') == 1) {
     $automailNew = 'checked=""';
 }
-if (getAutomail($property_code, 'automail_approved') == 1) {
+if (getPropertyData($property_code, 'automail_approved') == 1) {
     $automailApproved = 'checked=""';
 }
-if (getAutomail($property_code, 'automail_denied') == 1) {
+if (getPropertyData($property_code, 'automail_denied') == 1) {
     $automailDenied = 'checked=""';
 }
 //Loading time and calendly from the DB
-$getting_email_time = getAutomail($property_code, 'getting_email_time');
-$getting_calendly = propertyGetData($property_code, 'property_calendly');
+$getting_email_time = getPropertyData($property_code, 'getting_email_time');
+$getting_calendly = getPropertyData($property_code, 'property_calendly');
 
 //Check if the users clicked on any option by checking the hidden form if get by POST
 if (isset($_POST['save'])) {
     //If so check the status of each checkbox
     if (isset($_POST['automailNew'])) {
-        setAutomail($property_code, 'automail_new', 1);
+        setPropertyData($property_code, 'automail_new', 1);
         $automailNew = 'checked=""';
     }
     if (!isset($_POST['automailNew'])) {
-        setAutomail($property_code, 'automail_new', 0);
+        setPropertyData($property_code, 'automail_new', 0);
         $automailNew = '';
     }
     if ($_POST['automailApproved']) {
         $automailApproved = 'checked=""';
-        setAutomail($property_code, 'automail_approved', 1);
+        setPropertyData($property_code, 'automail_approved', 1);
     }
     if (!isset($_POST['automailApproved'])) {
         $automailApproved = '';
-        setAutomail($property_code, 'automail_approved', 0);
+        setPropertyData($property_code, 'automail_approved', 0);
     }
     if (isset($_POST['automailDenied'])) {
         $automailDenied = 'checked=""';
-        setAutomail($property_code, 'automail_denied', 1);
+        setPropertyData($property_code, 'automail_denied', 1);
     }
     if (!isset($_POST['automailDenied'])) {
         $automailDenied = '';
-        setAutomail($property_code, 'automail_denied', 0);
+        setPropertyData($property_code, 'automail_denied', 0);
     }
     if (isset($_POST['gettin_email_time'])) {
         $getting_email_time = $_POST['gettin_email_time'];
-        setAutomail($property_code, 'getting_email_time', $getting_email_time);
+        setPropertyData($property_code, 'getting_email_time', $getting_email_time);
     }
     if (isset($_POST['calendly'])) {
-        $getting_calendly = $_POST['calendly'];
-        propertySetData($property_code, 'property_calendly', $getting_calendly);
+        if ($_POST['calendly'] != getPropertyData($property_code, 'property_calendly')) {
+            setPropertyData($property_code, 'property_calendly', $_POST['calendly']);
+        }
+    }
+    if (isset($_POST['PropertyHostName'])) {
+        if ($_POST['PropertyHostName'] != getPropertyData($property_code, 'property_email_hostname')) {
+            setPropertyData($property_code, 'property_email_hostname', $_POST['PropertyHostName']);
+        }
+    }
+    if (isset($_POST['PropertyEmail'])) {
+        if ($_POST['PropertyEmail'] != getPropertyData($property_code, 'property_email_username')) {
+            setPropertyData($property_code, 'property_email_username', $_POST['PropertyEmail']);
+        }
+    }
+    if (isset($_POST['PropertyEmailPassword'])) {
+        if ($_POST['PropertyEmailPassword'] != getPropertyData($property_code, 'property_email_password')) {
+            setPropertyData($property_code, 'property_email_password', $_POST['PropertyEmailPassword']);
+        }
     }
 }
 
@@ -145,6 +162,29 @@ if (isset($_POST['save'])) {
                                     </div>
                                 </div>
                             </div>
+                            <hr class="my-4" />
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3"><label class="form-label"><strong>Property Host Name</strong></label>
+                                        <input class="form-control" type="text" value="<?php echo getPropertyData($property_code, 'property_email_hostname');
+                                                                                        ?>" name="PropertyHostName">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3"><label class="form-label"><strong>Property Email</strong></label>
+                                        <input class="form-control" type="text" value="<?php echo getPropertyData($property_code, 'property_email_username');
+                                                                                        ?>" name="PropertyEmail">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3"><label class="form-label"><strong>Property Email Password</strong></label>
+                                        <input class="form-control" type="password" value="<?php echo getPropertyData($property_code, 'property_email_password');
+                                                                                        ?>" name="PropertyEmailPassword">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            </div>
                         </div>
                     </div>
 
@@ -163,7 +203,7 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <input class="form-control" type="text" name=calendly value="<?php echo $getting_calendly; ?>">
+                                    <input class="form-control" type="text" name=calendly value="<?php echo getPropertyData($property_code, 'property_calendly'); ?>">
                                 </div>
                             </div>
 
@@ -188,7 +228,7 @@ if (isset($_POST['save'])) {
         if (flag) $('form').submit();
     });
 
-    $("form select").on('change', function() {
+    $("form").on('change', function() {
         $("form").trigger('submit');
     });
 </script>
