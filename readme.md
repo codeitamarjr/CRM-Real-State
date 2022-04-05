@@ -28,6 +28,8 @@ Getting E-mails: Set the time to fecth new enquiries;
 
 Calendly: Set the calendly web address;
 
+Search: This options enable the user to search enquiries by typying a word in the search bar, this option will search in the email and the name of the applicant;
+
 ### The Enviorement
 
 The base enviorement to run the system it is:
@@ -72,6 +74,8 @@ Dashboard screen:
 ![Dashboard Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/dashboard-page.png?raw=true "Dashboard Page")
 Enquiries screen:
 ![Enquiries Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/enquiries-page.png?raw=true "Enquiries Page")
+Search screen:
+![Search Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/search-screen.png?raw=true "Search Page")
 Reports screen:
 ![Reports Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/reports-page.png?raw=true "Reports Page")
 Automail screen:
