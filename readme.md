@@ -66,13 +66,19 @@ sudo phpenmod imap #To enable on PHP
 
 ### Screens
 
-Welcome and Loginn Screen:
+Welcome and Login Screen:
 ![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/wemcome-page.png?raw=true "Login Page")
+Dashboard screen:
 ![Dashboard Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/dashboard-page.png?raw=true "Dashboard Page")
+Enquiries screen:
 ![Enquiries Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/enquiries-page.png?raw=true "Enquiries Page")
+Reports screen:
 ![Reports Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/reports-page.png?raw=true "Reports Page")
+Automail screen:
 ![Automail Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/automail-page.png?raw=true "Automail Page")
+Calendly screen:
 ![Calendly Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/calendly-page.png?raw=true "Calendly Page")
-
+User Profile screen:
 ![User Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/profile-page.png?raw=true "User Page")
+System Settings screen:
 ![Settings Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/system-settings-page.png?raw=true "Settings Page")
