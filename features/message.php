@@ -1,22 +1,19 @@
 <?php
 
+//Load automail functions
 require "functions_automail.php";
-// Include config file
 require "config/config.php";
 
-//select all data from the mail_income sql
-$query = "SELECT * FROM messages WHERE message_id = '$message_id'";
-$result = mysqli_query($link, $query);
-while ($row = mysqli_fetch_array($result)) {
-    //Creates a loop to loop through results
-    $from = $row['messages_email'];
-    $phone = $row['message_phone_number'];
-    $date = $row['message_date'];
-    $message = $row['message_body'];
-    $status = $row['status'];
-    $hash = $row['message_hash'];
-    $name = $row['message_sender_name'];
-}
+//select all data from the mail_income sql table
+
+$from = getMessage($message_id, 'messages_email');
+$phone = getMessage($message_id, 'message_phone_number');
+$date = getMessage($message_id, 'message_date');
+$status = getMessage($message_id, 'status');
+$message = getMessage($message_id, 'message_body');
+$hash = getMessage($message_id, 'message_hash');
+$name = getMessage($message_id, 'message_sender_name');
+
 
 $message_id = $_GET['message_id'];
 
@@ -24,30 +21,19 @@ $message_id = $_GET['message_id'];
 if (!isset($_GET['outcome'])) {
     // nothing happens 
 } else if ($_GET['outcome'] == 'Approved') {
-    // if the outcome has a variable will update the status 
+    // if the outcome has a variable Approved will update the status to Approved
     $outcome = $_GET['outcome'];
-    $query = "UPDATE messages SET status = '$outcome' WHERE (message_id = '$message_id')";
-    if ($link->query($query) === TRUE) {
-        echo '<h1><span style="color: #339966;"><center>This enquirie has been approved with succes!</center></span></h1>';
-        $from = messagesDATA($message_id, 'messages_email');
-        emailSend('', $from, $from, '', 'viewing');
-        die();
-    } else {
-        echo "Error: " . $sql . "<br>" . $link->error;
-    }
+    echo setMessage($message_id, 'status', $outcome);
+    $from = getMessage($message_id, 'messages_email');
+    sendAutomail($name, $hash, '', $from, $from, '', 'viewing');
+    die();
 } else if ($_GET['outcome'] == 'Denied') {
     // if the outcome has a variable will update the status 
     $outcome = $_GET['outcome'];
-    $query = "UPDATE messages SET status = '$outcome' WHERE (message_id = '$message_id')";
-
-    if ($link->query($query) === TRUE) {
-        echo '<h1><span style="color: #ff0000;"><center>This enquirie has been denied with succes!</center></span></h1>';
-        $from = messagesDATA($message_id, 'messages_email');
-        emailSend('', $from, $from, '', 'denied');
-        die();
-    } else {
-        echo "Error: " . $sql . "<br>" . $link->error;
-    }
+    echo setMessage($message_id, 'status', $outcome);
+    $from = getMessage($message_id, 'messages_email');
+    sendAutomail($name, $hash, '', $from, $from, '', 'denied');
+    die();
 } else if ($_GET['outcome'] == 'Delete') {
     // if the outcome has a variable will update the status 
     $outcome = $_GET['outcome'];
@@ -60,14 +46,10 @@ if (!isset($_GET['outcome'])) {
         echo "Error: " . $sql . "<br>" . $link->error;
     }
 } else if ($_GET['outcome'] == 'SendEmail') {
-    $key = $hash;
-    $prospect_name = $name;
-    include 'automail_generated_messsage_3.php';
-    $subject = '' . getAutomailTitle(3) . '';
-    $email_adress = $from;
-    $message_sender_name = $from;
-    require 'email_sending.php';
-    die;
+    $outcome = $_GET['outcome'];
+    $from = getMessage($message_id, 'messages_email');
+    sendAutomail($name, $hash, '', $from, $from, '', 'welcome');
+    die();
 }
 ?>
 
@@ -215,7 +197,7 @@ if (!isset($_GET['outcome'])) {
                 Do you want to send the welcome e-mail based on the Automail template for <?php echo $from; ?>? <br>
             </div>
             <div class="modal-footer">
-                <form method="GET" action="<?=$_SERVER['PHP_SELF'];?>">
+                <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
                     <input type="hidden" name="access" value="message">
                     <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
                     <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
@@ -237,6 +219,5 @@ while ($row_prospect = mysqli_fetch_array($result)) {
         include "prospect_details.php";
     }
 };
-
-
 mysqli_close($link);
+?>

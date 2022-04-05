@@ -2,10 +2,10 @@
 
 function getPropertyData($property_code, $rowName)
 {
-    require "config/config.php";
+    include "config/config.php";
     $query = "SELECT * FROM property WHERE (property_code = '$property_code')";
     $result = mysqli_query($link, $query);
-    if (mysqli_query($link, $query)) {
+    if ($result) {
         while ($row = mysqli_fetch_array($result)) {
             return $row[$rowName];
         }

@@ -199,7 +199,7 @@ $message_id = $_GET['message_id'];
     <script src="assets/js/bs-init.js?h=e2b0d57f2c4a9b0d13919304f87f79ae"></script>
     <script src="assets/js/theme.js?h=79f403485707cf2617c5bc5a2d386bb0"></script>
     <!-- New emails feature starts -->
-    <object type="text/html" data="features/getting_email.php" width="1px" height="1px"></object>
+    <object type="text/html" data="features/getting_email.ph" width="1px" height="1px"></object>
     <!-- New emails feature end -->
 
 </body>

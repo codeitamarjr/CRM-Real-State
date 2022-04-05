@@ -6,12 +6,7 @@ require "features/functions_automail.php";
 //Set the automail_id from the GET data if it's not empty
 $automail_id = $_GET['automail_id'];
 if (!empty($automail_id)) {
-    $query = "SELECT * FROM automail WHERE automail_id = $automail_id";
-    $result = mysqli_query($link, $query);
-    while ($row = mysqli_fetch_array($result)) {
-        $automail_message =  str_replace("http://ec2-63-34-20-196.eu-west-1.compute.amazonaws.com/propertymanagement/prospect_area.php?key=' . \$key . '", "#PROSPECTLINK", $row['automail_message']);
-        //$automail_message = $row['automail_message'];
-    }
+    $automail_message = getAutomail($automail_id,'automail_message');
 }
 
 // Checking if the "tinyTextArea" field is set
@@ -23,16 +18,9 @@ if (!empty($_POST['tinyTextArea'])) {
     $automail_id = $_POST['automail_id'];
     $automail_title = $link->real_escape_string($_POST['title']);
     // Executing the query to update the message
-
-    $query = ("UPDATE automail SET automail_title = '$automail_title', automail_message = '$content' WHERE (automail_id = '$automail_id')");
-    createAutomailTemplate($automail_id);
-    if ($link->query($query) === TRUE) {
-       
-        echo '<h1><span style="color: #339966;"><center>This message has been updated with succes!</center></span></h1>';
-        die;
-    } else {
-        echo "Error: " . $sql . "<br>" . $link->error;
-    }
+    echo setAutomail($automail_id, 'automail_title', $automail_title);
+    echo setAutomail($automail_id, 'automail_message', $content);
+    die();
 }
 
 ?>
@@ -48,7 +36,7 @@ if (!empty($_POST['tinyTextArea'])) {
                 <input type="hidden" name="access" value="automail">
                 <label for="automail_id">Choose a message:</label>
                 <select class="form-select" id="automail_id" name="automail_id">
-                    <option selected><?php echo getAutomailTitle($_GET['automail_id']); ?></option>
+                    <option selected><?php echo getAutomail($_GET['automail_id'], 'automail_title'); ?></option>
                     <?php
                     //List all the messages from this property_code
                     $property_code = $_SESSION["property_code"];
@@ -88,7 +76,7 @@ if (!empty($_POST['tinyTextArea'])) {
                         <h6 class="mb-0">Title</h6>
                     </div>
                     <div class="col-lg text-secondary">
-                        <input type="text" class="form-control" name="title" value="<?php echo getAutomailTitle($_GET['automail_id']); ?>">
+                        <input type="text" class="form-control" name="title" value="<?php echo getAutomail($_GET['automail_id'], 'automail_title'); ?>">
                     </div>
                 </div>
             </div>
@@ -114,9 +102,9 @@ mysqli_close($link)
         toolbar: 'prospectLink propertyName prospectName',
         setup: function(editor) {
             editor.ui.registry.addButton('prospectLink', {
-                text: '#ProspectProfileLink',
+                text: 'Prospect Profile Link',
                 onAction: function(_) {
-                    editor.insertContent('<a href="#PROSPECTLINK">Personal Link</a>');
+                    editor.insertContent('%link%');
                 }
             });
             editor.ui.registry.addButton('propertyName', {
@@ -126,9 +114,9 @@ mysqli_close($link)
                 }
             });
             editor.ui.registry.addButton('prospectName', {
-                text: '#PropspectName',
+                text: 'Propspect Name',
                 onAction: function(_) {
-                    editor.insertContent('\'.$prospect_name.\'');
+                    editor.insertContent('%name%');
                 }
             });
         }
