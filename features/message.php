@@ -23,33 +23,108 @@ if (!isset($_GET['outcome'])) {
 } else if ($_GET['outcome'] == 'Approved') {
     // if the outcome has a variable Approved will update the status to Approved
     $outcome = $_GET['outcome'];
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
     echo setMessage($message_id, 'status', $outcome);
     $from = getMessage($message_id, 'messages_email');
     sendAutomail($name, $hash, '', $from, $from, '', 'viewing');
-    die();
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
 } else if ($_GET['outcome'] == 'Denied') {
     // if the outcome has a variable will update the status 
     $outcome = $_GET['outcome'];
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
     echo setMessage($message_id, 'status', $outcome);
     $from = getMessage($message_id, 'messages_email');
     sendAutomail($name, $hash, '', $from, $from, '', 'denied');
-    die();
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
 } else if ($_GET['outcome'] == 'Delete') {
     // if the outcome has a variable will update the status 
     $outcome = $_GET['outcome'];
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
     $query = "DELETE FROM messages WHERE (message_id = '$message_id')";
-
     if ($link->query($query) === TRUE) {
-        echo '<h1><span style="color: #ff0000;"><center>This enquirie has been deleted with succes!</center></span></h1>';
-        die;
+        echo '<div class="alert alert-danger" role="alert">This enquirie has been deleted with succes!</div>';
     } else {
         echo "Error: " . $sql . "<br>" . $link->error;
     }
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
 } else if ($_GET['outcome'] == 'SendEmail') {
     $outcome = $_GET['outcome'];
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
     $from = getMessage($message_id, 'messages_email');
     sendAutomail($name, $hash, '', $from, $from, '', 'welcome');
-    die();
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
 }
 ?>
 

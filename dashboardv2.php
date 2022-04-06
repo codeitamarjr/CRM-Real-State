@@ -44,6 +44,7 @@ $message_id = $_GET['message_id'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=37efe7e508357f382d0a5b2b73cd47ee">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
