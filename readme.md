@@ -1,16 +1,16 @@
 # Customer Relationship Management for Property Management - Real Enquiries
 
-This is a CRM for a Property Management to deal with enquiries from Daft.ie;
+This is a CRM for a Property Management to deal with enquiries from Daft.ie.
 
-With this CRM it will be possible to manage a high volume of enquiries that come trhough Daft.ie and do actions based on the message receveid by the applicant, the CRM can automatic respond to the an enquiry, ask for further details to help the agent make a decision and send invites for a viewing, it is possible to generate reports in a xls file and visualize data from applicants and future tenants.
+With this Web CRM it is possible to manage a high volume of enquiries that come trhough Daft.ie and do actions based on the message receveid by the applicant, the CRM can automatic respond to an enquiry with a Welcome Message asking for further details to help the agent make a decision, send invites for a viewing if the enquiry has been approved, and an automatic thank you for applying message for those who has been denied. It is possible to generate reports and export in a xls file.
 
 ## Features
 
-Dashboard: Summarize all the enquiries in one screen with the number of enquiries waiting to be answrered, the one that has been already answered with the approval status to invite for a viewing or the one that has being denied;
+Dashboard: Summarize all the enquiries in one screen with the total number of enquiries, the number of enquiries waiting to be answered, the ones that has been already answered with the approval status or the ones that has being denied; It is a snapshot of the current state of the enquiries.
 
-Enquiries: This feature will show a list of all the messages that come trhough Daft.ie in a specific mailbox and the user can change the status of this message for approved or denied based on the message from the enquiry; For each decision the CRM will send an automatic email to the sender of the enquiry with the outcome( If approved will be possivle to send a link for a third service to arrange a view for example and If it is denied it will send a denied message);
+Enquiries: This feature will show a list of all the messages that come trhough Daft.ie in a specific mailbox, and the user can change the status of this message for approved or denied based on the message sent by the applicant; For each decision the CRM will send an automatic email to the sender of the enquiry with the outcome( If approved it will be possible to send a link for a third service to arrange a view for example and If it is denied it will send a denied message to the applicant);
 
-Reports: This feature enable the user to download excels file with the list of all enquiries and status;
+Reports: This feature enable the user to export an excels file with the list of all enquiries and status;
 
 Automail: This feature enables the user to change the template of the email that is send to the user when he applies, when he has been approved or denied;
 
@@ -36,9 +36,9 @@ The base enviorement to run the system it is:
 
 Apache
 
-PHP ( with IMAP library[to fecth emails into the DB])
+PHP higher then 7 ( with IMAP library[to fecth emails into the DB])
 
-MySQL or MariaDB
+MySQL or MariaDB with the CRM database
 
 ### How-To enable IMAP library on PHP
 
