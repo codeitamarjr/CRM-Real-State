@@ -96,7 +96,7 @@ mysqli_close($link)
 <script>
     tinymce.init({
         selector: '#tinyTextArea',
-        plugins: 'print preview paste directionality code visualblocks visualchars fullscreen image link media table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+        plugins: 'print preview paste code fullscreen image link media table hr pagebreak nonbreaking anchor toc advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
         menubar: true,
         height: 500,
         toolbar: 'prospectLink propertyName prospectName',
