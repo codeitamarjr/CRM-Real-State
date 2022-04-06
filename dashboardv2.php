@@ -128,7 +128,7 @@ $message_id = $_GET['message_id'];
                             <li class="nav-item dropdown no-arrow">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
                                             <?php echo userGetData($_SESSION["username"], 'agent_name'); ?>
-                                        </span><img class="border rounded-circle img-profile" src="<?php echo htmlentities(userGetData($_SESSION["username"], 'agent_pic')); ?>"></a>
+                                        </span><img class="border rounded-circle img-profile" src="features/uploads/<?php echo htmlentities(userGetData($_SESSION["username"], 'agent_pic')); ?>"></a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="dashboardv2.php?access=profile"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <a class="dropdown-item" href="dashboardv2.php?access=system_settings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
                                         <a class="dropdown-item" href="dashboardv2.php?access=changelog"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Change log</a>
