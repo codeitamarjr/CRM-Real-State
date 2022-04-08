@@ -82,6 +82,8 @@ Automail screen:
 ![Automail Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/automail-page.png?raw=true "Automail Page")
 Calendly screen:
 ![Calendly Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/calendly-page.png?raw=true "Calendly Page")
+Manage Property screen:
+![Manage Property](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/manage-property.png?raw=true "Manage Property")
 User Profile screen:
 ![User Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/profile-page.png?raw=true "User Page")
 System Settings screen:
