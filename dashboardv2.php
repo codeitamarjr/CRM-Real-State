@@ -43,7 +43,6 @@ $message_id = $_GET['message_id'];
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css?h=37efe7e508357f382d0a5b2b73cd47ee">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -63,6 +62,7 @@ $message_id = $_GET['message_id'];
                         <a class="nav-link" href="dashboardv2.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a>
                         <a class="nav-link" href="dashboardv2.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a>
                         <a class="nav-link" href="dashboardv2.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a>
+                        <a class="nav-link" href="dashboardv2.php?access=property"><i class="far fa-building"></i><span>Manage Property</span></a>
                     </li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
@@ -181,6 +181,9 @@ $message_id = $_GET['message_id'];
                 if ($content == 'system_settings') {
                     include "features/system_settings.php";
                 }
+                if ($content == 'property') {
+                    include "features/manage_property.php";
+                }
 
                 ?>
                 <!-- Content End-->
@@ -206,3 +209,8 @@ $message_id = $_GET['message_id'];
 </body>
 
 </html>
+<style>
+    .alert{
+	width: fit-content;
+}
+</style>
