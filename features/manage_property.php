@@ -18,16 +18,16 @@ if (isset($_GET['submit'])) {
                 <center>
                    ';
     if (getPropertyData($_SESSION["property_code"], 'property_name') != $_GET['propertyName']) {
-        setPropertyData($_SESSION["property_code"], 'property_name', $_GET['propertyName']);
+        setPropertyDataSafe($_SESSION["property_code"], 'property_name', $_GET['propertyName'],'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_type') != $_GET['propertyType']) {
-        setPropertyData($_SESSION["property_code"], 'property_type', $_GET['propertyType']);
+        setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_GET['propertyType'],'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_units') != $_GET['units']) {
-        setPropertyData($_SESSION["property_code"], 'property_units', $_GET['units']);
+        setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_GET['units'],'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_address') != $_GET['propertyAddress']) {
-        setPropertyData($_SESSION["property_code"], 'property_address', $_GET['propertyAddress']);
+        setPropertyDataSafe($_SESSION["property_code"], 'property_address', $_GET['propertyAddress'],'ss');
     }
 
     echo '
