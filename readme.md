@@ -1,6 +1,6 @@
 <img src="https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/fav_logo_size.jpg?raw=true" alt="Real Enquiries" align="right">
 
-# CRM for Property Management - Real Enquiries &middot; [![Build Status](https://img.shields.io/travis/npm/npm/latest.svg?style=flat-square)](https://travis-ci.org/npm/npm) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/your/your-project/blob/master/LICENSE)
+# CRM for Property Management - Real Enquiries &middot; [![Build Status](https://img.shields.io/travis/npm/npm/latest.svg?style=flat-square)](https://travis-ci.org/npm/npm) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/codeitamarjr/CRM-Real-State/blob/master/LICENSE)
 > CRM Daft.ie Real Statement
 
 This is a CRM for a Property Management to deal with enquiries from Daft.ie.
