@@ -29,11 +29,11 @@ function setPropertyData($property_code, $rowName, $newData)
 
 function setPropertyDataSafe($username,$rowName,$newData,$dataType){
     require "config/config.php";
-    //This is a safe way to prevent SQL injection, first add a placeholder on the real data
+    //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
     $sql = "UPDATE property SET $rowName = ? WHERE (property_code = ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
-    //Check if the SQL is ok from the prepare statement, if so execute it and bind the data
+    //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
     if(!mysqli_stmt_prepare($stmt,$sql)){
         echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
     } else {
