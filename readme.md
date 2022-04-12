@@ -69,7 +69,9 @@ sudo phpenmod imap #To enable on PHP
 
 ### Tables on MySQL
 
-### Screens
+## Screens and Layouts
+
+This projects uses Bootstrap, custom CSS and custom JS to create the layout and the screens.
 
 Welcome and Login Screen:
 ![Login Page](https://github.com/codeitamarjr/CRM-Real-State/blob/master/assets/img/screens/wemcome-page.png?raw=true "Login Page")
