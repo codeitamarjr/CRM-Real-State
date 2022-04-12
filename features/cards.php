@@ -13,7 +13,7 @@
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total
                                     Enquiries</span></div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo enquiriesTotal($_SESSION["property_code"]); ?>
+                                    <?php echo totalMesssages($_SESSION["property_code"],''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-mailbox fa-2x text-gray-300">
@@ -34,12 +34,12 @@
                             <div class="row g-0 align-items-center">
                                 <div class="col-auto">
                                     <div class="text-dark fw-bold h5 mb-0 me-3"><span>
-                                            <?php echo enquiriesQueue($_SESSION["property_code"]); ?>
+                                            <?php echo totalMesssages($_SESSION["property_code"],'AND status = \'Queue\''); ?>
                                         </span></div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo (totalMesssages($_SESSION["property_code"],'AND status = \'Queue\'')/totalMesssages($_SESSION["property_code"],''))*100; ?>%;">
                                             <span class="visually-hidden">50%</span>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                 <span>Approved</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo enquiriesApproved($_SESSION["property_code"]); ?>
+                                    <?php echo totalMesssages($_SESSION["property_code"],'AND status = \'Approved\''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -79,7 +79,7 @@
                                 <span>Denied</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo enquiriesDenied($_SESSION["property_code"]); ?>
+                                    <?php echo totalMesssages($_SESSION["property_code"],'AND status = \'Denied\''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
@@ -109,17 +109,21 @@
         data: {
             labels: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             datasets: [{
-                label: "Total Enquiries",
+                label: "New Enquiries",
                 backgroundColor: "rgb(78, 115, 223)",
-                data: [<?php echo enquiriesTotal($_SESSION["property_code"]); ?>, 5]
+                data: [<?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-02%\''); ?>, <?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-03%\''); ?>]
             }, {
                 label: "Queue",
                 backgroundColor: "rgb(54, 185, 204)",
-                data: [<?php echo enquiriesQueue($_SESSION["property_code"]); ?>, 4]
+                data: [<?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-02%\' AND status = \'Queue\''); ?>, <?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-03%\' AND status = \'Queue\''); ?>]
             }, {
                 label: "Approved",
                 backgroundColor: "rgb(28, 200, 138)",
-                data: [<?php echo enquiriesApproved($_SESSION["property_code"]); ?>, 1]
+                data: [<?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-02%\' AND status = \'Approved\''); ?>, <?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-03%\' AND status = \'Approved\''); ?>]
+            }, {
+                label: "Denied",
+                backgroundColor: "#FF0000",
+                data: [<?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-02%\' AND status = \'Denied\''); ?>, <?php echo totalMesssages($_SESSION["property_code"],'AND message_date LIKE \'%2022-03%\' AND status = \'Denied\''); ?>]
             }]
         },
         options: {

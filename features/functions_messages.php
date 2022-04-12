@@ -1,5 +1,12 @@
 <?php
 
+function totalMesssages($property_code,$aditionalQuery){
+    require "config/config.php";
+    $result = mysqli_query($link, "SELECT * FROM messages WHERE property_code = '$property_code' $aditionalQuery");
+    return mysqli_num_rows($result);
+    mysqli_close($link);
+}
+
 function messagesNotification($timeForNotification)
 {
     // This function will get the number of messages receives in the last $timeForNotification minutes;
