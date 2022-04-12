@@ -99,7 +99,7 @@ mysqli_close($link)
         plugins: 'print preview paste code fullscreen image link media table hr pagebreak nonbreaking anchor toc advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
         menubar: true,
         height: 500,
-        toolbar: 'prospectLink propertyName prospectName prospectEmail prsName prsPhone prsAddress',
+        toolbar: 'prospectLink propertyName prospectName prospectEmail prsName prsPhone prsEmail prsAddress',
         setup: function(editor) {
             editor.ui.registry.addButton('prospectLink', {
                 text: '#ProspectProfileLink',
@@ -135,6 +135,12 @@ mysqli_close($link)
                 text: '#prsPhone',
                 onAction: function(_) {
                     editor.insertContent('%prsPhone%');
+                }
+            });
+            editor.ui.registry.addButton('prsEmail', {
+                text: '#prsE-mail',
+                onAction: function(_) {
+                    editor.insertContent('%prsEmail%');
                 }
             });
             editor.ui.registry.addButton('prsAddress', {
