@@ -99,10 +99,10 @@ mysqli_close($link)
         plugins: 'print preview paste code fullscreen image link media table hr pagebreak nonbreaking anchor toc advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
         menubar: true,
         height: 500,
-        toolbar: 'prospectLink propertyName prospectName',
+        toolbar: 'prospectLink propertyName prospectName prospectEmail prsName prsPhone prsAddress',
         setup: function(editor) {
             editor.ui.registry.addButton('prospectLink', {
-                text: 'Prospect Profile Link',
+                text: '#ProspectProfileLink',
                 onAction: function(_) {
                     editor.insertContent('%link%');
                 }
@@ -110,13 +110,37 @@ mysqli_close($link)
             editor.ui.registry.addButton('propertyName', {
                 text: '#PropertyName',
                 onAction: function(_) {
-                    editor.insertContent('\'.$property_name.\'');
+                    editor.insertContent('%propertyName%');
                 }
             });
             editor.ui.registry.addButton('prospectName', {
-                text: 'Propspect Name',
+                text: '#PropspectName',
                 onAction: function(_) {
-                    editor.insertContent('%name%');
+                    editor.insertContent('%prospectName%');
+                }
+            });
+            editor.ui.registry.addButton('prospectEmail', {
+                text: '#PropspectE-mail',
+                onAction: function(_) {
+                    editor.insertContent('%prospectEmail%');
+                }
+            });
+            editor.ui.registry.addButton('prsName', {
+                text: '#prsName',
+                onAction: function(_) {
+                    editor.insertContent('%prsName%');
+                }
+            });
+            editor.ui.registry.addButton('prsPhone', {
+                text: '#prsPhone',
+                onAction: function(_) {
+                    editor.insertContent('%prsPhone%');
+                }
+            });
+            editor.ui.registry.addButton('prsAddress', {
+                text: '#prsAddress',
+                onAction: function(_) {
+                    editor.insertContent('%prsAddress%');
                 }
             });
         }

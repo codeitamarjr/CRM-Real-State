@@ -119,7 +119,7 @@ if (!isset($_GET['outcome'])) {
                 <center>
                    ';
     $from = getMessage($message_id, 'messages_email');
-    sendAutomail($name, $hash, '', $from, $from, '', 'welcome');
+    sendAutomail($name, $hash, $property_name , $from, $from, '', 'welcome');
     echo '
                 </center></div>
             </div>
