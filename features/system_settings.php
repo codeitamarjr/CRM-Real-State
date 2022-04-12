@@ -1,6 +1,5 @@
 <?php
 require "features/functions_automail.php";
-require "features/functions_property.php";
 
 
 $property_code = $_SESSION["property_code"];
@@ -221,7 +220,7 @@ if (isset($_POST['save'])) {
     </div>
 
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     $('input[type="checkbox"]').on('click', function(event) {
         var flag = $('input').length > 2 ? true : false;

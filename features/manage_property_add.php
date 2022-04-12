@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET['submit'])) {
+if (isset($_POST['submit'])) {
     echo "<script>
     $(document).ready(function(){
         $(\"#alertModal\").modal('show');
@@ -16,18 +16,7 @@ if (isset($_GET['submit'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    if (getPropertyData($_SESSION["property_code"], 'property_name') != $_GET['propertyName']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_name', $_GET['propertyName'], 'ss');
-    }
-    if (getPropertyData($_SESSION["property_code"], 'property_type') != $_GET['propertyType']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_GET['propertyType'], 'ss');
-    }
-    if (getPropertyData($_SESSION["property_code"], 'property_units') != $_GET['units']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_GET['units'], 'ss');
-    }
-    if (getPropertyData($_SESSION["property_code"], 'property_address') != $_GET['propertyAddress']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_address', $_GET['propertyAddress'], 'ss');
-    }
+                   insertPropertyDataSafe($_POST['propertyType'],$_POST['units'],$_POST['propertyName'],$_POST['propertyAddress'],'ss',$agent_prs_code);
 
     echo '
         </center></div>
@@ -43,55 +32,51 @@ if (isset($_GET['submit'])) {
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Edit Property</a>
+                        <a class="nav-link" aria-current="page" href="dashboardv2.php?access=property">Edit Property</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboardv2.php?access=manage_property_add">Add Property</a>
+                        <a class="nav-link active" href="#">Add Property</a>
                     </li>
                 </ul>
 
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Edit Property</p>
+                        <p class="text-primary m-0 fw-bold">Add a New Property</p>
                     </div>
                     <div class="card-body">
-                        <form method="GET">
+                        <form method="POST">
                             <input type="hidden" name="access" value="property">
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Name</strong></label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?>" name="propertyName">
+                                        <input class="form-control" type="text" name="propertyName" required>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Type</strong></label>
                                         <div class="form-group">
-                                            <select class="form-control" name="propertyType">
-                                                <option value="house" <?php if (getPropertyData($_SESSION["property_code"], 'property_type') === "house") {
-                                                                            echo 'selected';
-                                                                        } ?>>House</option>
-                                                <option value="apartment" <?php if (getPropertyData($_SESSION["property_code"], 'property_type') === "apartment") {
-                                                                                echo 'selected';
-                                                                            } ?>>Apartment</option>
+                                            <select class="form-control" name="propertyType" required>
+                                                <option value="house">House</option>
+                                                <option value="apartment">Apartment</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Units</strong></label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_units'); ?>" name="units">
+                                        <input class="form-control" type="text" name="units" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Full Address</strong></label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_address'); ?>" name="propertyAddress">
+                                        <input class="form-control" type="text" name="propertyAddress" required>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <button class="btn btn-primary btn-sm" type="submit" name="submit">Update</button>
+                                <button class="btn btn-primary btn-sm" type="submit" name="submit">Save</button>
                             </div>
                         </form>
                     </div>
