@@ -12,7 +12,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 // Load configs and functions
 require "config/config.php";
 require "features/functions_user.php";
-require "features/functions_enquiries.php";
 require "features/functions_messages.php";
 require "features/functions_property.php";
 $agent_prs_code = $_SESSION["agent_prs_code"];

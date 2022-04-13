@@ -11,11 +11,14 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
         //Creates a loop to loop through results
         $message = $row['automail_message'];
         $subject = $row['automail_title'];
+        $automail_id = $row['automail_id'];
     }
     $message = str_replace('%propertyName%', getPropertyData($_SESSION["property_code"],'property_name') , $message);
     $message = str_replace('%prospectName%', $name , $message);
-    $message = str_replace('%prospectEmail%', $email_adress , $message);
-    $message = str_replace('%link%', 'http://ec2-63-34-20-196.eu-west-1.compute.amazonaws.com/propertymanagement/prospect_area.php?key='.$hash.'', $message);
+    $message = str_replace('%prospectEmail%', $email_adress , $message); 
+    //$base_mail = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $base_mail = getAutomail($automail_id,'automail_website');
+    $message = str_replace('%link%', ''.$base_mail.'/prospect_area.php?key='.$hash.'', $message);
     $message = str_replace('%prsName%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_name') , $message);
     $message = str_replace('%prsPhone%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_phone') , $message);
     $message = str_replace('%prsEmail%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_email') , $message);

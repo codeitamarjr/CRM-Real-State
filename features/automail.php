@@ -13,7 +13,7 @@ if (!empty($automail_id)) {
 if (!empty($_POST['tinyTextArea'])) {
     // Getting the variables from the form
     //$content = $link->real_escape_string($_POST['tinyTextArea']);
-    $content =  str_replace("#PROSPECTLINK", "http://ec2-63-34-20-196.eu-west-1.compute.amazonaws.com/propertymanagement/prospect_area.php?key=' . \$key . '",  $_POST['tinyTextArea']);
+    $content =  $_POST['tinyTextArea'];
     $content = $link->real_escape_string($content);
     $automail_id = $_POST['automail_id'];
     $automail_title = $link->real_escape_string($_POST['title']);
