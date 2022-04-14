@@ -6,13 +6,13 @@ require "config/config.php";
 
 //select all data from the mail_income sql table
 
-$from = getMessage($message_id, 'messages_email');
-$phone = getMessage($message_id, 'message_phone_number');
-$date = getMessage($message_id, 'message_date');
-$status = getMessage($message_id, 'status');
-$message = getMessage($message_id, 'message_body');
-$hash = getMessage($message_id, 'message_hash');
-$name = getMessage($message_id, 'message_sender_name');
+$from = getMessage('message_id',$message_id, 'messages_email');
+$phone = getMessage('message_id',$message_id, 'message_phone_number');
+$date = getMessage('message_id',$message_id, 'message_date');
+$status = getMessage('message_id',$message_id, 'status');
+$message = getMessage('message_id',$message_id, 'message_body');
+$hash = getMessage('message_id',$message_id, 'message_hash');
+$name = getMessage('message_id',$message_id, 'message_sender_name');
 
 
 $message_id = $_GET['message_id'];
@@ -38,8 +38,8 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    echo setMessage($message_id, 'status', $outcome);
-    $from = getMessage($message_id, 'messages_email');
+    echo setMessage('message_id',$message_id, 'status', $outcome);
+    $from = getMessage('message_id',$message_id, 'messages_email');
     sendAutomail($name, $hash, $property_name, $from, $from, '', 'viewing');
     echo '
                 </center></div>
@@ -64,8 +64,8 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    echo setMessage($message_id, 'status', $outcome);
-    $from = getMessage($message_id, 'messages_email');
+    echo setMessage('message_id',$message_id, 'status', $outcome);
+    $from = getMessage('message_id',$message_id, 'messages_email');
     sendAutomail($name, $hash, '', $from, $from, '', 'denied');
     echo '
                 </center></div>
@@ -118,7 +118,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    $from = getMessage($message_id, 'messages_email');
+    $from = getMessage('message_id',$message_id, 'messages_email');
     sendAutomail($name, $hash, $property_name, $from, $from, '', 'welcome');
     echo '
                 </center></div>

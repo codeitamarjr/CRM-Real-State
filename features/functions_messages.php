@@ -30,14 +30,14 @@ function setMessage($message_id, $rowName, $newData)
     }
     mysqli_close($link);
 }
-function getMessage($message_id, $rowName)
+function getMessage($conditionalRow, $conditionalRowData, $rowDataReturn)
 {
     require "config/config.php";
-    $query = "SELECT * FROM messages WHERE (message_id = '$message_id')";
+    $query = "SELECT * FROM messages WHERE ($conditionalRow = '$conditionalRowData')";
     $result = mysqli_query($link, $query);
     if (mysqli_query($link, $query)) {
         while ($row = mysqli_fetch_array($result)) {
-            return $row[$rowName];
+            return $row[$rowDataReturn];
         }
     } else {
         return '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';

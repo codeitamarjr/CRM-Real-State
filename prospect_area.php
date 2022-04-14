@@ -1,11 +1,17 @@
 <?php
 //Load config
 require "features/functions_prospect.php";
+require "features/functions_messages.php";
 
 //Load variable key into hash
 $hash = $_GET['key'];
 
-if (isset($_POST['save'])) {
+//Create the profile query in case of he've been created
+if (getProspectData($hash, 'hash') === null) {
+    insertProspectDataSafe('hash', $hash, 's');
+}
+
+if (isset($_POST['save']) | isset($_POST['proceed'])) {
     if ($_POST['prospectName'] != getProspectData($hash, 'prospect_full_name')) {
         setProspectDataSafe($hash, 'prospect_full_name', $_POST['prospectName'], 'ss');
     }
@@ -87,7 +93,32 @@ if (isset($_POST['upload'])) {
                             </div>
                             <div class="col-lg-6">
 
-                                <?php if (!isset($_POST['proceed']) && !isset($_POST['upload'])) { ?>
+                            <?php if (!isset($_POST['proceed']) && !isset($_POST['upload']) && !isset($_POST['start'])) { ?>
+
+                                <div class="p-5">
+                                    <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="POST">
+                                        <div class="text-center">
+                                            <h1 class="text-dark mb-4">On-line Application</h1>
+                                        </div>
+                                        <ul class="form-section page-section">
+                                            <div id="subHeader_1" class="form-subHeader">
+                                                <p>Welcome to your online application <?php echo getMessage('message_hash', $hash, 'message_sender_name'); ?>.</p>
+                                                <p>Your application has been started with success.</p>
+                                            </div>
+                                        </ul>
+                                        <li class="form-line" data-type="control_button" id="id_2">
+                                            <div id="cid_2" class="form-input-wide" data-layout="full">
+                                                <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
+                                                    <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="start">
+                                                        Start
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </form>
+                                </div>
+
+                                <?php } elseif ( !isset($_POST['upload']) && isset($_POST['start'])) { ?>
 
                                     <div class="p-5">
                                         <div class="text-center">
@@ -98,7 +129,6 @@ if (isset($_POST['upload'])) {
                                                 <div id="subHeader_1" class="form-subHeader">
                                                     Welcome to your on-line application
                                                     <?php echo getProspectData($hash, 'prospect_full_name'); ?>, here you can add extra information to support a quick and positive outcome.
-                                                    <p> Bear in mind that you can just submit your data once, after you click on the submit button you can not change your application.</p>
                                                 </div>
                                                 <li class="form-line jf-required" data-type="control_fullname" id="id_3">
                                                     <label class="form-label form-label-top form-label-auto" id="label_3" for="first_3">
@@ -775,7 +805,7 @@ if (isset($_POST['upload'])) {
                                         </form>
                                     </div>
 
-                                <?php };?>
+                                <?php }; ?>
 
                                 <?php if (isset($_POST['proceed'])) { ?>
 
@@ -788,8 +818,6 @@ if (isset($_POST['upload'])) {
                                             <input type="hidden" name="category" value="prospectID">
                                             <ul class="form-section page-section">
                                                 <div id="subHeader_1" class="form-subHeader">
-                                                    <p> Welcome to the second part of your on-line application
-                                                        <?php echo getProspectData($hash, 'prospect_full_name'); ?>.</p>
                                                     <p>In order to be considered for an apartment, you need to upload the following documents:</p>
                                                 </div>
                                                 <li id="cid_18" class="form-input-wide" data-type="control_head">
@@ -800,7 +828,6 @@ if (isset($_POST['upload'])) {
                                                             </h2>
                                                             <div id="subHeader_18" class="form-subHeader">
                                                                 <p>Please upload an image of your ID (Passport, driver licence, national ID)</p>
-                                                                <p>For joint applications, please upload proof of ID for each applicant on the one application</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -815,6 +842,16 @@ if (isset($_POST['upload'])) {
                                                     <div id="cid_3" class="form-input-wide jf-required">
                                                         <div data-wrapper-react="true">
                                                             <span class="form-sub-label-container" style="vertical-align:top">
+
+                                                                <div class="card">
+                                                                    <img src="features/uploads/<?php echo $hash; ?>_ID.jpeg" class="card-img-top" alt="...">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title">ID</h5>
+                                                                        <p class="card-text">This is the ID that you have uploaded, you can upload a new one selecting a new file below.</p>
+                                                                        <p class="card-text"><button type="button" class="btn btn-danger btn-sm" name="removeID">Delete File</button></p>
+                                                                    </div>
+                                                                </div>
+
                                                                 <input class="form-control" type="file" name="ID">
                                                                 <label class="form-sub-label" style="min-height:13px" aria-hidden="false">The following files are accepted: 'jpg', 'jpeg', 'png', 'pdf', 'webp', 'docx', 'doc', 'xlsx', 'xls'.</label>
                                                             </span>
@@ -872,21 +909,21 @@ if (isset($_POST['upload'])) {
 
                                 <?php if (isset($_POST['upload'])) { ?>
 
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="text-dark mb-4">On-line Application</h1>
-                                    </div>
-                                    <input type="hidden" name="id" value="<?php echo $hash; ?>">
-                                    <input type="hidden" name="category" value="prospectID">
-                                    <ul class="form-section page-section">
-                                        <div id="subHeader_1" class="form-subHeader">
-                                            <p>Thank you <?php echo getProspectData($hash, 'prospect_full_name'); ?>.</p>
-                                            <p>Your online application has been submitted with succes!</p>
-                                            <p>One of our agents will be in touch shortly on your email address or phone number.</p>
-                                            <p>Please keep your application data updated and if you need you can come back using your personal link and edit or add more information.</p>
+                                    <div class="p-5">
+                                        <div class="text-center">
+                                            <h1 class="text-dark mb-4">On-line Application</h1>
                                         </div>
-                                    </ul>
-                                </div>
+                                        <input type="hidden" name="id" value="<?php echo $hash; ?>">
+                                        <input type="hidden" name="category" value="prospectID">
+                                        <ul class="form-section page-section">
+                                            <div id="subHeader_1" class="form-subHeader">
+                                                <p>Thank you <?php echo getProspectData($hash, 'prospect_full_name'); ?>.</p>
+                                                <p>Your online application has been submitted with succes!</p>
+                                                <p>One of our agents will be in touch shortly on your email address or phone number.</p>
+                                                <p>Please keep your application data updated and if you need you can come back using your personal link and edit or add more information.</p>
+                                            </div>
+                                        </ul>
+                                    </div>
 
                                 <?php }; ?>
 
