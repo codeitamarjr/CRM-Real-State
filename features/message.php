@@ -38,7 +38,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    echo setMessage('message_id',$message_id, 'status', $outcome);
+    echo setMessage($message_id, 'status', $outcome);
     $from = getMessage('message_id',$message_id, 'messages_email');
     sendAutomail($name, $hash, $property_name, $from, $from, '', 'viewing');
     echo '
@@ -64,7 +64,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    echo setMessage('message_id',$message_id, 'status', $outcome);
+    echo setMessage($message_id, 'status', $outcome);
     $from = getMessage('message_id',$message_id, 'messages_email');
     sendAutomail($name, $hash, '', $from, $from, '', 'denied');
     echo '
