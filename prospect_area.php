@@ -7,9 +7,11 @@ require "features/functions_messages.php";
 $hash = $_GET['key'];
 
 //Create the profile query in case of he've been created
-if (getProspectData($hash, 'hash') === null) {
+if (getProspectData($hash, 'hash') === null && getMessage('message_hash', $hash, 'message_sender_name') !== null) {
     insertProspectDataSafe('hash', $hash, 's');
 }
+
+
 
 if (isset($_POST['save']) | isset($_POST['proceed'])) {
     if ($_POST['prospectName'] != getProspectData($hash, 'prospect_full_name')) {
@@ -51,20 +53,77 @@ if (isset($_POST['upload'])) {
     //require "features/upload.php";
     require "features/functions_upload.php";
     if ($_FILES['ID']['name'] != null) {
-        uploadFile($_FILES['ID'], $hash, 'ID');
+        //If the prospect already uploaded a file, delete it, upload a new one and update the database
+        if (getProspectData($hash, 'prospect_attach_id') != null) {
+            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_id') . '');
+            $fileIDName = uploadFile($_FILES['ID'], $hash, 'ID');
+            setProspectDataSafe($hash, 'prospect_attach_id', $fileIDName, 'ss');
+        } else {
+            $fileIDName = uploadFile($_FILES['ID'], $hash, 'ID');
+            setProspectDataSafe($hash, 'prospect_attach_id', $fileIDName, 'ss');
+        }
     }
     if ($_FILES['applicantProofOfPayment1']['name'] != null) {
-        uploadFile($_FILES['applicantProofOfPayment1'], $hash, 'ProofOfPayment1');
+        if (getProspectData($hash, 'prospect_attach_proofpayment1') != null) {
+            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment1') . '');
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment1'], $hash, 'ProofOfPayment1');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment1', $fileIDName, 'ss');
+        } else {
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment1'], $hash, 'ProofOfPayment1');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment1', $fileIDName, 'ss');
+        }
     }
     if ($_FILES['applicantProofOfPayment2']['name'] != null) {
-        uploadFile($_FILES['applicantProofOfPayment2'], $hash, 'ProofOfPayment2');
+        if (getProspectData($hash, 'prospect_attach_proofpayment2') != null) {
+            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment2') . '');
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment2'], $hash, 'ProofOfPayment2');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment2', $fileIDName, 'ss');
+        } else {
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment2'], $hash, 'ProofOfPayment2');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment2', $fileIDName, 'ss');
+        }
     }
     if ($_FILES['applicantProofOfPayment3']['name'] != null) {
-        uploadFile($_FILES['applicantProofOfPayment3'], $hash, 'ProofOfPayment3');
+        if (getProspectData($hash, 'prospect_attach_proofpayment3') != null) {
+            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment3') . '');
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment3'], $hash, 'ProofOfPayment3');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment3', $fileIDName, 'ss');
+        } else {
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment3'], $hash, 'ProofOfPayment3');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment3', $fileIDName, 'ss');
+        }
     }
     if ($_FILES['applicantProofOfPayment4']['name'] != null) {
-        uploadFile($_FILES['applicantProofOfPayment4'], $hash, 'ProofOfPayment4');
+        if (getProspectData($hash, 'prospect_attach_proofpayment4') != null) {
+            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment4') . '');
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment4'], $hash, 'ProofOfPayment4');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment4', $fileIDName, 'ss');
+        } else {
+            $fileIDName = uploadFile($_FILES['applicantProofOfPayment4'], $hash, 'ProofOfPayment4');
+            setProspectDataSafe($hash, 'prospect_attach_proofpayment4', $fileIDName, 'ss');
+        }
     }
+};
+
+if (isset($_POST['removeID'])) {
+    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_id') . '');
+    setProspectDataSafe($hash, 'prospect_attach_id', '', 'ss');
+};
+if (isset($_POST['removeProofOfPayment1'])) {
+    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment1') . '');
+    setProspectDataSafe($hash, 'prospect_attach_proofpayment1', '', 'ss');
+};
+if (isset($_POST['removeProofOfPayment2'])) {
+    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment2') . '');
+    setProspectDataSafe($hash, 'prospect_attach_proofpayment2', '', 'ss');
+};
+if (isset($_POST['removeProofOfPayment3'])) {
+    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment3') . '');
+    setProspectDataSafe($hash, 'prospect_attach_proofpayment3', '', 'ss');
+};
+if (isset($_POST['removeProofOfPayment4'])) {
+    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment4') . '');
+    setProspectDataSafe($hash, 'prospect_attach_proofpayment4', '', 'ss');
 };
 
 ?>
@@ -93,32 +152,38 @@ if (isset($_POST['upload'])) {
                             </div>
                             <div class="col-lg-6">
 
-                            <?php if (!isset($_POST['proceed']) && !isset($_POST['upload']) && !isset($_POST['start'])) { ?>
+                                <?php //Stop the page if the hash is not valid
+                                if (getMessage('message_hash', $hash, 'message_sender_name') === null) {
+                                    echo '<div class="p-5"><div class="alert alert-danger" role="alert"><strong>Error!</strong> The link you are trying to access is not valid.</div></div>';
+                                    die;
+                                } ?>
 
-                                <div class="p-5">
-                                    <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="POST">
-                                        <div class="text-center">
-                                            <h1 class="text-dark mb-4">On-line Application</h1>
-                                        </div>
-                                        <ul class="form-section page-section">
-                                            <div id="subHeader_1" class="form-subHeader">
-                                                <p>Welcome to your online application <?php echo getMessage('message_hash', $hash, 'message_sender_name'); ?>.</p>
-                                                <p>Your application has been started with success.</p>
+                                <?php if (!isset($_POST['proceed']) && !isset($_POST['upload']) && !isset($_POST['start'])) { ?>
+
+                                    <div class="p-5">
+                                        <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="POST">
+                                            <div class="text-center">
+                                                <h1 class="text-dark mb-4">On-line Application</h1>
                                             </div>
-                                        </ul>
-                                        <li class="form-line" data-type="control_button" id="id_2">
-                                            <div id="cid_2" class="form-input-wide" data-layout="full">
-                                                <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
-                                                    <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="start">
-                                                        Start
-                                                    </button>
+                                            <ul class="form-section page-section">
+                                                <div id="subHeader_1" class="form-subHeader">
+                                                    <p>Welcome to your online application <?php echo getMessage('message_hash', $hash, 'message_sender_name'); ?>.</p>
+                                                    <p>Your application has been started with success.</p>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    </form>
-                                </div>
+                                            </ul>
+                                            <li class="form-line" data-type="control_button" id="id_2">
+                                                <div id="cid_2" class="form-input-wide" data-layout="full">
+                                                    <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
+                                                        <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="start">
+                                                            Start
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </form>
+                                    </div>
 
-                                <?php } elseif ( !isset($_POST['upload']) && isset($_POST['start'])) { ?>
+                                <?php } elseif (!isset($_POST['upload']) && isset($_POST['start'])) { ?>
 
                                     <div class="p-5">
                                         <div class="text-center">
@@ -141,9 +206,7 @@ if (isset($_POST['upload'])) {
                                                         <div data-wrapper-react="true">
                                                             <span class="form-sub-label-container" style="vertical-align:top" data-input-type="first">
                                                                 <input type="text" name="prospectName" class="form-textbox validate[required]" autoComplete="section-input_3 given-name" size="10" value="<?php echo getProspectData($hash, 'prospect_full_name') ?>" aria-labelledby="label_3 sublabel_3_first" required="" />
-                                                                <label class="form-sub-label" for="first_3" id="sublabel_3_first" style="min-height:13px" aria-hidden="false"> Full Name </label>
                                                             </span>
-
                                                         </div>
                                                     </div>
                                                 </li>
@@ -844,11 +907,11 @@ if (isset($_POST['upload'])) {
                                                             <span class="form-sub-label-container" style="vertical-align:top">
 
                                                                 <div class="card">
-                                                                    <img src="features/uploads/<?php echo $hash; ?>_ID.jpeg" class="card-img-top" alt="...">
                                                                     <div class="card-body">
-                                                                        <h5 class="card-title">ID</h5>
-                                                                        <p class="card-text">This is the ID that you have uploaded, you can upload a new one selecting a new file below.</p>
-                                                                        <p class="card-text"><button type="button" class="btn btn-danger btn-sm" name="removeID">Delete File</button></p>
+                                                                        <div>
+                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_id'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_id'); ?></a>
+                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeID">X</button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
 
@@ -883,10 +946,59 @@ if (isset($_POST['upload'])) {
                                                     <div id="cid_3" class="form-input-wide jf-required" data-layout="full">
                                                         <div data-wrapper-react="true">
                                                             <span class="form-sub-label-container" style="vertical-align:top" data-input-type="first">
+
+                                                                <p>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div>
+                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment1'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment1'); ?></a>
+                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment1">X</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 <input class="form-control" type="file" name="applicantProofOfPayment1">
+                                                                </p>
+
+                                                                <p>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div>
+                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment2'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment2'); ?></a>
+                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment2">X</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 <input class="form-control" type="file" name="applicantProofOfPayment2">
+                                                                </p>
+
+                                                                <p>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div>
+                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment3'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment3'); ?></a>
+                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment3">X</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 <input class="form-control" type="file" name="applicantProofOfPayment3">
+                                                                </p>
+
+                                                                <p>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div>
+                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment4'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment4'); ?></a>
+                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment4">X</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                                 <input class="form-control" type="file" name="applicantProofOfPayment4">
+                                                                </p>
+
                                                                 <label class="form-sub-label" for="first_3" id="sublabel_3_first" style="min-height:13px" aria-hidden="false">The following files are accepted: 'jpg', 'jpeg', 'png', 'pdf', 'webp', 'docx', 'doc', 'xlsx', 'xls'.</label>
                                                             </span>
                                                         </div>
@@ -896,7 +1008,7 @@ if (isset($_POST['upload'])) {
                                                     <div id="cid_2" class="form-input-wide" data-layout="full">
                                                         <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
                                                             <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="upload">
-                                                                Finish
+                                                                Upload files and Finish
                                                             </button>
                                                         </div>
                                                     </div>

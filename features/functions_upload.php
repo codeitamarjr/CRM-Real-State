@@ -15,11 +15,11 @@ function uploadFile($file, $fileID, $fileCategory){
 
     if (in_array($fileActualExt, $allowed)) {
         if ($fileError === 0) {
-            if ($fileSize < 100000) {
+            if ($fileSize < 1000000) {
                 $fileNameNew = $fileID . "_" . $fileCategory . "." . $fileActualExt;
                 $fileDestination = 'features/uploads/' . $fileNameNew;
                 move_uploaded_file($fileTmpName, $fileDestination);
-                echo '<div class="alert alert-success" role="alert">File updated with succes!</div>';
+                return $fileNameNew;
             } else {
                 echo '<div class="alert alert-danger" role="alert">Your file is too big!</div>';
             }
