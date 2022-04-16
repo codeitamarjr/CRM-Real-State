@@ -3,6 +3,8 @@
 function getPropertyData($property_code, $rowName)
 {
     include "config/config.php";
+    include "../config/config.php";
+
     $query = "SELECT * FROM property WHERE (property_code = '$property_code')";
     $result = mysqli_query($link, $query);
     if ($result) {

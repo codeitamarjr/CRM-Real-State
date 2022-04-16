@@ -141,7 +141,7 @@ $message_id = $_GET['message_id'];
         </div>
     </footer>
     <!-- New emails feature starts -->
-    <object type="text/html" data="features/getting_email.ph" width="1px" height="1px"></object>
+    <object type="text/html" data="features/getting_email.php" width="1px" height="1px"></object>
     <!-- New emails feature end -->
 
 </body>
