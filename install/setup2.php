@@ -44,19 +44,25 @@ session_start();
                                                 <div class="form-group">
                                                     <label class="col control-label">Server</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="server">
+                                                        <input type="text" class="form-control" name="server" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col control-label">Username</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="username">
+                                                        <input type="text" class="form-control" name="username" required>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="col control-label">Password</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="password">
+                                                        <input type="text" class="form-control" name="password" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col control-label">DB Name</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="dbname" required>
                                                     </div>
                                                 </div>
                                             </div>
