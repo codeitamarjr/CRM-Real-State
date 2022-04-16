@@ -58,7 +58,7 @@ if ($_FILES['picture']['name'] != null) {
 ?>
 
 <div class="container-fluid">
-    <h3 class="text-dark mb-4">Profile <?php echo userGetData($_SESSION["username"],'agent_pic'); ?></h3>
+    <h3 class="text-dark mb-4"></h3>
     <div class="row mb-3">
         <div class="col-lg-4 col-xl-4">
             <div class="card mb-3">

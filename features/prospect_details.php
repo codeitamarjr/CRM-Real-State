@@ -54,7 +54,7 @@ mysqli_close($link);
             <div class="d-flex flex-column align-items-center text-center">
               <div class="mt-3">
                 <p class="text-secondary mb-1">
-                  <a href="prospect_area.php?key=<?php echo $hash; ?>" target="_blank">Personal Link</a>
+                  <a href="prospect_area.php?key=<?php echo $hash; ?>" target="_blank">Prospect On-Line Application Area</a>
                 </p>
               </div>
             </div>
