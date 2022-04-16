@@ -120,7 +120,7 @@ if (isset($_POST['upload'])) {
             <div class="col-xl-12">
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Property Management Data</p>
+                        <p class="text-primary m-0 fw-bold">PRS Management Data</p>
                     </div>
                     <div class="card-body">
                         <form method="GET">

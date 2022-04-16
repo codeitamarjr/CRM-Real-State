@@ -10,14 +10,13 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 }
 
 // Load configs and functions
-require "config/config.php";
 require "features/functions_user.php";
 require "features/functions_messages.php";
 require "features/functions_property.php";
 $agent_prs_code = $_SESSION["agent_prs_code"];
 
 //It'll set the property_code to the session if it's not set
-if(!isset($_SESSION["property_code"])){
+if (!isset($_SESSION["property_code"])) {
     $_SESSION["property_code"] = userProperty($agent_prs_code);
 }
 
@@ -30,10 +29,7 @@ if (!isset($_GET['access'])) {
 //to pass to child pages
 $page =   $_GET['page'];
 $message_id = $_GET['message_id'];
-//If the agent selects a property from the list will change the session property_code
-if(isset($_POST['select_property'])){
-    $_SESSION["property_code"] = $_POST['select_property'];
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +46,10 @@ if(isset($_POST['select_property'])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="assets/js/bs-init.js?h=e2b0d57f2c4a9b0d13919304f87f79ae"></script>
+    <script src="assets/js/theme.js?h=79f403485707cf2617c5bc5a2d386bb0"></script>
 </head>
 
 <body id="page-top">
@@ -126,7 +126,7 @@ if(isset($_POST['select_property'])){
                 if ($content == 'manage_property_add') {
                     include "features/manage_property_add.php";
                 }
-                
+
 
                 ?>
                 <!-- Content End-->
@@ -140,11 +140,6 @@ if(isset($_POST['select_property'])){
             <div class="text-center my-auto copyright"><span>Copyright © Real Enquiries 2022 | Designed by <a href="https://www.itjunior.dev/" target="_blank">Itamar Junior</a></span></div>
         </div>
     </footer>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-    <script src="assets/js/bs-init.js?h=e2b0d57f2c4a9b0d13919304f87f79ae"></script>
-    <script src="assets/js/theme.js?h=79f403485707cf2617c5bc5a2d386bb0"></script>
     <!-- New emails feature starts -->
     <object type="text/html" data="features/getting_email.ph" width="1px" height="1px"></object>
     <!-- New emails feature end -->

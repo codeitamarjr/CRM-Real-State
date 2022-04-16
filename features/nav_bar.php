@@ -12,32 +12,7 @@
         <!-- Search Bar Ends -->
 
         <ul class="navbar-nav flex-nowrap ms-auto">
-            <!-- Property Selector Starts -->
-            <li class="nav-item dropdown no-arrow">
-                <div class="nav-item dropdown no-arrow">
-                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                        <span class="d-none d-lg-inline me-2 text-gray-600 small">
-                            <form method="POST">
-                                <select class="form-select" name="select_property">
-                                    <option selected><?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?></option>
-                                    <?php
-                                    //List all the properties from an agent
-                                    $query = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
-                                    $result = mysqli_query($link, $query);
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        echo '<option value='.$row['property_code'];
-                                        echo '>';
-                                        echo $row['property_name'];
-                                        echo '</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </form>
-                        </span>
-                    </a>
-                </div>
-            </li>
-            <!-- Property Selector Ends -->
+           <?php require "selector_bar.php"; ?>
             <div class="d-none d-sm-block topbar-divider"></div>
             <li class="nav-item dropdown no-arrow mx-1">
                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
@@ -73,7 +48,7 @@
                 </div>
             </li>
             <li class="nav-item dropdown no-arrow mx-1">
-                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown">
+                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false">
                         <span class="badge bg-danger badge-counter"><?php echo messagesNotification(60) ?></span><i class="fas fa-envelope fa-fw"></i></a>
                 </div>
                 <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
@@ -95,9 +70,3 @@
         </ul>
     </div>
 </nav>
-<script>
-    //auto send form using Jquery
-    $("form").on('change', function() {
-        $("form").trigger('submit');
-    });
-</script>

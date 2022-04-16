@@ -130,7 +130,6 @@ if (!isset($_GET['outcome'])) {
 
 
 <div class="container-fluid">
-    <h3 class="text-dark mb-1">Message</h3>
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>

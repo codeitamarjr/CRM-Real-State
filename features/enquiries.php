@@ -87,7 +87,7 @@ $result = mysqli_query($link, $query);
                             while ($row_prospect = mysqli_fetch_array($result_prospect)) {
                                 $hash = $row_prospect['hash'];
                                 if (!empty($hash)) {
-                                    echo '<a data-toggle="tooltip" title="This applicant has submited his data already" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
+                                    echo '<a data-toggle="tooltip" title="This applicant has visited his welcome email" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
                                 }
                             };
 
@@ -115,9 +115,11 @@ $result = mysqli_query($link, $query);
 
 
             <div class="row">
+
                 <div class="col-md-6 align-self-center">
-                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?> of <?php echo enquiriesTotal($_SESSION["property_code"]); ?></p>
+                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?> of <?php echo totalMesssages($_SESSION["property_code"],''); ?></p>
                 </div>
+
                 <div class="col-md-6">
                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                         <ul class="pagination">
@@ -130,10 +132,10 @@ $result = mysqli_query($link, $query);
                             //Close SQL connection
                             mysqli_close($link);
                             ?>
-
                         </ul>
                     </nav>
                 </div>
+
             </div>
         </div>
     </div>
