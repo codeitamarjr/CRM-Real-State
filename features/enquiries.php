@@ -76,7 +76,14 @@ $result = mysqli_query($link, $query);
                         <?php while ($row = mysqli_fetch_array($result)) {
                             $message_id = htmlspecialchars($row['message_id']);
 
-                            echo "<tr>
+                            echo "<tr ";
+                            if ($row['status'] == "Approved"){
+                                echo "class='table-success'";
+                            }
+                            if ($row['status'] == "Denied"){
+                                echo "class='table-danger'";
+                            }
+                            echo ">
     <td><a href=\"dashboardv2.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['message_sender_name']) . "</a></td>
     <td><a href=\"dashboardv2.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['messages_email']) . "</a></td>
     <td>";
@@ -87,7 +94,7 @@ $result = mysqli_query($link, $query);
                             while ($row_prospect = mysqli_fetch_array($result_prospect)) {
                                 $hash = $row_prospect['hash'];
                                 if (!empty($hash)) {
-                                    echo '<a data-toggle="tooltip" title="This applicant has visited his welcome email" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
+                                    echo '<a data-toggle="tooltip" title="This applicant has submitted his data" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
                                 }
                             };
 
@@ -155,3 +162,4 @@ $result = mysqli_query($link, $query);
         window.location = "dashboardv2.php?access=enquiries&" + elm.value;
     }
 </script>
+

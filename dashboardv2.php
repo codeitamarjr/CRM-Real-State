@@ -63,12 +63,12 @@ $message_id = $_GET['message_id'];
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link active" href="dashboardv2.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="dashboardv2.php?access=enquiries"><i class="fas fa-table"></i><span>Enquiries</span></a>
-                        <a class="nav-link" href="dashboardv2.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a>
-                        <a class="nav-link" href="dashboardv2.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a>
-                        <a class="nav-link" href="dashboardv2.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboardv2.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboardv2.php?access=enquiries"><i class="fas fa-table"></i><span>Enquiries</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboardv2.php?access=tenants"><i class="fas fa-table"></i><span>Tenants</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboardv2.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboardv2.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') { echo 'active';}?>" href="dashboardv2.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
@@ -90,8 +90,8 @@ $message_id = $_GET['message_id'];
                 if ($content == 'enquiries') {
                     include "features/enquiries.php";
                 }
-                if ($content == 'changelog') {
-                    include "features/changelog.php";
+                if ($content == 'tenants') {
+                    include "features/tenants.php";
                 }
                 if ($content == 'message') {
                     include "features/message.php";

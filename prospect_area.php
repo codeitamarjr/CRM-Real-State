@@ -6,14 +6,16 @@ require "features/functions_messages.php";
 //Load variable key into hash
 $hash = $_GET['key'];
 
-//Create the profile query in case of he've been created
-if (getProspectData($hash, 'hash') === null && getMessage('message_hash', $hash, 'message_sender_name') !== null) {
-    insertProspectDataSafe('hash', $hash, 's');
-}
-
-
-
 if (isset($_POST['save']) | isset($_POST['proceed'])) {
+
+    //Create the profile in the prospect table in case of the hash is valid and the user has not created a profile yet
+    if (getProspectData($hash, 'hash') === null && getMessage('message_hash', $hash, 'message_sender_name') !== null) {
+        insertProspectDataSafe('hash', $hash, 's');
+        //After the profile is created, set the prospect_property_code
+        $prospect_property_code = getMessage('message_hash', $hash, 'property_code');
+        setProspectDataSafe($hash, 'prospect_property_code', $prospect_property_code, 'ss');
+    }
+
     if ($_POST['prospectName'] != getProspectData($hash, 'prospect_full_name')) {
         setProspectDataSafe($hash, 'prospect_full_name', $_POST['prospectName'], 'ss');
     }
@@ -37,6 +39,9 @@ if (isset($_POST['save']) | isset($_POST['proceed'])) {
     }
     if ($_POST['job_title'] != getProspectData($hash, 'prospect_job_title')) {
         setProspectDataSafe($hash, 'prospect_job_title', $_POST['job_title'], 'ss');
+    }
+    if ($_POST['monthly_income'] != getProspectData($hash, 'prospect_income')) {
+        setProspectDataSafe($hash, 'prospect_income', $_POST['monthly_income'], 'ss');
     }
     if ($_POST['occupants'] != getProspectData($hash, 'prospect_occupants')) {
         setProspectDataSafe($hash, 'prospect_occupants', $_POST['occupants'], 'ss');
@@ -152,7 +157,7 @@ if (isset($_POST['removeProofOfPayment4'])) {
                             </div>
                             <div class="col-lg-6">
 
-                                <?php //Stop the page if the hash is not valid
+                                <?php //Stop the page if the hash is not valid as one of the hashes from the enquiries table
                                 if (getMessage('message_hash', $hash, 'message_sender_name') === null) {
                                     echo '<div class="p-5"><div class="alert alert-danger" role="alert"><strong>Error!</strong> The link you are trying to access is not valid.</div></div>';
                                     die;
@@ -567,7 +572,7 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                         </div>
                                                     </div>
                                                 </li>
-                                                <li class="form-line jf-required" data-type="control_dropdown" id="id_21">
+                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_dropdown">
                                                     <label class="form-label form-label-top form-label-auto" id="label_21" for="input_21">
                                                         Sector
                                                         <span class="form-required">
@@ -794,7 +799,7 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                         </select>
                                                     </div>
                                                 </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_textbox" id="id_20">
+                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox">
                                                     <label class="form-label form-label-top" id="label_20" for="input_20">
                                                         Employer
                                                         <span class="form-required">
@@ -805,7 +810,7 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                         <input type="text" name="employer" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_employer'); ?>" data-component="textbox" aria-labelledby="label_20" required="" />
                                                     </div>
                                                 </li>
-                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox" id="id_22">
+                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_textbox">
                                                     <label class="form-label form-label-top" id="label_22" for="input_22">
                                                         Job Title
                                                         <span class="form-required">
@@ -816,6 +821,16 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                         <input type="text" name="job_title" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_job_title'); ?>" data-component="textbox" aria-labelledby="label_22" required="" />
                                                     </div>
                                                 </li>
+                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox">
+                                                    <label class="form-label form-label-top" id="label_23" for="input_23">
+                                                        Monthly Net Income
+                                                        <span class="form-required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="form-input-wide jf-required" data-layout="half">
+                                                        <input type="number" name="monthly_income" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_income'); ?>" data-component="number" aria-labelledby="label_23" required="" />
+                                                    </div>
                                                 <li id="cid_24" class="form-input-wide" data-type="control_head">
                                                     <div class="form-header-group  header-default">
                                                         <div class="header-text httal htvam">
