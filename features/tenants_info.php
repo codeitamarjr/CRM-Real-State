@@ -1,66 +1,8 @@
 
-<div class="container">
-   <div class="row">
-      <div class="col-md-12">
-         <div id="content" class="content content-full-width">
-            <!-- begin profile -->
-            <div class="profile">
-               <div class="profile-header">
-                  <!-- BEGIN profile-header-cover -->
-                  <div class="profile-header-cover"></div>
-                  <!-- END profile-header-cover -->
-                  <!-- BEGIN profile-header-content -->
-                  <div class="profile-header-content">
-                     <!-- BEGIN profile-header-img -->
-                     <div class="profile-header-img">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-                     </div>
-                     <!-- END profile-header-img -->
-                     <!-- BEGIN profile-header-info -->
-                     <div class="profile-header-info">
-                        <h4 class="m-t-10 m-b-5">John Doe</h4>
-                        <p class="m-b-10">Web And Frontend Developer<br>
-                            <i class="fa fa-map-marker fa-fw text-primary"></i><small>New York, NY</small><br>
-                            <i class="fa fa-envelope fa-fw text-primary"></i><small>New York, NY</small></p>
-                     </div>
-                     <!-- END profile-header-info -->
-                  </div>
-                  <!-- END profile-header-content -->
-                  <!-- BEGIN profile-header-tab -->
-                  <ul class="profile-header-tab nav nav-tabs">
-                    <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">Property</a></li>
-                    <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">Billing & Payment</a></li>
-                     <li class="nav-item"><a href="#profile-post" class="nav-link" data-toggle="tab">Profile</a></li>
-                     <li class="nav-item"><a href="#profile-about" class="nav-link active show" data-toggle="tab">Enquiries</a></li>
-                     
-                     <li class="nav-item"><a href="#profile-videos" class="nav-link" data-toggle="tab">VIDEOS</a></li>
-                     <li class="nav-item"><a href="#profile-friends" class="nav-link" data-toggle="tab">FRIENDS</a></li>
-                  </ul>
-                  <!-- END profile-header-tab -->
-               </div>
-            </div>
-            <!-- end profile -->
-            <!-- begin profile-content -->
-            <div class="profile-content">
-               <!-- begin tab-content -->
-               <div class="tab-content p-0">
 
-                  <!-- begin #profile-about tab -->
-                  
-                  <!-- end #profile-about tab -->
-               </div>
-               <!-- end tab-content -->
-            </div>
-            <!-- end profile-content -->
-         </div>
-      </div>
-   </div>
-</div>
     
 
 <style>
- 
-
 .profile-header {
     position: relative;
     overflow: hidden
