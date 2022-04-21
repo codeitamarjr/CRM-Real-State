@@ -32,7 +32,7 @@ if (isset($_POST['submit'])) {
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="dashboardv2.php?access=property">Edit Property</a>
+                        <a class="nav-link" aria-current="page" href="dashboard.php?access=property">Edit Property</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Add Property</a>

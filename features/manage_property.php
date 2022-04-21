@@ -47,7 +47,7 @@ if (isset($_GET['submit'])) {
                         <a class="nav-link active" aria-current="page" href="#">Edit Property</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboardv2.php?access=manage_property_add">Add Property</a>
+                        <a class="nav-link" href="dashboard.php?access=manage_property_add">Add Property</a>
                     </li>
                 </ul>
 

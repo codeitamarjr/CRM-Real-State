@@ -84,8 +84,8 @@ $result = mysqli_query($link, $query);
                                 echo "class='table-danger'";
                             }
                             echo ">
-    <td><a href=\"dashboardv2.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['message_sender_name']) . "</a></td>
-    <td><a href=\"dashboardv2.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['messages_email']) . "</a></td>
+    <td><a href=\"dashboard.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['message_sender_name']) . "</a></td>
+    <td><a href=\"dashboard.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['messages_email']) . "</a></td>
     <td>";
                             //Check if the user fillout his data on prospect table, if so shows an clickable link to show his profile
                             $message_hash = $row['message_hash'];
@@ -94,7 +94,7 @@ $result = mysqli_query($link, $query);
                             while ($row_prospect = mysqli_fetch_array($result_prospect)) {
                                 $hash = $row_prospect['hash'];
                                 if (!empty($hash)) {
-                                    echo '<a data-toggle="tooltip" title="This applicant has submitted his data" href="dashboardv2.php?access=message&message_id='.$message_id.'"><img class="rounded-circle me-2" width="30" height="30" src="assets/img/profile.svg"></a>';
+                                    echo '<a data-toggle="tooltip" title="This applicant has submitted his data" href="dashboard.php?access=message&message_id='.$message_id.'"><i class="fa fa-address-card"></i></a>';
                                 }
                             };
 
@@ -133,7 +133,7 @@ $result = mysqli_query($link, $query);
                             <?php
                             //display the link of the pages in URL  
                             for ($page = 1; $page <= $number_of_page;) {
-                                echo '<li class="page-item"><a class="page-link" href="dashboardv2.php?access=enquiries&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="dashboard.php?access=enquiries&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
                                 $page++;
                             }
                             //Close SQL connection
@@ -159,7 +159,7 @@ $result = mysqli_query($link, $query);
 
 <script type="text/javascript">
     function handleSelect(elm) {
-        window.location = "dashboardv2.php?access=enquiries&" + elm.value;
+        window.location = "dashboard.php?access=enquiries&" + elm.value;
     }
 </script>
 

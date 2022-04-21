@@ -1,12 +1,7 @@
 <?php
 require "config/config.php";
 ?>
-
-
-
-
-
-
+<!-- Search Start -->
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -47,7 +42,7 @@ require "config/config.php";
 
                                         echo '<tr>
             <td>
-                <h5 class="font-medium mb-0"><a href="dashboardv2.php?access=message&message_id=' . $message_id . '">' . $name . '</a></h5>
+                <h5 class="font-medium mb-0"><a href="dashboard.php?access=message&message_id=' . $message_id . '">' . $name . '</a></h5>
             </td>
             <td>
                 <span class="text-muted">' . $status . '</span><br>
@@ -60,7 +55,7 @@ require "config/config.php";
                 <span class="text-muted">' . $date . '</span><br>
             </td>
             <td>
-            <a class="dropdown-item" href="dashboardv2.php?access=message&message_id=' . $message_id . '&outcome=Delete"><button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button></a>
+            <a class="dropdown-item" href="dashboard.php?access=message&message_id=' . $message_id . '&outcome=Delete"><button type="button" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button></a>
             </td>
         </tr>';
                                     }

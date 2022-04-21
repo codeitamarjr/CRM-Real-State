@@ -62,23 +62,23 @@ mysqli_close($link);
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 ID
-                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_id; ?>" download><?php if($prospect_attach_id != null) echo 'Download'; ?></a></span>
+                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_id; ?>" download><?php if($prospect_attach_id != null) echo '<i class="fa fa-cloud-download"></i>'; ?></a></span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 Proof of Payment 1
-                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment1; ?>" download><?php if($prospect_attach_proofpayment1 != null) echo 'Download'; ?></a></span>
+                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment1; ?>" download><?php if($prospect_attach_proofpayment1 != null) echo '<i class="fa fa-cloud-download"></i>'; ?></a></span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 Proof of Payment 2
-                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment2; ?>" download><?php if($prospect_attach_proofpayment2 != null) echo 'Download'; ?></a></span>
+                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment2; ?>" download><?php if($prospect_attach_proofpayment2 != null) echo '<i class="fa fa-cloud-download"></i>'; ?></a></span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 Proof of Payment 3
-                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment3; ?>" download><?php if($prospect_attach_proofpayment3 != null) echo 'Download'; ?></a></span>
+                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment3; ?>" download><?php if($prospect_attach_proofpayment3 != null) echo '<i class="fa fa-cloud-download"></i>'; ?></a></span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                 Proof of Payment 4
-                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment4; ?>" download><?php if($prospect_attach_proofpayment4 != null) echo 'Download'; ?></a></span>
+                <span class="text-secondary"><a href="features/uploads/<?php echo $prospect_attach_proofpayment4; ?>" download><?php if($prospect_attach_proofpayment4 != null) echo '<i class="fa fa-cloud-download"></i>'; ?></a></span>
               </li>
             </ul>
     

@@ -13,6 +13,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 require "features/functions_user.php";
 require "features/functions_messages.php";
 require "features/functions_property.php";
+
+//set the variable GLOBAL agent_prs_code
 $agent_prs_code = $_SESSION["agent_prs_code"];
 
 //It'll set the property_code to the session if it's not set
@@ -57,18 +59,18 @@ $message_id = $_GET['message_id'];
         <!-- Menu Start -->
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0">
-                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0">
                     <div class="sidebar-brand-icon"><i class="far fa-building"></i></div>
                     <div class="sidebar-brand-text mx-3"><span><?php echo $agent_prs_code; ?></span></div>
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboardv2.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboardv2.php?access=enquiries"><i class="fas fa-table"></i><span>Enquiries</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboardv2.php?access=tenants"><i class="fas fa-table"></i><span>Tenants</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboardv2.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboardv2.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') { echo 'active';}?>" href="dashboardv2.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboard.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboard.php?access=enquiries"><i class="fas fa-table"></i><span>Enquiries</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboard.php?access=tenants"><i class="fas fa-table"></i><span>Tenants</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboard.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboard.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') { echo 'active';}?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
