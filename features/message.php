@@ -311,6 +311,7 @@ if (!isset($_GET['outcome'])) {
                         <label for="code_unit" class="col-4 col-form-label">Code of the Unit</label>
                         <div class="col-8">
                             <input id="code_unit" name="code_unit" type="text" class="form-control" required="required">
+                            <span id="move-inHelpBlock" class="form-text text-muted">Custom code of the unit.</span>
                         </div>
                     </div>
                     <div class="form-group row">

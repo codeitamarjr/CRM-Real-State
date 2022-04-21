@@ -178,7 +178,7 @@ if (isset($_POST['save'])) {
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Email Password</strong></label>
                                         <input class="form-control" type="password" value="<?php echo getPropertyData($property_code, 'property_email_password');
-                                                                                        ?>" name="PropertyEmailPassword">
+                                                                                            ?>" name="PropertyEmailPassword">
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +202,10 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <input class="form-control" type="text" name=calendly value="<?php echo getPropertyData($property_code, 'property_calendly'); ?>">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon3">https://calendly.com/</span>
+                                        <input type="text" class="form-control" aria-describedby="basic-addon3" name=calendly value="<?php echo getPropertyData($property_code, 'property_calendly'); ?>">
+                                    </div>
                                 </div>
                             </div>
 
