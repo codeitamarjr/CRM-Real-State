@@ -125,6 +125,30 @@ if (!isset($_GET['outcome'])) {
             </div>
         </div>
     </div>';
+} else if ($_POST['outcome'] == 'newTenant') {
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
+    insertTenantDataSafe($_POST['tenant-property'],'rented',$_POST['move-in'],$_POST['lease-starts'],$_POST['lease-term'],$_POST['lease-expires'],$_POST['rent'],$_POST['first-rent'],$_POST['deposit'],$_POST['code-unit'],$_POST['bedrooms'],$_POST['carParking'],$_POST['pet'],$_POST['pet-breed'],'ss');
+    $from = getMessage('message_id', $message_id, 'messages_email');
+    sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
 }
 ?>
 
@@ -137,7 +161,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center"><strong>Change Status</strong></h6>
                     <?php if ($status == 'Approved') { ?>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;Set as Tenant</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;New Tenant</a>
                         <div class="dropdown-divider"></div>
                     <?php }; ?>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
@@ -289,7 +313,7 @@ if (!isset($_GET['outcome'])) {
 <!-- New Tenant Modal -->
 <div class="modal fade" id="newTenant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
+        <form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">New Tenant</h5>
@@ -301,16 +325,23 @@ if (!isset($_GET['outcome'])) {
                     <div class="form-group row">
                         <label class="col-4 col-form-label" for="property_selector">Select a Property</label>
                         <div class="col-8">
-                            <select id="property_selector" name="property_selector" class="form-control" required="required">
-                                <option value="aaaa">aaa</option>
-                                <option value="bbbb">bbbb</option>
+                            <select id="property_selector" name="tenant-property" class="form-control" required="required">
+                                <?php
+                                //List all the properties from an agent
+                                require 'config/config.php';
+                                $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                                $result = mysqli_query($link, $select);
+                                while ($row = mysqli_fetch_array($result)) {
+                                    echo '<option value=' . $row['property_code'] . '>' . $row['property_name'] . '</option>';
+                                };
+                                ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="code_unit" class="col-4 col-form-label">Code of the Unit</label>
                         <div class="col-8">
-                            <input id="code_unit" name="code_unit" type="text" class="form-control" required="required">
+                            <input id="code_unit" name="code-unit" type="text" class="form-control" required="required">
                             <span id="move-inHelpBlock" class="form-text text-muted">Custom code of the unit.</span>
                         </div>
                     </div>
@@ -339,7 +370,7 @@ if (!isset($_GET['outcome'])) {
                         <label for="lease_starts" class="col-4 col-form-label">Lease Starts</label>
                         <div class="col-8">
                             <div class="input-group">
-                                <input id="lease_starts" name="lease_starts" type="date" aria-describedby="lease_startsHelpBlock" required="required" class="form-control">
+                                <input id="lease_starts" name="lease-starts" type="date" aria-describedby="lease_startsHelpBlock" required="required" class="form-control">
                             </div>
                             <span id="lease_startsHelpBlock" class="form-text text-muted">Select the date the lease starts.</span>
                         </div>
@@ -347,14 +378,14 @@ if (!isset($_GET['outcome'])) {
                     <div class="form-group row">
                         <label for="lease_term" class="col-4 col-form-label">Lease Term</label>
                         <div class="col-8">
-                            <input id="lease_term" name="lease_term" type="number" aria-describedby="lease_termHelpBlock" required="required" class="form-control">
+                            <input id="lease_term" name="lease-term" type="number" aria-describedby="lease_termHelpBlock" required="required" class="form-control">
                             <span id="lease_termHelpBlock" class="form-text text-muted">What is the time of the lease in months</span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="lease_expires" class="col-4 col-form-label">Lease expires</label>
                         <div class="col-8">
-                            <input id="lease_expires" name="lease_expires" type="date" aria-describedby="lease_expiresHelpBlock" required="required" class="form-control">
+                            <input id="lease_expires" name="lease-expires" type="date" aria-describedby="lease_expiresHelpBlock" required="required" class="form-control">
                             <span id="lease_expiresHelpBlock" class="form-text text-muted">The date that the lease will expire based on the start lease and term.</span>
                         </div>
                     </div>
@@ -367,18 +398,19 @@ if (!isset($_GET['outcome'])) {
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="first_rent" class="col-4 col-form-label">First Rent</label>
-                        <div class="col-8">
-                            <input id="first_rent" name="first_rent" type="text" class="form-control" required="required" aria-describedby="first_rentHelpBlock" data-type="currency" placeholder="€0.000,00">
-                            <span id="first_rentHelpBlock" class="form-text text-muted">First rent or remaining rent, in case of the tenant move-in in the middle of the month.</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="deposit" class="col-4 col-form-label">Deposit</label>
                         <div class="col-8">
                             <input id="deposit" name="deposit" type="text" class="form-control" required="required" data-type="currency" placeholder="€0.000,00">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="first_rent" class="col-4 col-form-label">First Rent</label>
+                        <div class="col-8">
+                            <input id="first_rent" name="first-rent" type="text" class="form-control" required="required" aria-describedby="first_rentHelpBlock" data-type="currency" placeholder="€0.000,00">
+                            <span id="first_rentHelpBlock" class="form-text text-muted">First rent or remaining rent, in case of the tenant move-in in the middle of the month.</span>
+                        </div>
+                    </div>
+
                     <hr>
 
                     <div class="form-group row">
@@ -416,7 +448,7 @@ if (!isset($_GET['outcome'])) {
                     <div class="form-group row">
                         <label for="pet_breed" class="col-4 col-form-label">Pet Breed</label>
                         <div class="col-8">
-                            <input id="pet_breed" name="pet_breed" type="text" class="form-control">
+                            <input id="pet_breed" name="pet-breed" type="text" class="form-control">
                         </div>
                     </div>
 
@@ -426,8 +458,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-footer">
                     <input type="hidden" name="access" value="message">
                     <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
-                    <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Save New Tenant</button>
-
+                    <button type="submit" class="btn btn-primary" name="outcome" value="newTenant">&nbsp;Save New Tenant</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
                 </div>
         </form>
