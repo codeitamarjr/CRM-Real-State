@@ -3,7 +3,7 @@
 function logInsert($property_code, $value, $logTitle, $content)
 {
     echo "Loading logInsert for " + $logTitle;
-    require "../config/config.php";
+    include "../config/config.php";
     $sql_query = "INSERT INTO log (property_code, status, source, content) VALUES ($property_code, $value, '$logTitle','$content');";
     if ($link->query($sql_query) === TRUE) {
     } else {

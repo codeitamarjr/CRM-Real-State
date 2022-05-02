@@ -18,6 +18,7 @@ while ($row = mysqli_fetch_array($result)) {
     //Creates a loop to loop through results
     $property_code = $row['property_code'];
     $property_email_hostname = $row['property_email_hostname'];
+    $property_email_port = $row['property_email_port'];
     $property_email_username = $row['property_email_username'];
     $property_email_password = $row['property_email_password'];
 }
@@ -28,8 +29,9 @@ try {
     $mail->isSMTP();
     $mail->Host = $property_email_hostname ;
     $mail->SMTPAuth = true;
+    $mail->SMTPSecure = "tls";
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port = $property_email_port;
 
     $mail->Username = $property_email_username; // Username from DB
     $mail->Password = $property_email_password; // Password from DB

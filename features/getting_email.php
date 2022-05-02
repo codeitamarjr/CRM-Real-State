@@ -27,6 +27,7 @@ if (logTimerToDie($property_code, 'get_email', getPropertyData($property_code, '
 
 //Saves a log of the script, it'll prevent the script from running again if it's already running
 logInsert($property_code, 1, 'get_email','Start getting email from property code ' . $property_code . '.');
+echo '<br>Log saved.<br>';
 
 
 //Load email settings from the property
