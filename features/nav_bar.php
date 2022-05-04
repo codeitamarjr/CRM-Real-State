@@ -12,7 +12,7 @@
         <!-- Search Bar Ends -->
 
         <ul class="navbar-nav flex-nowrap ms-auto">
-           <?php require "selector_bar.php"; ?>
+           <?php require "nav_bar_selector_property.php"; ?>
             <div class="d-none d-sm-block topbar-divider"></div>
             <li class="nav-item dropdown no-arrow mx-1">
                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>

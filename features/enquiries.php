@@ -44,7 +44,9 @@ $result = mysqli_query($link, $query);
     <h3 class="text-dark mb-4">Enquiries</h3>
     <div class="card shadow">
         <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Inbox of Enquiries</p>
+            <p class="text-primary m-0 fw-bold">Inbox of Enquiries
+            <button class="btn btn-primary btn-sm" type="submit" name="submit"> + Add New Enquiry</button>
+        </p>
         </div>
         <div class="card-body">
             <div class="row">
