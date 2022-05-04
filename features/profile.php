@@ -79,7 +79,7 @@ if ($_FILES['picture']['name'] != null) {
                 <div class="col-xl-12">
                     <div class="card shadow mb-3">
                         <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Personal user data</p>
+                            <p class="text-primary m-0 fw-bold">Agent Data</p>
                         </div>
                         <div class="card-body">
                             <form method="GET">
@@ -109,7 +109,7 @@ if ($_FILES['picture']['name'] != null) {
             <div class="col-xl-12">
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Agent Management Data</p>
+                        <p class="text-primary m-0 fw-bold">Estate Agency Info</p>
                     </div>
                     <div class="card-body">
                         <form method="GET">
