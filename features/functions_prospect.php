@@ -15,6 +15,20 @@ function getProspectData($hash, $rowName)
     mysqli_close($link);
 }
 
+function getProspectData2($data, $rowName, $rowReturn){
+    require "config/config.php";
+    $query = "SELECT $rowReturn FROM prospect WHERE ($rowName = '$data')";
+    $result = mysqli_query($link, $query);
+    if ($result) {
+        while ($row = mysqli_fetch_array($result)) {
+            return $row[$rowReturn];
+        }
+    } else {
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+    }
+    mysqli_close($link);
+}
+
 
 function setProspectDataSafe($hash,$rowName,$newData,$dataType){
     require "config/config.php";

@@ -126,13 +126,17 @@ if (!isset($_GET['outcome'])) {
             </div>
         </div>
     </div>';
-} else if ($_POST['outcome'] == 'newTenant') {
+}
+if ($_POST['outcome'] == 'newTenant') {
+    require "features/functions_prospect.php";
+    require "features/functions_tenant.php";
     echo "<script>
     $(document).ready(function(){
         $(\"#alertModal\").modal('show');
     });
     </script>";
-    echo '<!-- Modal Alert -->
+    echo
+    '<!-- Modal Alert -->
     <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -142,10 +146,29 @@ if (!isset($_GET['outcome'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    insertTenantDataSafe($_POST['tenant-property'],'rented',$_POST['move-in'],$_POST['lease-starts'],$_POST['lease-term'],$_POST['lease-expires'],$_POST['rent'],$_POST['first-rent'],$_POST['deposit'],$_POST['code-unit'],$_POST['bedrooms'],$_POST['carParking'],$_POST['pet'],$_POST['pet-breed'],'ss');
-    $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
+
+    if (
+        getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'prospect_id') != 0
+    ) {
+        echo "<div class='alert alert-danger' role='alert'>This prospect already it's a tenant!</div>";
+    } else {
+        echo newTenantDataSafe($_POST['tenant-property'], getProspectData($hash, 'prospect_id'));
+        $tenantscod = getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'tenantscod');
+        setTenantDataSafe($tenantscod, 'unit_rented_code', $_POST['unit_rented_code']);
+        setTenantDataSafe($tenantscod, 'bedrooms', $_POST['bedrooms']);
+        setTenantDataSafe($tenantscod, 'move_in', $_POST['move-in']);
+        setTenantDataSafe($tenantscod, 'lease_starts', $_POST['lease-starts']);
+        setTenantDataSafe($tenantscod, 'lease_term', $_POST['lease-term']);
+        setTenantDataSafe($tenantscod, 'lease_expires', $_POST['lease-expires']);
+        setTenantDataSafe($tenantscod, 'rent', $_POST['rent']);
+        setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
+        setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
+    }
+
+    //$from = getMessage('message_id', $message_id, 'messages_email');
+    //sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
     echo '
+                <meta http-equiv="refresh" content="2;?access=tenantView&tenantContent=prospect_details&tenantscod=' . $tenantscod . '&hash=' . $hash . '" />
                 </center></div>
             </div>
         </div>
@@ -162,7 +185,7 @@ if (!isset($_GET['outcome'])) {
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center"><strong>Change Status</strong></h6>
                     <?php if ($status == 'Approved') { ?>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;New Tenant</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;Set as Tenant</a>
                         <div class="dropdown-divider"></div>
                     <?php }; ?>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
@@ -314,10 +337,10 @@ if (!isset($_GET['outcome'])) {
 <!-- New Tenant Modal -->
 <div class="modal fade" id="newTenant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST" action="<?= $_SERVER['PHP_SELF']; ?>">
+        <form method="POST" action="?access=message&message_id=<?php echo $message_id ?>">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New Tenant</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Future Tenant</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -342,7 +365,7 @@ if (!isset($_GET['outcome'])) {
                     <div class="form-group row">
                         <label for="code_unit" class="col-4 col-form-label">Code of the Unit</label>
                         <div class="col-8">
-                            <input id="code_unit" name="code-unit" type="text" class="form-control" required="required">
+                            <input id="code_unit" name="unit_rented_code" type="text" class="form-control" required="required">
                             <span id="move-inHelpBlock" class="form-text text-muted">Custom code of the unit.</span>
                         </div>
                     </div>
@@ -412,53 +435,12 @@ if (!isset($_GET['outcome'])) {
                         </div>
                     </div>
 
-                    <hr>
-
-                    <div class="form-group row">
-                        <div class="mb-3">
-                            <label class="form-label d-block">Car Parking</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="no" type="checkbox" name="carParking" data-sb-validations="required" />
-                                <label class="form-check-label" for="no">No</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="yes1CarParking" type="checkbox" name="carParking" data-sb-validations="required" />
-                                <label class="form-check-label" for="yes1CarParking">Yes 1 Car Parking</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" id="yes2CarParking" type="checkbox" name="carParking" data-sb-validations="required" />
-                                <label class="form-check-label" for="yes2CarParking">Yes 2 Car Parking</label>
-                            </div>
-                            <div class="invalid-feedback" data-sb-feedback="carParking:required">One option is required.</div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label class="col-4">Pet</label>
-                        <div class="col-8">
-                            <div class="form-check form-check-inline">
-                                <input name="pet" id="pet_0" type="radio" class="form-check-input" value="1">
-                                <label for="pet_0" class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input name="pet" id="pet_1" type="radio" class="form-check-input" value="0">
-                                <label for="pet_1" class="form-check-label">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="pet_breed" class="col-4 col-form-label">Pet Breed</label>
-                        <div class="col-8">
-                            <input id="pet_breed" name="pet-breed" type="text" class="form-control">
-                        </div>
-                    </div>
 
                     <br>
 
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="access" value="message">
-                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
+                    <input type="hidden" name="outcome" value="newTenant">
                     <button type="submit" class="btn btn-primary" name="outcome" value="newTenant">&nbsp;Save New Tenant</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
                 </div>
@@ -466,17 +448,9 @@ if (!isset($_GET['outcome'])) {
     </div>
 </div>
 </div>
+<p>
 
-
-<?php
-//check if the HASH is inside prospect if so include details
-$sql = "SELECT * FROM prospect WHERE hash = '$hash'";
-$result = mysqli_query($link, $sql);
-while ($row_prospect = mysqli_fetch_array($result)) {
-    $hash = $row_prospect['hash'];
-    if (!empty($hash)) {
-        include "prospect_details.php";
-    }
-};
-mysqli_close($link);
-?>
+    <?php
+    include "prospect_details.php";
+    ?>
+</p>

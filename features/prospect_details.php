@@ -21,6 +21,7 @@ while ($row = mysqli_fetch_array($result)) {
   $prospect_sector = $row['prospect_sector'];
   $prospect_employer = $row['prospect_employer'];
   $prospect_job_title = $row['prospect_job_title'];
+  $prospect_net_income = $row['prospect_income'];
   $prospect_occupants = $row['prospect_occupants'];
   $prospect_occupants_over18 = $row['prospect_occupants_over18'];
   $prospect_extra = $row['prospect_extra'];
@@ -54,7 +55,7 @@ mysqli_close($link);
             <div class="d-flex flex-column align-items-center text-center">
               <div class="mt-3">
                 <p class="text-secondary mb-1">
-                  <a href="prospect_area.php?key=<?php echo $hash; ?>" target="_blank">Prospect On-Line Application Area</a>
+                  <a href="prospect_area.php?key=<?php echo $hash; ?>" target="_blank">View Application Area</a>
                 </p>
               </div>
             </div>
@@ -158,6 +159,15 @@ mysqli_close($link);
               </div>
               <div class="col-sm-9 text-secondary">
                 <?php echo htmlentities($prospect_job_title); ?>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Net Income</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                <?php echo htmlentities($prospect_net_income); ?>
               </div>
             </div>
             <hr>
