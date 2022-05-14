@@ -5,7 +5,7 @@ function userSetData($username,$rowName,$newData){
     require "config/config.php";
     //Prevent SQL injection
     //Add a placeholder on the real data
-    $sql = "UPDATE agent SET $rowName = ? WHERE (agent_email = ?)";
+    $sql = "UPDATE estate_agent SET $rowName = ? WHERE (agent_email = ?)";
     //Start the prepare statement
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL is ok consulting the DB
@@ -26,7 +26,7 @@ function userGetData($username,$rowName){
     require "config/config.php";
     //Escape SQL injection
     //$username = $link->real_escape_string($username);
-    $query = "SELECT * FROM agent WHERE agent_email = '$username'";
+    $query = "SELECT * FROM estate_agent WHERE agent_email = '$username'";
     $result = mysqli_query($link, $query);
     while ($row = mysqli_fetch_array($result)) {
         return $row[$rowName];

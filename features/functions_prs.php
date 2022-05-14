@@ -3,7 +3,7 @@
 function getPRSData($PRSCode, $rowName)
 {
     require "config/config.php";
-    $query = "SELECT * FROM prs WHERE (prs_code = '$PRSCode')";
+    $query = "SELECT * FROM estate_agency WHERE (prs_code = '$PRSCode')";
     $result = mysqli_query($link, $query);
     if (mysqli_query($link, $query)) {
         while ($row = mysqli_fetch_array($result)) {
@@ -18,7 +18,7 @@ function getPRSData($PRSCode, $rowName)
 function setPRSData($PRSCode, $rowName, $newData)
 {
     require "config/config.php";
-    $query = "UPDATE prs SET $rowName = '$newData' WHERE (prs_code = '$PRSCode')";
+    $query = "UPDATE estate_agency SET $rowName = '$newData' WHERE (prs_code = '$PRSCode')";
     if (mysqli_query($link, $query)) {
         echo '<center><div class="alert alert-success" role="alert">'. $newData .' updated with success!</div></center>';
     } else {

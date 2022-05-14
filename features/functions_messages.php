@@ -19,14 +19,36 @@ function messagesNotification($timeForNotification)
         return $notification;
     }
 }
+
+//INSERT INTO `property_management`.`messages` (`messages_email`) VALUES ('mail@mail.com');
+
+function insertMessage($email,$property_code)
+{
+    require "config/config.php";
+    $key = hash('md5', $email);
+    $message_date = date("Y/m/d H:i:s");
+    $query = "INSERT INTO messages (messages_email, message_date, message_hash ,property_code) VALUES ('$email', '$message_date' ,'$key' ,'$property_code')";
+    if (mysqli_query($link, $query)) {
+        echo '<center><div class="alert alert-success" role="alert">Enquiry created with success!</div></center>';
+    } else {
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+    }
+    mysqli_close($link);
+}
+
+
+
 function setMessage($message_id, $rowName, $newData)
 {
     require "config/config.php";
-    $query = "UPDATE messages SET $rowName = '$newData' WHERE (message_id = '$message_id')";
-    if (mysqli_query($link, $query)) {
+    $query = "UPDATE messages SET $rowName = ? WHERE (message_id = '$message_id')";
+    $stmt = mysqli_stmt_init($link);
+    if (mysqli_stmt_prepare($stmt,$query)) {
+        mysqli_stmt_bind_param($stmt, "s", $newData);
+        mysqli_stmt_execute($stmt);
         return '<center><div class="alert alert-success" role="alert">Enquiry updated with success!</div></center>';
     } else {
-        return '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+        return '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_stmt_error($stmt) . '</div></center>';
     }
     mysqli_close($link);
 }

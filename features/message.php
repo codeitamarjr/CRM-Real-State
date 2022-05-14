@@ -97,6 +97,7 @@ if (!isset($_GET['outcome'])) {
         echo "Error: " . $sql . "<br>" . $link->error;
     }
     echo '
+                <meta http-equiv="refresh" content="2;?access=enquiries" />
                 </center></div>
             </div>
         </div>
@@ -273,14 +274,14 @@ if (!isset($_GET['outcome'])) {
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm to Delet this Enquirie</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Delete this Enquirie</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Delete the enquirie from <?php echo $from; ?>? <br>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=message&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delet</a>
+                <a class="btn btn-primary" href="dashboard.php?access=message&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delete</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>

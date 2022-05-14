@@ -17,7 +17,7 @@ require "features/functions_property.php";
 //set the variable GLOBAL agent_prs_code
 $agent_prs_code = $_SESSION["agent_prs_code"];
 
-//It'll set the property_code to the session if it's not set
+//It'll set the main property_code to the session if it's not set
 if (!isset($_SESSION["property_code"])) {
     $_SESSION["property_code"] = userProperty($agent_prs_code);
 }
@@ -28,6 +28,7 @@ if (!isset($_GET['access'])) {
 } else
     //carryon the page to access
     $content =   $_GET['access'];
+
 //to pass to child pages
 $page =   $_GET['page'];
 $message_id = $_GET['message_id'];
@@ -88,46 +89,49 @@ $message_id = $_GET['message_id'];
                 <?php
                 if (empty($content)) {
                     include "features/cards.php";
+                } else {
+                    include "features/$content.php";
                 }
-                if ($content == 'enquiries') {
-                    include "features/enquiries.php";
-                }
-                if ($content == 'tenants') {
-                    include "features/tenants.php";
-                }
-                if ($content == 'message') {
-                    include "features/message.php";
-                }
-                if ($content == 'details') {
-                    include "features/details.php";
-                }
-                if ($content == 'report') {
-                    include "features/report.php";
-                }
-                if ($content == 'automail') {
-                    include "features/automail.php";
-                }
-                if ($content == 'prospect_details') {
-                    include "features/prospect_details.php";
-                }
-                if ($content == 'profile') {
-                    include "features/profile.php";
-                }
-                if ($content == 'search') {
-                    include "features/search.php";
-                }
-                if ($content == 'calendly') {
-                    include "features/calendly.php";
-                }
-                if ($content == 'system_settings') {
-                    include "features/system_settings.php";
-                }
-                if ($content == 'property') {
-                    include "features/manage_property.php";
-                }
-                if ($content == 'manage_property_add') {
-                    include "features/manage_property_add.php";
-                }
+                // }
+                // if ($content == 'enquiries') {
+                //     include "features/enquiries.php";
+                // }
+                // if ($content == 'tenants') {
+                //     include "features/tenants.php";
+                // }
+                // if ($content == 'message') {
+                //     include "features/message.php";
+                // }
+                // if ($content == 'details') {
+                //     include "features/details.php";
+                // }
+                // if ($content == 'report') {
+                //     include "features/report.php";
+                // }
+                // if ($content == 'automail') {
+                //     include "features/automail.php";
+                // }
+                // if ($content == 'prospect_details') {
+                //     include "features/prospect_details.php";
+                // }
+                // if ($content == 'profile') {
+                //     include "features/profile.php";
+                // }
+                // if ($content == 'search') {
+                //     include "features/search.php";
+                // }
+                // if ($content == 'calendly') {
+                //     include "features/calendly.php";
+                // }
+                // if ($content == 'system_settings') {
+                //     include "features/system_settings.php";
+                // }
+                // if ($content == 'property') {
+                //     include "features/manage_property.php";
+                // }
+                // if ($content == 'manage_property_add') {
+                //     include "features/manage_property_add.php";
+                // }
 
 
                 ?>
