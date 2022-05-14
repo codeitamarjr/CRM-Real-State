@@ -195,7 +195,7 @@
         options: {
             title: {
                 display: true,
-                text: 'Population growth (millions)'
+                text: 'Enquiry by unit and month'
             }
         }
     });

@@ -24,6 +24,7 @@ $hash = $_GET['hash'];
         <ul class="profile-header-tab nav nav-tabs">
             <li class="nav-item"><a href="?access=tenantView&tenantContent=prospect_details" class="nav-link <?php if ($_GET['tenantContent'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
             <li class="nav-item"><a href="#profile-about" class="nav-link" data-toggle="tab">Rent Details</a></li>
+            <li class="nav-item"><a href="#profile-about" class="nav-link" data-toggle="tab">RTB</a></li>
             <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">Financial Details</a></li>
             <li class="nav-item"><a href="#profile-friends" class="nav-link" data-toggle="tab">Documents</a></li>
         </ul>
