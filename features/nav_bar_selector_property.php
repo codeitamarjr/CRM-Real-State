@@ -7,7 +7,7 @@ if(isset($_POST['select_property'])){
 
 
     <!-- Property Selector Starts -->
-    <li class="nav-item dropdown no-arrow">
+    
         <div class="nav-item dropdown no-arrow">
             <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                 <span class="d-none d-lg-inline me-2 text-gray-600 small">
@@ -29,7 +29,7 @@ if(isset($_POST['select_property'])){
             </span>
             </a>
         </div>
-    </li>
+    
     <!-- Property Selector Ends -->
 
     <script>

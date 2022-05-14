@@ -13,7 +13,7 @@ if (!isset($_GET['show'])) {
 
 //Insert new enquiry
 if ($_GET['insert'] == true) {
-    
+
     //Define variables
     $message_hash = hash('md5', $_GET['email']);
     $email_adress = $_GET['email'];
@@ -25,15 +25,15 @@ if ($_GET['insert'] == true) {
     $message_sender_name = "$first_name $last_name";
     $property_code = $_SESSION["property_code"];
 
-    if ( getMessage('messages_email',$_GET['email'],'message_date') != 0) {
+    if (getMessage('messages_email', $_GET['email'], 'message_date') != 0) {
         echo '<center><div class="alert alert-danger" role="alert">Error: This email is already in the database!</div></center>';
     } else {
         //Insert new enquiry
-        insertMessage($email,$property_code);
-        setMessage(getMessage('messages_email',$email,'message_id'),'message_sender_name',$message_sender_name);
-        setMessage(getMessage('messages_email',$email,'message_id'),'message_phone_number',$message_phone_number);
-        setMessage(getMessage('messages_email',$email,'message_id'),'message_title',$mail_subject);
-        setMessage(getMessage('messages_email',$email,'message_id'),'message_body',$_GET['message_text']);
+        insertMessage($email, $property_code);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_sender_name', $message_sender_name);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_phone_number', $message_phone_number);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_title', $mail_subject);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_body', $_GET['message_text']);
     }
 };
 
@@ -109,9 +109,9 @@ $result = mysqli_query($link, $query);
                             if ($row['status'] == "Denied") {
                                 echo "class='table-danger'";
                             }
-                            echo ">
-    <td><a href=\"dashboard.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['message_sender_name']) . "</a></td>
-    <td><a href=\"dashboard.php?access=message&message_id=$message_id \">" . htmlspecialchars($row['messages_email']) . "</a></td>
+                            echo " onclick=\"location.href='?access=message&message_id=$message_id'\" >
+    <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
+    <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";
                             //Check if the user fillout his data on prospect table, if so shows an clickable link to show his profile
                             $message_hash = $row['message_hash'];
@@ -211,3 +211,11 @@ $result = mysqli_query($link, $query);
         window.location = "dashboard.php?access=enquiries&" + elm.value;
     }
 </script>
+
+<style>
+    tr:hover {
+        background-color: #4e73df;
+        color: white;
+        cursor: pointer;
+    }
+</style>

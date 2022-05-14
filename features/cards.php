@@ -3,6 +3,7 @@
 <div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Dashboard</h3>
+        <?php require "nav_bar_selector_property.php"; ?>
     </div>
     <div class="row">
         <div class="col-md-6 col-xl-3 mb-4">
