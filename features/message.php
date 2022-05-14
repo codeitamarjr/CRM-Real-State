@@ -32,9 +32,6 @@ if (!isset($_GET['outcome'])) {
     <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
                 <div class="modal-body">
                 <center>
                    ';
@@ -42,6 +39,18 @@ if (!isset($_GET['outcome'])) {
     $from = getMessage('message_id', $message_id, 'messages_email');
     sendAutomail($name, $hash, $property_name, $from, $from, '', 'viewing');
     echo '
+
+    <p> Redirect in <span id="countdowntimer">3 </span> seconds</p>
+    <meta http-equiv="refresh" content="3;?access=enquiries" />
+<script type="text/javascript">
+    var timeleft = 5;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+</script>
                 </center></div>
             </div>
         </div>

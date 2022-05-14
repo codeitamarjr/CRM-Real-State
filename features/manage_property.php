@@ -57,7 +57,7 @@ if (isset($_GET['submit'])) {
                     </div>
                     <div class="card-body">
                         <form method="GET">
-                            <input type="hidden" name="access" value="property">
+                            <input type="hidden" name="access" value="manage_property">
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Name</strong></label>

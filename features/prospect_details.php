@@ -37,7 +37,7 @@ mysqli_close($link);
 
 
 
-<div class="container">
+<div class="container-fluid">
   <div class="main-body">
     <div class="row gutters-sm">
       <div class="col-md-4 mb-0">

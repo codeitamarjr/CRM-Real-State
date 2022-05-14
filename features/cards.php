@@ -121,10 +121,11 @@
                     $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
                     $result = mysqli_query($link, $select);
                     while ($row = mysqli_fetch_array($result)) {
+                        $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE property_code = " . $row['property_code'] . ""));
                     ?>
-                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo $row['property_units']; ?> | 20%</span></h4>
+                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo $row['property_units']; ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo $totalAvaiable / $row['property_units'] * 100 ?>%</span></h4>
                         <div class="progress mb-4">
-                            <div class="progress-bar bg-primary" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="visually-hidden">20%</span></div>
+                            <div class="progress-bar bg-primary" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $totalAvaiable / $row['property_units'] * 100 ?>%;"></div>
                         </div>
                     <?php
                     }
@@ -140,24 +141,55 @@
     new Chart(document.getElementById("enquiriesChart"), {
         type: 'bar',
         data: {
-            labels: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             datasets: [{
-                label: "New Enquiries",
-                backgroundColor: "rgb(78, 115, 223)",
-                data: [<?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-02%\''); ?>, <?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-03%\''); ?>]
-            }, {
-                label: "Queue",
-                backgroundColor: "rgb(54, 185, 204)",
-                data: [<?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-02%\' AND status = \'Queue\''); ?>, <?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-03%\' AND status = \'Queue\''); ?>]
-            }, {
-                label: "Approved",
-                backgroundColor: "rgb(28, 200, 138)",
-                data: [<?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-02%\' AND status = \'Approved\''); ?>, <?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-03%\' AND status = \'Approved\''); ?>]
-            }, {
-                label: "Denied",
-                backgroundColor: "#FF0000",
-                data: [<?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-02%\' AND status = \'Denied\''); ?>, <?php echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-03%\' AND status = \'Denied\''); ?>]
-            }]
+                    label: "New Enquiries",
+                    backgroundColor: "rgb(78, 115, 223)",
+                    data: [
+                        <?php
+                        for ($month = 1; $month <= 12; $month++) {
+                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\'');
+                            echo ',';
+                        }
+                        ?>
+                    ]
+                },
+                {
+                    label: "Queue",
+                    backgroundColor: "rgb(54, 185, 204)",
+                    data: [
+                        <?php
+                        for ($month = 1; $month <= 12; $month++) {
+                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\'');
+                            echo ',';
+                        }
+                        ?>
+                    ]
+                }, {
+                    label: "Approved",
+                    backgroundColor: "rgb(28, 200, 138)",
+                    data: [
+                        <?php
+                        for ($month = 1; $month <= 12; $month++) {
+                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\'');
+                            echo ',';
+                        }
+                        ?>
+                    ]
+                }, {
+                    label: "Denied",
+                    backgroundColor: "#FF0000",
+                    data: [
+                        <?php
+                        for ($month = 1; $month <= 12; $month++) {
+                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\'');
+                            echo ',';
+                        }
+                        ?>
+                    ]
+                }
+            ]
         },
         options: {
             title: {
