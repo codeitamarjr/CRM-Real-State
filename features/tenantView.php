@@ -3,6 +3,8 @@ require "features/functions_prospect.php";
 require "features/functions_tenant.php";
 //This pages required tenantscod and hash
 $hash = $_GET['hash'];
+$tenantscod = $_GET['tenantscod'];
+
 
 ?>
 <div class="container-fluid">
@@ -22,10 +24,10 @@ $hash = $_GET['hash'];
         </div>
 
         <ul class="profile-header-tab nav nav-tabs">
-            <li class="nav-item"><a href="?access=tenantView&tenantContent=prospect_details" class="nav-link <?php if ($_GET['tenantContent'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
             <li class="nav-item"><a href="#profile-about" class="nav-link" data-toggle="tab">Rent Details</a></li>
             <li class="nav-item"><a href="#profile-about" class="nav-link" data-toggle="tab">RTB</a></li>
-            <li class="nav-item"><a href="#profile-photos" class="nav-link" data-toggle="tab">Financial Details</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
             <li class="nav-item"><a href="#profile-friends" class="nav-link" data-toggle="tab">Documents</a></li>
         </ul>
     </div>
@@ -33,10 +35,10 @@ $hash = $_GET['hash'];
     <div class="content">
         <p>
             <?php
-            $tenantContent = $_GET['tenantContent'];
+            $content = $_GET['content'];
 
-            if (!empty($tenantContent)) {
-                include "features/$tenantContent.php";
+            if (!empty($content)) {
+                include "features/$content.php";
             }
             ?>
         </p>

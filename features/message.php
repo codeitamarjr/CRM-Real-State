@@ -172,12 +172,16 @@ if ($_POST['outcome'] == 'newTenant') {
         setTenantDataSafe($tenantscod, 'rent', $_POST['rent']);
         setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
         setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
+        require "features/functions_billings.php";
+        createBill($tenantscod,$_POST['tenant-property'],'Rent',$_POST['rent']);
+        createBill($tenantscod,$_POST['tenant-property'],'First Rent',$_POST['first-rent']);
+        createBill($tenantscod,$_POST['tenant-property'],'Deposit',$_POST['deposit']);
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');
     //sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
     echo '
-                <meta http-equiv="refresh" content="2;?access=tenantView&tenantContent=prospect_details&tenantscod=' . $tenantscod . '&hash=' . $hash . '" />
+                <meta http-equiv="refresh" content="2;?access=tenantView&content=prospect_details&tenantscod=' . $tenantscod . '&hash=' . $hash . '" />
                 </center></div>
             </div>
         </div>

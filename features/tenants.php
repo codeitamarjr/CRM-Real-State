@@ -72,7 +72,7 @@ $result = mysqli_query($link, $query);
                     <tbody>
                         <?php while ($row = mysqli_fetch_array($result)) {
                             $tenantscod = $row['tenantscod'];
-                            echo "<tr class=\"showsRow\" onclick=\"location.href='?access=tenantView&tenantContent=prospect_details&tenantscod=".$tenantscod ."&hash=".getProspectData2($row['prospect_id'], 'prospect_id', 'hash')."'\">
+                            echo "<tr class=\"showsRow\" onclick=\"location.href='?access=tenantView&content=prospect_details&tenantscod=".$tenantscod ."&hash=".getProspectData2($row['prospect_id'], 'prospect_id', 'hash')."'\">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['unit_rented_code']) . "</td>
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['lease_starts']))) . "</td>
