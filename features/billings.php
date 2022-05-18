@@ -53,46 +53,81 @@
                                 $query = "SELECT * FROM billings WHERE billings_tenantscod = $tenantscod";
                                 $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    echo '<tr data-bs-toggle="modal" data-bs-target="#billingDetails" class="showsRow">';
+                                    echo '<tr data-bs-toggle="modal" data-bs-target="#billingDetails'. htmlspecialchars($row['idbillings']) .'" class="showsRow">';
                                     echo "<td>#" . htmlspecialchars($row['idbillings']) . "</td>
                             <td>" . htmlspecialchars($row['billings_description']) . "</td>
                             <td>" . htmlspecialchars($row['billings_invoice_date']) . "</td>
                             <td>" . htmlspecialchars($row['billings_amount']) . "</td>
                             <td><span class=\"badge bg-secondary\">" . htmlspecialchars($row['billings_status']) . "</span></td>
                             </tr>";
+                                ?>
+                                    <!-- Modal Billing Details -->
+                                    <div class="modal fade" id="billingDetails<?php echo htmlspecialchars($row['idbillings']); ?>" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ModalLabel">Billing Detail</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container-fluid">
+                                                        <!-- Form START -->
+                                                        <form>
+                                                            <!-- Contact detail -->
+                                                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                                                                <div class="row g-3">
+                                                                    <h4 class="mb-4 mt-0">Billing Details</h4>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Transaction ID</label>
+                                                                        <input type="text" class="form-control" value="#<?php echo htmlspecialchars($row['idbillings']); ?>" disabled="disabled">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Transaction Date</label>
+                                                                        <input type="text" class="form-control" value="<?php echo htmlspecialchars($row['billings_invoice_date']); ?>" disabled="disabled">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="form-label">Ammount *</label>
+                                                                        <input type="text" class="form-control" placeholder="" value="<?php echo htmlspecialchars($row['billings_amount']); ?>">
+                                                                    </div>
+                                                                    <hr>
+                                                                    <div class="col-md-6">
+                                                                        <label for="inputEmail4" class="form-label">Charge Date *</label>
+                                                                        <input type="date" class="form-control" value="05/05/2000">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Status *</label>
+                                                                        <select class="form-control" id="exampleFormControlSelect1">
+                                                                            <option>Pending</option>
+                                                                            <option>Paid</option>
+                                                                            <option>Overdue</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="exampleFormControlTextarea1">Notes</label>
+                                                                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                    </div>
+                                                                </div> <!-- Row END -->
+                                                            </div>
+                                                        </form> <!-- Form END -->
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php
                                 }
                                 ?>
                             </tbody>
 
                             <!-- <tbody>
-                        <tr data-bs-toggle="modal" data-bs-target="#billingDetails" class="showsRow">
-                            <td>#39201</td>
-                            <td>Rent</td>
-                            <td>06/15/2021</td>
-                            <td>$29.99</td>
                             <td><span class="badge bg-secondary">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38594</td>
-                            <td>Rent</td>
-                            <td>05/15/2021</td>
-                            <td>$29.99</td>
                             <td><span class="badge bg-danger">Arreas</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38223</td>
-                            <td>Rent</td>
-                            <td>04/15/2021</td>
-                            <td>$29.99</td>
                             <td><span class="badge bg-success">Paid</span></td>
-                        </tr>
-                        <tr>
-                            <td>#38125</td>
-                            <td>Deposit</td>
-                            <td>03/15/2021</td>
-                            <td>$29.99</td>
                             <td><span class="badge bg-success">Paid</span></td>
-                        </tr>
                     </tbody> -->
 
                         </table>
@@ -106,23 +141,7 @@
             </div>
         </div>
 
-        <!-- Modal Billing Details -->
-        <div class="modal fade" id="billingDetails" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Billing Detail</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Ddasdasdas
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <style>
             tr.showsRow:hover {
