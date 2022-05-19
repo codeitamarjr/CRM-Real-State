@@ -9,6 +9,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
+
 // Load configs and functions
 require "features/functions_user.php";
 require "features/functions_messages.php";

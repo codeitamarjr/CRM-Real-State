@@ -173,9 +173,12 @@ if ($_POST['outcome'] == 'newTenant') {
         setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
         setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
         require "features/functions_billings.php";
-        createBill($tenantscod,$_POST['tenant-property'],'Rent',$_POST['rent']);
-        createBill($tenantscod,$_POST['tenant-property'],'First Rent',$_POST['first-rent']);
-        createBill($tenantscod,$_POST['tenant-property'],'Deposit',$_POST['deposit']);
+        //First rent
+        $next_month = date('Y-m-d', mktime(0, 0, 0, date('m')+1, 1, date('Y')));
+        createBill($tenantscod,$_POST['tenant-property'],'Rent',$_POST['rent'],$next_month);
+        //Deposit and First Rent
+        createBill($tenantscod,$_POST['tenant-property'],'Deposit',$_POST['deposit'],date('Y/m/d'));
+        createBill($tenantscod,$_POST['tenant-property'],'First Rent',$_POST['first-rent'],date('Y/m/d'));
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');

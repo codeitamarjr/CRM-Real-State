@@ -37,8 +37,8 @@ mysqli_close($link);
 
 
 
-<div class="container-fluid">
-  <div class="main-body">
+<div class="container">
+  <div class="row">
     <div class="row gutters-sm">
       <div class="col-md-4 mb-0">
         <div class="card">
