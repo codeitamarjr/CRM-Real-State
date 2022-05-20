@@ -2,7 +2,7 @@
 
 function totalMesssages($property_code,$aditionalQuery){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT * FROM messages WHERE property_code = '$property_code' $aditionalQuery");
+    $result = mysqli_query($link, "SELECT * FROM messages WHERE messages_prs_code = '$property_code' $aditionalQuery");
     return mysqli_num_rows($result);
     mysqli_close($link);
 }
@@ -22,12 +22,12 @@ function messagesNotification($timeForNotification)
 
 //INSERT INTO `property_management`.`messages` (`messages_email`) VALUES ('mail@mail.com');
 
-function insertMessage($email,$property_code)
+function insertMessage($prs_code,$email,$property_code)
 {
     require "config/config.php";
     $key = hash('md5', $email);
     $message_date = date("Y/m/d H:i:s");
-    $query = "INSERT INTO messages (messages_email, message_date, message_hash ,property_code) VALUES ('$email', '$message_date' ,'$key' ,'$property_code')";
+    $query = "INSERT INTO messages (messages_prs_code, messages_email, message_date, message_hash ,property_code) VALUES ('$prs_code','$email', '$message_date' ,'$key' ,'$property_code')";
     if (mysqli_query($link, $query)) {
         echo '<center><div class="alert alert-success" role="alert">Enquiry created with success!</div></center>';
     } else {

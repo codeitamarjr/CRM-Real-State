@@ -52,6 +52,12 @@ if (isset($_POST['save']) | isset($_POST['proceed'])) {
     if ($_POST['extra'] != getProspectData($hash, 'prospect_extra')) {
         setProspectDataSafe($hash, 'prospect_extra', $_POST['extra'], 'ss');
     }
+    if ($_POST['carpark'] != getProspectData($hash, 'prospect_carpark')) {
+        setProspectDataSafe($hash, 'prospect_carpark', $_POST['carpark'], 'ss');
+    }
+    if ($_POST['pet'] != getProspectData($hash, 'prospect_pet')) {
+        setProspectDataSafe($hash, 'prospect_pet', $_POST['pet'], 'ss');
+    }
 }
 
 if (isset($_POST['upload'])) {
@@ -831,6 +837,7 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                     <div class="form-input-wide jf-required" data-layout="half">
                                                         <input type="number" name="monthly_income" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_income'); ?>" data-component="number" aria-labelledby="label_23" required="" />
                                                     </div>
+
                                                 <li id="cid_24" class="form-input-wide" data-type="control_head">
                                                     <div class="form-header-group  header-default">
                                                         <div class="header-text httal htvam">
@@ -861,6 +868,38 @@ if (isset($_POST['removeProofOfPayment4'])) {
                                                         <input type="number" name="occupants_over18" data-type="input-number" class=" form-number-input form-textbox" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_occupants_over18'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_26" step="any" />
                                                     </div>
                                                 </li>
+
+                                                <li id="cid_24" class="form-input-wide" data-type="control_head">
+                                                    <div class="form-header-group  header-default">
+                                                        <div class="header-text httal htvam">
+                                                            <h2 id="header_24" class="form-header" data-component="header">
+                                                                Extra Requests
+                                                            </h2>
+                                                            <div id="subHeader_18" class="form-subHeader">
+                                                                Extra information about your lease
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_number" id="id_25">
+                                                    <label class="form-label form-label-top" id="label_25" for="input_25">
+                                                        Car Parking
+                                                        <span class="form-required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div id="cid_25" class="form-input-wide jf-required" data-layout="half">
+                                                        <input type="number" name="carpark" data-type="input-number" class=" form-number-input form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_carpark'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_25" required="" step="any" />
+                                                    </div>
+                                                </li>
+                                                <li class="form-line form-line-column form-col-2" data-type="control_number" id="id_26">
+                                                    <label class="form-label form-label-top" id="label_26" for="input_26">
+                                                        Pet</label>
+                                                    <div id="cid_26" class="form-input-wide" data-layout="half">
+                                                        <input type="number" name="pet" data-type="input-number" class=" form-number-input form-textbox" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_pet'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_26" step="any" />
+                                                    </div>
+                                                </li>
+
                                                 <li class="form-line" data-type="control_textarea" id="id_11">
                                                     <label class="form-label form-label-top form-label-auto" id="label_11" for="input_11"> Extra info: </label>
                                                     <div id="cid_11" class="form-input-wide" data-layout="full">

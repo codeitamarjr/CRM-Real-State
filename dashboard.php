@@ -89,7 +89,7 @@ $message_id = $_GET['message_id'];
                 <!-- Content Start-->
                 <?php
                 if (empty($content)) {
-                    include "features/cards.php";
+                    include "features/section.cards.php";
                 } else {
                     include "features/$content.php";
                 }

@@ -14,7 +14,7 @@
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total
                                     Enquiries</span></div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["property_code"], ''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], ''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-mailbox fa-2x text-gray-300">
@@ -35,12 +35,12 @@
                             <div class="row g-0 align-items-center">
                                 <div class="col-auto">
                                     <div class="text-dark fw-bold h5 mb-0 me-3"><span>
-                                            <?php echo totalMesssages($_SESSION["property_code"], 'AND status = \'Queue\''); ?>
+                                            <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Queue\''); ?>
                                         </span></div>
                                 </div>
                                 <div class="col">
                                     <div class="progress progress-sm">
-                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo (totalMesssages($_SESSION["property_code"], 'AND status = \'Queue\'') / totalMesssages($_SESSION["property_code"], '')) * 100; ?>%;">
+                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo (totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Queue\'') / totalMesssages($_SESSION["agent_prs_code"], '')) * 100; ?>%;">
                                             <span class="visually-hidden">50%</span>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                 <span>Approved</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["property_code"], 'AND status = \'Approved\''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Approved\''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -80,7 +80,7 @@
                                 <span>Denied</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["property_code"], 'AND status = \'Denied\''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Denied\''); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
@@ -150,7 +150,7 @@
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\'');
                             echo ',';
                         }
                         ?>
@@ -162,7 +162,7 @@
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\'');
                             echo ',';
                         }
                         ?>
@@ -173,7 +173,7 @@
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\'');
                             echo ',';
                         }
                         ?>
@@ -184,7 +184,7 @@
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["property_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\'');
                             echo ',';
                         }
                         ?>

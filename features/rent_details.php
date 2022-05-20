@@ -3,9 +3,10 @@
 if($_POST['save'] == true) {
    if(!isset($_POST['tenantscod'])) {
        $status = $_POST['status'];
-       require "config/config.php";
-       $status = mysqli_real_escape_string($link, $status);
        setTenantDataSafe($_GET['tenantscod'],'status',$status);
+       setTenantDataSafe($_GET['tenantscod'],'user',$_SESSION["agent_id"]);
+       setTenantDataSafe($_GET['tenantscod'],'user_date',date("Y-m-d H:i:s"));
+
    }
 }
 
@@ -72,11 +73,11 @@ if($_POST['save'] == true) {
 
                         <br>
 
-                        <div class="card-header">Lease Charges</div>
+                        <div class="card-header">Chargeable Items</div>
                         <div class="row">
                             <div class="col">
                                 <label class="small mb-1">Code</label>
-                                <select class="form-select" name="chargeCode" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <select class="form-select" name="chargeCode1" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                                     <option selected>Select Code</option>
                                     <option value="PET">PET</option>
                                     <option value="CARPARKING">CARPARKING</option>
@@ -84,22 +85,78 @@ if($_POST['save'] == true) {
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Description</label>
-                                <input class="form-control" name="chargeDescriptio" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <input class="form-control" name="chargeDescription1" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Amount</label>
-                                <input class="form-control" name="chargeAmmount" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <input class="form-control" name="chargeAmmount1" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                             </div>
                             <div class="col">
                                 <label class="small mb-1">From Date</label>
-                                <input class="form-control" name="chargeFromDate" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <input class="form-control" name="chargeFromDate1" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                             </div>
                             <div class="col">
                                 <label class="small mb-1">To Date</label>
-                                <input class="form-control" name="chargeToDate" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <input class="form-control" name="chargeToDate1" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="small mb-1">Code</label>
+                                <select class="form-select" name="chargeCode2" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                    <option selected>Select Code</option>
+                                    <option value="PET">PET</option>
+                                    <option value="CARPARKING">CARPARKING</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">Description</label>
+                                <input class="form-control" name="chargeDescription2" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">Amount</label>
+                                <input class="form-control" name="chargeAmmount2" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">From Date</label>
+                                <input class="form-control" name="chargeFromDate2" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">To Date</label>
+                                <input class="form-control" name="chargeToDate2" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <label class="small mb-1">Code</label>
+                                <select class="form-select" name="chargeCode3" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                    <option selected>Select Code</option>
+                                    <option value="PET">PET</option>
+                                    <option value="CARPARKING">CARPARKING</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">Description</label>
+                                <input class="form-control" name="chargeDescription3" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">Amount</label>
+                                <input class="form-control" name="chargeAmmount3" type="text" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">From Date</label>
+                                <input class="form-control" name="chargeFromDate3" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            </div>
+                            <div class="col">
+                                <label class="small mb-1">To Date</label>
+                                <input class="form-control" name="chargeToDate3" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                             </div>
                         </div>
                         
+                        <br>
+                        <label class="small mb-1">Last edited by <?php echo userGetData2('agent_id',(getTenantData($_GET['tenantscod'], 'tenantscod', 'user')),'agent_name'); ?> on <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'user_date'); ?> </label>
                         <br>
                         <?php if(!$_GET['editor'] ?? null) echo '<button class="btn btn-primary" type="submit">Edit</button>'; ?>
                         <?php if($_GET['editor'] ?? null) echo '<button class="btn btn-primary" type="submit" name="save" value="true">Save</button>'; ?>

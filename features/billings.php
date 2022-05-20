@@ -19,6 +19,8 @@
                                  setBill($_POST['transactionID'],'billings_charge_date',$_POST['billings_charge_date']);
                                  setBill($_POST['transactionID'],'billings_status',$_POST['billings_status']);
                                  setBill($_POST['transactionID'],'billings_note',$_POST['billings_note']);
+                                 setBill($_POST['transactionID'],'billings_user',$_SESSION["agent_id"]);
+                                 setBill($_POST['transactionID'],'billings_user_date',date("Y-m-d H:i:s"));
                                 ?>
                                 <p> Redirect in <span id="countdowntimer">3 </span> seconds</p>
                                 <meta http-equiv="refresh" content="3;#" />
@@ -159,6 +161,7 @@
                                                                         <label>Notes</label>
                                                                         <textarea class="form-control" name="billings_note" rows="3"><?php echo htmlspecialchars($row['billings_note']); ?></textarea>
                                                                     </div>
+                                                                    <label class="small mb-1">Edited by <?php echo userGetData2('agent_id',($row['billings_user']),'agent_name'); ?> on <?php echo htmlspecialchars($row['billings_user_date']); ?> </label>
                                                                 </div> <!-- Row END -->
                                                             </div>
                                                         </div>

@@ -12,28 +12,29 @@ if (!isset($_GET['show'])) {
 }
 
 //Insert new enquiry
-if ($_GET['insert'] == true) {
+if ($_POST['insert'] == true) {
 
     //Define variables
-    $message_hash = hash('md5', $_GET['email']);
-    $email_adress = $_GET['email'];
+    $message_hash = hash('md5', $_POST['email']);
+    $email_adress = $_POST['email'];
     $mail_subject = "Manual Insert";
-    $email = $_GET['email'];
-    $message_phone_number = $_GET['phone'];
-    $first_name =   $_GET['first_name'];
-    $last_name = $_GET['last_name'];
+    $email = $_POST['email'];
+    $message_phone_number = $_POST['phone'];
+    $first_name =   $_POST['first_name'];
+    $last_name = $_POST['last_name'];
     $message_sender_name = "$first_name $last_name";
-    $property_code = $_SESSION["property_code"];
+    $property_code_enquiry = $_POST['property_code_enquiry'];
 
-    if (getMessage('messages_email', $_GET['email'], 'message_date') != 0) {
+    if (getMessage('messages_email', $_POST['email'], 'message_date') != 0) {
         echo '<center><div class="alert alert-danger" role="alert">Error: This email is already in the database!</div></center>';
     } else {
         //Insert new enquiry
-        insertMessage($email, $property_code);
+        insertMessage($prs_code_enquiry,$email, $property_code_enquiry);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_sender_name', $message_sender_name);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_phone_number', $message_phone_number);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_title', $mail_subject);
-        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_body', $_GET['message_text']);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_body', $_POST['message_text']);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'messages_prs_code', $_SESSION["agent_prs_code"]);
     }
 };
 
@@ -109,7 +110,7 @@ $result = mysqli_query($link, $query);
                             if ($row['status'] == "Denied") {
                                 echo "class='table-danger'";
                             }
-                            echo " onclick=\"location.href='?access=message&message_id=$message_id'\" >
+                            echo " onclick=\"location.href='?access=enquiryDetails&message_id=$message_id'\" >
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";
@@ -178,7 +179,7 @@ $result = mysqli_query($link, $query);
 <div class="modal fade" id="newEnquiry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="GET">
+            <form method="POST">
                 <input type="hidden" name="access" value="enquiries">
                 <input type="hidden" name="insert" value="true">
                 <div class="modal-header">
@@ -186,7 +187,78 @@ $result = mysqli_query($link, $query);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <?php include "enquiries_new.php"; ?>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="col-lg">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <p>
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Property</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <select class="form-select" name="property_code_enquiry">
+                                                    <?php
+                                                    //List all the properties from an agent
+                                                    require 'config/config.php';
+                                                    $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                                                    $result = mysqli_query($link, $select);
+                                                    while ($row = mysqli_fetch_array($result)) {
+                                                        echo '<option value="' . $row['property_code'] . '">' . $row['property_name'] . '</option>';
+                                                    }
+                                                    mysqli_close($link);
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            </p>
+
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">First Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="first_name" required>
+                                            </div>
+                                            <p>
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Last Name</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="last_name" required>
+                                            </div>
+                                            </p>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Email</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="email" class="form-control" name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Phone</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="phone" class="form-control" name="phone" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Message</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <textarea class="form-control" name="message_text"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <input type="submit" class="btn btn-primary" value="Insert">

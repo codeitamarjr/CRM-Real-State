@@ -3,6 +3,7 @@
 //Load automail functions
 require "functions_automail.php";
 require "config/config.php";
+include "features/functions_prospect.php";
 
 //select all data from the mail_income sql table
 
@@ -13,6 +14,7 @@ $status = getMessage('message_id', $message_id, 'status');
 $message = getMessage('message_id', $message_id, 'message_body');
 $hash = getMessage('message_id', $message_id, 'message_hash');
 $name = getMessage('message_id', $message_id, 'message_sender_name');
+$property = getMessage('message_id', $message_id, 'property_code');
 
 
 $message_id = $_GET['message_id'];
@@ -217,6 +219,15 @@ if ($_POST['outcome'] == 'newTenant') {
 
             <div class="card mb-3">
                 <div class="card-body">
+                <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Property</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <?php echo getPropertyData($property,'property_name'); ?>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="row">
                         <div class="col-sm-3">
                             <h6 class="mb-0">Email</h6>
@@ -353,7 +364,7 @@ if ($_POST['outcome'] == 'newTenant') {
 <!-- New Tenant Modal -->
 <div class="modal fade" id="newTenant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST" action="?access=message&message_id=<?php echo $message_id ?>">
+        <form method="POST" action="?access=enquiryDetails&message_id=<?php echo $message_id ?>">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Future Tenant</h5>

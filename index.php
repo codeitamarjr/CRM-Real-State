@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT agent_prs_code, agent_email, agent_password FROM estate_agent WHERE agent_email = ?";
+        $sql = "SELECT agent_id , agent_prs_code, agent_email, agent_password FROM user WHERE agent_email = ?";
 
         if ($stmt = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Check if username exists, if yes then verify password
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $agent_prs_code, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $agent_id, $agent_prs_code, $username, $hashed_password);
                     if (mysqli_stmt_fetch($stmt)) {
                         if (password_verify($password, $hashed_password)) {
                             // Password is correct, so start a new session
@@ -62,6 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["loggedin"] = true;
                             $_SESSION["agent_prs_code"] = $agent_prs_code;
                             $_SESSION["username"] = $username;
+                            $_SESSION["agent_id"] = $agent_id;
+
+
 
                             // Redirect user to welcome page
                             header("location: dashboard.php");
