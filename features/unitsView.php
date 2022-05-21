@@ -2,8 +2,6 @@
 // Include config file
 require "config/config.php";
 require "features/functions_prospect.php";
-//Get property code definied at the start of the login SESSION
-$property_code = $_SESSION["property_code"];
 
 //Define max of results per page 
 if (!isset($_GET['show'])) {
@@ -12,8 +10,10 @@ if (!isset($_GET['show'])) {
     $results_per_page = $_GET['show'];
 }
 
+$prs_code = $_SESSION["agent_prs_code"];
+
 //Select all data from tenant table
-$query = "SELECT * FROM tenant";
+$query = "SELECT * FROM unit WHERE prs_code = '$prs_code' ORDER BY idunit DESC";
 $result = mysqli_query($link, $query);
 
 //find the total number of results
@@ -32,7 +32,7 @@ if (!isset($_GET['page'])) {
 //determine the sql LIMIT starting number for the results on the displaying page  
 $page_first_result = ($page - 1) * $results_per_page;
 
-$query = "SELECT * FROM tenant ORDER BY tenantscod DESC LIMIT " . $page_first_result . ',' . $results_per_page;
+$query = "SELECT * FROM unit ORDER BY property_code DESC LIMIT " . $page_first_result . ',' . $results_per_page;
 $result = mysqli_query($link, $query);
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -41,7 +41,7 @@ $result = mysqli_query($link, $query);
 <div class="container">
     <div class="card shadow">
         <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Tenants
+            <p class="text-primary m-0 fw-bold">Units
             </p>
         </div>
         <div class="card-body">
@@ -64,19 +64,27 @@ $result = mysqli_query($link, $query);
                         <tr>
                             <th>Property</th>
                             <th>Code</th>
-                            <th>Lease starts</th>
                             <th>Tenant</th>
+                            <th>Block</th>
+                            <th>Unit</th>
+                            <th>Address</th>
+                            <th>Bedroons</th>
+                            <th>Availability Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_array($result)) {
                             $tenantscod = $row['tenantscod'];
-                            echo "<tr class=\"showsRow\" onclick=\"location.href='?access=tenantView&content=prospect_details&tenantscod=".$tenantscod ."&hash=".getProspectData2($row['prospect_id'], 'prospect_id', 'hash')."'\">
+                            echo "<tr class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
-    <td>" . htmlspecialchars($row['unit_rented_code']) . "</td>
-    <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['lease_starts']))) . "</td>
-    <td>" . htmlspecialchars(getProspectData2($row['prospect_id'], 'prospect_id', 'prospect_full_name')) . "</td>
+    <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
+    <td>" . htmlspecialchars($row['occupant']) . "</td>
+    <td>" . htmlspecialchars($row['unit_block']) . "</td>
+    <td>" . htmlspecialchars($row['unit_number']) . "</td>
+    <td>" . htmlspecialchars($row['address']) . "</td>
+    <td>" . htmlspecialchars($row['bedrooms']) . "</td>
+    <td>" . htmlspecialchars($row['date_available']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
     </tr>";
                         } ?>
@@ -85,19 +93,19 @@ $result = mysqli_query($link, $query);
                         <tr>
                             <th>Property</th>
                             <th>Code</th>
-                            <th>Lease starts</th>
                             <th>Tenant</th>
+                            <th>Block</th>
+                            <th>Unit</th>
+                            <th>Address</th>
+                            <th>Bedroons</th>
+                            <th>Availability Date</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
-
-
-
             <div class="row">
-
                 <div class="col-md-6 align-self-center">
                     <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?> of <?php echo totalMesssages($_SESSION["property_code"], ''); ?></p>
                 </div>
@@ -108,7 +116,7 @@ $result = mysqli_query($link, $query);
                             <?php
                             //display the link of the pages in URL  
                             for ($page = 1; $page <= $number_of_page;) {
-                                echo '<li class="page-item"><a class="page-link" href="?access=tenants&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
+                                echo '<li class="page-item"><a class="page-link" href="?access=unitsView&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
                                 $page++;
                             }
                             //Close SQL connection
@@ -123,24 +131,18 @@ $result = mysqli_query($link, $query);
     </div>
 </div>
 
-<script>
-    //Function to handle the select box
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-
 <script type="text/javascript">
+    //auto click on pagination
     function handleSelect(elm) {
-        window.location = "?access=tenants&" + elm.value;
+        window.location = "?access=unitsView&" + elm.value;
     }
+    //autoedit
 </script>
 
 <style>
-    tr.showsRow:hover{
-  background-color: #4e73df;
-  color: white;
-  cursor: pointer;
-}
-
+    tr.showsRow:hover {
+        background-color: #4e73df;
+        color: white;
+        cursor: pointer;
+    }
 </style>

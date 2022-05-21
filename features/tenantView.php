@@ -4,7 +4,9 @@ require "features/functions_tenant.php";
 //This pages required tenantscod and hash
 $hash = $_GET['hash'];
 $tenantscod = $_GET['tenantscod'];
-
+if($_POST['action'] == true){
+    deleteTenant($_POST['tenantscod']);
+}
 
 ?>
 <div class="container-fluid">
@@ -32,7 +34,7 @@ $tenantscod = $_GET['tenantscod'];
             <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
-            <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Documents</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#tenantAction">Cancel Move-in</a></li>
 
         </ul>
     </div>
@@ -40,7 +42,6 @@ $tenantscod = $_GET['tenantscod'];
         <p>
             <?php
             $content = $_GET['content'];
-
             if (!empty($content)) {
                 include "features/$content.php";
             }
@@ -50,23 +51,23 @@ $tenantscod = $_GET['tenantscod'];
 </div>
 
 <!-- Action Modal -->
-<div class="modal fade" id="sendModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tenantAction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm to Send the Welcome E-mail</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Cancel Move-in</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Do you want to send the welcome e-mail based on the Automail template for <?php echo $from; ?>? <br>
+                This action can not be undone. Are you sure you want to cancel the move-in?
+                <p>All the bills will be cancelled and the tenant will be removed from the property.</p>
             </div>
             <div class="modal-footer">
-                <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
-                    <input type="hidden" name="access" value="message">
-                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
-                    <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
+                <form method="POST">
+                    <input type="hidden" name="tenantscod" value="<?php echo $tenantscod; ?>">
+                <button type="submit" class="btn btn-primary" name="action" value="true">&nbsp;Cancel Move-in</button>
                 </form>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

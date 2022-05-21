@@ -6,7 +6,7 @@ $property_code = $_SESSION["property_code"];
 
 //Define max of results per page 
 if (!isset($_GET['show'])) {
-    $results_per_page = 10;
+    $results_per_page = 15;
 } else {
     $results_per_page = $_GET['show'];
 }
@@ -62,10 +62,9 @@ $page_first_result = ($page - 1) * $results_per_page;
 $query = "SELECT * FROM messages WHERE property_code = $property_code ORDER BY message_date DESC LIMIT " . $page_first_result . ',' . $results_per_page;
 $result = mysqli_query($link, $query);
 ?>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
-<div class="container-fluid">
+<div class="container">
     <h3 class="text-dark mb-4">Enquiries</h3>
     <div class="card shadow">
         <div class="card-header py-3">
@@ -114,7 +113,7 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";
-                            //Check if the user fillout his data on prospect table, if so shows an clickable link to show his profile
+                            //Check if the prospect fillout his data on prospect table, if so shows an clickable link to show his profile
                             $message_hash = $row['message_hash'];
                             $query_prospect = "SELECT * FROM prospect WHERE hash = '$message_hash'";
                             $result_prospect = mysqli_query($link, $query_prospect);
@@ -124,7 +123,6 @@ $result = mysqli_query($link, $query);
                                     echo '<a data-toggle="tooltip" title="This application has been received"><i class="fa fa-address-card"></i></a>';
                                 }
                             };
-
                             echo "</td>
     <td>" . htmlspecialchars($row['message_date']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>

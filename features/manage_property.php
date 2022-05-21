@@ -23,6 +23,16 @@ if (isset($_POST['submit'])) {
         setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_POST['propertyType'], 'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_units') != $_POST['units']) {
+        include 'features/functions_unit.php';
+        //Remove units
+        if ($_POST['units'] < getPropertyData($_SESSION["property_code"], 'property_units')) {
+            $totalUnits = getPropertyData($_SESSION["property_code"], 'property_units') - $_POST['units'];
+            removeUnit($_SESSION["property_code"], $totalUnits);
+        } else {
+            //Add units
+            $totalUnits = $_POST['units'] - getPropertyData($_SESSION["property_code"], 'property_units');
+            createUnit($_SESSION["agent_prs_code"],$_SESSION["property_code"], $totalUnits);
+        }
         setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_POST['units'], 'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_address') != $_POST['propertyAddress']) {
