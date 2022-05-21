@@ -80,7 +80,7 @@ if ($_POST['report'] == 'messages' || $_POST['report'] == 'demographic') {
 
 
 
-<div class="container-fluid">
+<div class="container">
     <h3 class="text-dark mb-1">Report</h3>
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">

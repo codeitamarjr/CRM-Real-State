@@ -26,7 +26,7 @@ if (!empty($_POST['tinyTextArea'])) {
 ?>
 <script src='features/tinymce/tinymce.min.js'></script>
 
-<div class="container-fluid">
+<div class="container">
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Edit the Automail Response</h6>
@@ -55,7 +55,7 @@ if (!empty($_POST['tinyTextArea'])) {
     </div>
 </div>
 
-<div class="container-fluid">
+<div class="container">
     <div class="card shadow mb-4">
         <form method="POST">
             <div class="card-header d-flex justify-content-between align-items-center">

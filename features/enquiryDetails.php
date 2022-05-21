@@ -177,7 +177,13 @@ if ($_POST['outcome'] == 'newTenant') {
         require "features/functions_billings.php";
         //First rent
         $next_month = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, 1, date('Y')));
-        createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
+        //Recurring rent
+        $recurring = 1;
+        do {
+            createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
+            $next_month = date('Y-m-d', mktime(0, 0, 0, date('m') + $recurring , 1, date('Y')));
+            $recurring++;
+          } while ($recurring < $_POST['lease-term']);
         //Deposit and First Rent
         createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], date('Y/m/d'));
         createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], date('Y/m/d'));

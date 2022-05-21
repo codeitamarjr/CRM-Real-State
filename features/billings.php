@@ -91,7 +91,7 @@
                             <tbody>
                                 <?php
                                 require "config/config.php";
-                                $query = "SELECT * FROM billings WHERE billings_tenantscod = $tenantscod";
+                                $query = "SELECT * FROM billings WHERE billings_tenantscod = $tenantscod ORDER BY billings_invoice_date DESC";
                                 $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result)) {
                                     $mysqDateTime = htmlspecialchars($row['billings_invoice_date']);
