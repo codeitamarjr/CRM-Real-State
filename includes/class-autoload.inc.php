@@ -10,5 +10,5 @@ function autoLoader($className) {
         return false;
     }
 
-    include_once $path . $className . $extension;
+    include_once $fileName;
 }

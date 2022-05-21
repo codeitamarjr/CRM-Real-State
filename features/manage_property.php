@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET['submit'])) {
+if (isset($_POST['submit'])) {
     echo "<script>
     $(document).ready(function(){
         $(\"#alertModal\").modal('show');
@@ -16,19 +16,18 @@ if (isset($_GET['submit'])) {
                 <div class="modal-body">
                 <center>
                    ';
-    if (getPropertyData($_SESSION["property_code"], 'property_name') != $_GET['propertyName']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_name', $_GET['propertyName'], 'ss');
+    if (getPropertyData($_SESSION["property_code"], 'property_name') != $_POST['propertyName']) {
+        setPropertyDataSafe($_SESSION["property_code"], 'property_name', $_POST['propertyName'], 'ss');
     }
-    if (getPropertyData($_SESSION["property_code"], 'property_type') != $_GET['propertyType']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_GET['propertyType'], 'ss');
+    if (getPropertyData($_SESSION["property_code"], 'property_type') != $_POST['propertyType']) {
+        setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_POST['propertyType'], 'ss');
     }
-    if (getPropertyData($_SESSION["property_code"], 'property_units') != $_GET['units']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_GET['units'], 'ss');
+    if (getPropertyData($_SESSION["property_code"], 'property_units') != $_POST['units']) {
+        setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_POST['units'], 'ss');
     }
-    if (getPropertyData($_SESSION["property_code"], 'property_address') != $_GET['propertyAddress']) {
-        setPropertyDataSafe($_SESSION["property_code"], 'property_address', $_GET['propertyAddress'], 'ss');
+    if (getPropertyData($_SESSION["property_code"], 'property_address') != $_POST['propertyAddress']) {
+        setPropertyDataSafe($_SESSION["property_code"], 'property_address', $_POST['propertyAddress'], 'ss');
     }
-
     echo '
         </center></div>
     </div>
@@ -56,7 +55,7 @@ if (isset($_GET['submit'])) {
                         <p class="text-primary m-0 fw-bold">Edit Property</p>
                     </div>
                     <div class="card-body">
-                        <form method="GET">
+                        <form method="POST">
                             <input type="hidden" name="access" value="manage_property">
                             <div class="row">
                                 <div class="col">
