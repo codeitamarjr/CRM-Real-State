@@ -50,7 +50,7 @@ if($_POST['save'] == true) {
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Lease To</label>
-                                <input class="form-control" name="lease_expires" type="date" value="" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                                <input class="form-control" name="lease_expires" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($_GET['tenantscod'], 'tenantscod', 'lease_expires')))); ?>" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
                             </div>
                         </div>
 

@@ -29,7 +29,7 @@ if ($_POST['insert'] == true) {
         echo '<center><div class="alert alert-danger" role="alert">Error: This email is already in the database!</div></center>';
     } else {
         //Insert new enquiry
-        insertMessage($prs_code_enquiry,$email, $property_code_enquiry);
+        insertMessage($prs_code_enquiry, $email, $property_code_enquiry);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_sender_name', $message_sender_name);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_phone_number', $message_phone_number);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_title', $mail_subject);
@@ -121,7 +121,7 @@ $result = mysqli_query($link, $query);
                             while ($row_prospect = mysqli_fetch_array($result_prospect)) {
                                 $hash = $row_prospect['hash'];
                                 if (!empty($hash)) {
-                                    echo '<a data-toggle="tooltip" title="This application has been received" href="dashboard.php?access=message&message_id=' . $message_id . '"><i class="fa fa-address-card"></i></a>';
+                                    echo '<a data-toggle="tooltip" title="This application has been received"><i class="fa fa-address-card"></i></a>';
                                 }
                             };
 
@@ -175,7 +175,7 @@ $result = mysqli_query($link, $query);
     </div>
 </div>
 
-<!-- New Enquiry Approve -->
+<!-- New Enquiry Modal -->
 <div class="modal fade" id="newEnquiry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

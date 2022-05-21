@@ -139,8 +139,8 @@ if (!isset($_GET['outcome'])) {
     </div>';
 }
 if ($_POST['outcome'] == 'newTenant') {
-    require "features/functions_prospect.php";
     require "features/functions_tenant.php";
+
     echo "<script>
     $(document).ready(function(){
         $(\"#alertModal\").modal('show');
@@ -161,7 +161,7 @@ if ($_POST['outcome'] == 'newTenant') {
     if (
         getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'prospect_id') != 0
     ) {
-        echo "<div class='alert alert-danger' role='alert'>This prospect already it's a tenant!</div>";
+        echo "<div class='alert alert-danger' role='alert'>This prospect is already a tenant!</div>";
     } else {
         echo newTenantDataSafe($_POST['tenant-property'], getProspectData($hash, 'prospect_id'));
         $tenantscod = getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'tenantscod');
@@ -170,17 +170,17 @@ if ($_POST['outcome'] == 'newTenant') {
         setTenantDataSafe($tenantscod, 'move_in', $_POST['move-in']);
         setTenantDataSafe($tenantscod, 'lease_starts', $_POST['lease-starts']);
         setTenantDataSafe($tenantscod, 'lease_term', $_POST['lease-term']);
-        setTenantDataSafe($tenantscod, 'lease_expires', $_POST['lease-expires']);
+        setTenantDataSafe($tenantscod, 'lease_expires', date('Y-m-d', (strtotime($_POST['lease-starts'] . ' + ' . $_POST['lease-term'] . ' month'))));
         setTenantDataSafe($tenantscod, 'rent', $_POST['rent']);
         setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
         setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
         require "features/functions_billings.php";
         //First rent
-        $next_month = date('Y-m-d', mktime(0, 0, 0, date('m')+1, 1, date('Y')));
-        createBill($tenantscod,$_POST['tenant-property'],'Rent',$_POST['rent'],$next_month);
+        $next_month = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, 1, date('Y')));
+        createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
         //Deposit and First Rent
-        createBill($tenantscod,$_POST['tenant-property'],'Deposit',$_POST['deposit'],date('Y/m/d'));
-        createBill($tenantscod,$_POST['tenant-property'],'First Rent',$_POST['first-rent'],date('Y/m/d'));
+        createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], date('Y/m/d'));
+        createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], date('Y/m/d'));
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');
@@ -199,7 +199,10 @@ if ($_POST['outcome'] == 'newTenant') {
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>
-            <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+            <div class="dropdown no-arrow">
+                <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
+                    <i class="fas fa-ellipsis-v text-gray-400"></i>
+                </button>
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center"><strong>Change Status</strong></h6>
                     <?php if ($status == 'Approved') { ?>
@@ -219,12 +222,12 @@ if ($_POST['outcome'] == 'newTenant') {
 
             <div class="card mb-3">
                 <div class="card-body">
-                <div class="row">
+                    <div class="row">
                         <div class="col-sm-3">
                             <h6 class="mb-0">Property</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <?php echo getPropertyData($property,'property_name'); ?>
+                            <?php echo getPropertyData($property, 'property_name'); ?>
                         </div>
                     </div>
                     <hr>
@@ -292,7 +295,7 @@ if ($_POST['outcome'] == 'newTenant') {
                 Approve the enquirie from <?php echo $from; ?>?
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=message&message_id=<?php echo $message_id ?>&outcome=Approved">&nbsp;Approve</a>
+                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Approved">&nbsp;Approve</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>
@@ -312,7 +315,7 @@ if ($_POST['outcome'] == 'newTenant') {
                 If the settings are set to auto send an email, this will be sent to this applicant.
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=message&message_id=<?php echo $message_id ?>&outcome=Denied">&nbsp;Deny</a>
+                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Denied">&nbsp;Deny</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>
@@ -331,7 +334,7 @@ if ($_POST['outcome'] == 'newTenant') {
                 Delete the enquirie from <?php echo $from; ?>? <br>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=message&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delete</a>
+                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delete</a>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>
@@ -371,8 +374,6 @@ if ($_POST['outcome'] == 'newTenant') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
-
                     <div class="form-group row">
                         <label class="col-4 col-form-label" for="property_selector">Select a Property</label>
                         <div class="col-8">
@@ -430,14 +431,7 @@ if ($_POST['outcome'] == 'newTenant') {
                         <label for="lease_term" class="col-4 col-form-label">Lease Term</label>
                         <div class="col-8">
                             <input id="lease_term" name="lease-term" type="number" aria-describedby="lease_termHelpBlock" required="required" class="form-control">
-                            <span id="lease_termHelpBlock" class="form-text text-muted">What is the time of the lease in months</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="lease_expires" class="col-4 col-form-label">Lease expires</label>
-                        <div class="col-8">
-                            <input id="lease_expires" name="lease-expires" type="date" aria-describedby="lease_expiresHelpBlock" required="required" class="form-control">
-                            <span id="lease_expiresHelpBlock" class="form-text text-muted">The date that the lease will expire based on the start lease and term.</span>
+                            <span id="lease_termHelpBlock" class="form-text text-muted">The time of the lease in months</span>
                         </div>
                     </div>
                     <hr>
@@ -461,10 +455,7 @@ if ($_POST['outcome'] == 'newTenant') {
                             <span id="first_rentHelpBlock" class="form-text text-muted">First rent or remaining rent, in case of the tenant move-in in the middle of the month.</span>
                         </div>
                     </div>
-
-
                     <br>
-
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="outcome" value="newTenant">

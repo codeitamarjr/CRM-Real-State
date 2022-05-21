@@ -67,14 +67,14 @@ $message_id = $_GET['message_id'];
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboard.php"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboard.php?access=enquiries"><i class="fas fa-table"></i><span>Enquiries</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboard.php?access=tenants"><i class="fas fa-table"></i><span>Tenants</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboard.php?access=report"><i class="far fa-file-excel"></i><span>Reports</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboard.php?access=automail"><i class="icon ion-email"></i><span>Automail</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') { echo 'active';}?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar"></i><span>Calendly</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboard.php"><i class="fas fa-tachometer-alt" style="font-size: 20px;"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboard.php?access=enquiries"><i class="fa fa-list" style="font-size: 20px;"></i><span>Enquiries</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboard.php?access=tenants"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'units') { echo 'active';}?>" href="dashboard.php?access=units"><i class="fa fa-building-o" style="font-size: 20px;"></i><span>Units</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboard.php?access=report"><i class="fa fa-file-excel-o" style="font-size: 20px;"></i><span>Reports</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboard.php?access=automail"><i class="icon ion-email" style="font-size: 20px;"></i><span>Templates</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') { echo 'active';}?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar" style="font-size: 20px;"></i><span>Calendly</span></a></li>
                 </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
             </div>
         </nav>
         <!-- Menu End -->

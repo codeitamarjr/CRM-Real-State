@@ -29,16 +29,6 @@ if (isset($_POST['submit'])) {
     <div class="col-lg">
         <div class="row">
             <div class="col-xl-12">
-
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="dashboard.php?access=property">Edit Property</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Add Property</a>
-                    </li>
-                </ul>
-
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
                         <p class="text-primary m-0 fw-bold">Add a New Property</p>

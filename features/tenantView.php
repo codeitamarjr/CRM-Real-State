@@ -9,29 +9,33 @@ $tenantscod = $_GET['tenantscod'];
 ?>
 <div class="container-fluid">
     <div class="profile-header">
+
         <div class="profile-header-cover"></div>
         <div class="profile-header-content">
             <div class="profile-header-img mb-4">
                 <img src="assets/img/avatars/user_blank.png" class="mb-4" alt="Tenant img" width="100%" />
             </div>
 
+
+
             <div class="profile-header-info">
-                <h4 class="m-t-sm"><?php echo getProspectData($hash,'prospect_full_name'); ?></h4>
-                <p class="m-b-sm"><?php echo getPropertyData(getTenantData($_GET['tenantscod'],'tenantscod','property_code'),'property_name'); ?>
-                <br>
-                Unit: <?php echo getTenantData($_GET['tenantscod'],'tenantscod','unit_rented_code'); ?></p>
+                <h4 class="m-t-sm"><?php echo getProspectData($hash, 'prospect_full_name'); ?></h4>
+                <p class="m-b-sm"><?php echo getPropertyData(getTenantData($_GET['tenantscod'], 'tenantscod', 'property_code'), 'property_name'); ?>
+                    <br>
+                    Unit: <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'unit_rented_code'); ?>
+                </p>
             </div>
         </div>
 
         <ul class="profile-header-tab nav nav-tabs">
-            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash?>" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=<?php echo $tenantscod ?>&hash=<?php echo $hash ?>" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
             <li class="nav-item"><a href="" class="nav-link" data-toggle="tab">Documents</a></li>
+
         </ul>
     </div>
-
     <div class="content">
         <p>
             <?php
@@ -42,6 +46,29 @@ $tenantscod = $_GET['tenantscod'];
             }
             ?>
         </p>
+    </div>
+</div>
+
+<!-- Action Modal -->
+<div class="modal fade" id="sendModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Send the Welcome E-mail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want to send the welcome e-mail based on the Automail template for <?php echo $from; ?>? <br>
+            </div>
+            <div class="modal-footer">
+                <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
+                    <input type="hidden" name="access" value="message">
+                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
+                    <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
