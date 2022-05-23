@@ -29,7 +29,7 @@ function removeUnit($property_code, $totalUnits)
     mysqli_close($link);
 }
 
-function setUnit($idunit, $rowName, $newData)
+function setUnit($test, $rowName, $newData)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
@@ -41,7 +41,7 @@ function setUnit($idunit, $rowName, $newData)
         echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
     } else {
         //Bind parameters to the placeholder with the right datatype s=String i=integer b=Blob d=Double
-        mysqli_stmt_bind_param($stmt, "ss", $newData, $idunit);
+        mysqli_stmt_bind_param($stmt, "ss", $newData, $test);
         //Run parametes inside DB
         mysqli_stmt_execute($stmt);
         return '<center><div class="alert alert-success" role="alert">Unit #'.$idunit.' updated with success!</div></center>';

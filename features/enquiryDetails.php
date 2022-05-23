@@ -165,7 +165,7 @@ if ($_POST['outcome'] == 'newTenant') {
     } else {
         echo newTenantDataSafe($_POST['tenant-property'], getProspectData($hash, 'prospect_id'));
         $tenantscod = getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'tenantscod');
-        setTenantDataSafe($tenantscod, 'unit_rented_code', $_POST['unit_rented_code']);
+        setTenantDataSafe($tenantscod, 'idunit', $_POST['idunit']);
         setTenantDataSafe($tenantscod, 'bedrooms', $_POST['bedrooms']);
         setTenantDataSafe($tenantscod, 'move_in', $_POST['move-in']);
         setTenantDataSafe($tenantscod, 'lease_starts', $_POST['lease-starts']);
@@ -190,6 +190,9 @@ if ($_POST['outcome'] == 'newTenant') {
         //Deposit and First Rent or Remaining Rent
         createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], $_POST['lease-starts']);
         createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], $_POST['lease-starts']);
+        //Update the tenant with the unit
+        require "features/functions_unit.php";
+        setUnit($_POST['idunit'], 'tenant_id', $tenantscod);
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');
@@ -400,9 +403,9 @@ if ($_POST['outcome'] == 'newTenant') {
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="code_unit" class="col-4 col-form-label">Code of the Unit</label>
+                        <label for="code_unit" class="col-4 col-form-label">#CRM of the Unit</label>
                         <div class="col-8">
-                            <input id="code_unit" name="unit_rented_code" type="text" class="form-control" required="required">
+                            <input id="code_unit" name="idunit" type="text" class="form-control" required="required">
                             <span id="move-inHelpBlock" class="form-text text-muted">Custom code of the unit.</span>
                         </div>
                     </div>

@@ -63,6 +63,7 @@ $result = mysqli_query($link, $query);
                     <thead>
                         <tr>
                             <th>Property</th>
+                            <th>CRM#</th>
                             <th>Code</th>
                             <th>Tenant</th>
                             <th>Block</th>
@@ -78,8 +79,9 @@ $result = mysqli_query($link, $query);
                             $tenantscod = $row['tenantscod'];
                             echo "<tr class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
+    <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
-    <td>" . htmlspecialchars($row['occupant']) . "</td>
+    <td>" . htmlspecialchars($row['tenant_id']) . "</td>
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
     <td>" . htmlspecialchars($row['address']) . "</td>

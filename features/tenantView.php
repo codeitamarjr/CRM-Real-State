@@ -24,7 +24,7 @@ if($_POST['action'] == true){
                 <h4 class="m-t-sm"><?php echo getProspectData($hash, 'prospect_full_name'); ?></h4>
                 <p class="m-b-sm"><?php echo getPropertyData(getTenantData($_GET['tenantscod'], 'tenantscod', 'property_code'), 'property_name'); ?>
                     <br>
-                    Unit: <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'unit_rented_code'); ?>
+                    CRM#: <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'idunit'); ?>
                 </p>
             </div>
         </div>
