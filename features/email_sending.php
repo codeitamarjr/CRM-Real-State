@@ -33,6 +33,16 @@ try {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = $property_email_port;
 
+    //Custom connection options
+    //Note that these settings are INSECURE
+    $mail->SMTPOptions = array(
+        'ssl' => [
+            'verify_peer_name' => false,
+            'verify_depth' => 3,
+            'allow_self_signed' => true,
+        ],
+    );
+
     $mail->Username = $property_email_username; // Username from DB
     $mail->Password = $property_email_password; // Password from DB
 

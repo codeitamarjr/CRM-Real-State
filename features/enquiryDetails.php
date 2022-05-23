@@ -175,18 +175,21 @@ if ($_POST['outcome'] == 'newTenant') {
         setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
         setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
         require "features/functions_billings.php";
-        //First rent
-        $next_month = date('Y-m-d', mktime(0, 0, 0, date('m') + 1, 1, date('Y')));
+        //Create the bills for the tenant
+        //Create bills for the next months based on the lease term
+        $next_month =  date('Y-m-d', strtotime($_POST['lease-starts'] . ' + 1 months'));
+        //Get the first day of the month
+        $next_month = date('Y-m-01', strtotime($next_month));
         //Recurring rent
         $recurring = 1;
         do {
             createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
-            $next_month = date('Y-m-d', mktime(0, 0, 0, date('m') + $recurring , 1, date('Y')));
+            $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
             $recurring++;
-          } while ($recurring < $_POST['lease-term']);
-        //Deposit and First Rent
-        createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], date('Y/m/d'));
-        createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], date('Y/m/d'));
+        } while ($recurring <= $_POST['lease-term']);
+        //Deposit and First Rent or Remaining Rent
+        createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], $_POST['lease-starts']);
+        createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], $_POST['lease-starts']);
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');
@@ -360,7 +363,7 @@ if ($_POST['outcome'] == 'newTenant') {
             </div>
             <div class="modal-footer">
                 <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
-                    <input type="hidden" name="access" value="message">
+                    <input type="hidden" name="access" value="enquiryDetails">
                     <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
                     <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
                 </form>
