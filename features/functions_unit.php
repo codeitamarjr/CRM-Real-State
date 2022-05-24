@@ -63,3 +63,10 @@ function getUnit($data, $rowName, $rowReturn)
     }
     mysqli_close($link);
 }
+
+function totalUnits($property_code,$aditionalQuery){
+    require "config/config.php";
+    $result = mysqli_query($link, "SELECT * FROM unit WHERE property_code = '$property_code' $aditionalQuery");
+    return mysqli_num_rows($result);
+    mysqli_close($link);
+}

@@ -56,7 +56,9 @@
                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">
                             <?php echo userGetData($_SESSION["username"], 'agent_name'); ?>
                         </span><img class="border rounded-circle img-profile" src="features/uploads/<?php echo userGetData($_SESSION["username"], 'agent_pic'); ?>"></a>
-                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="dashboard.php?access=profile"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Agent</a>
+                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                        <a class="dropdown-item" href="dashboard.php?access=profile"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Agent</a>
+                        <a class="dropdown-item" href="dashboard.php?access=prsSettings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;PRS Settings</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property_add"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Create Property</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Property Settings</a>
                         <a class="dropdown-item" href="dashboard.php?access=system_settings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;System Settings</a>

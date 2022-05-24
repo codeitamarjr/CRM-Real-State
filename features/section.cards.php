@@ -1,3 +1,6 @@
+<?php
+require "features/functions_unit.php";
+?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="container-fluid">
@@ -124,9 +127,9 @@
                     while ($row = mysqli_fetch_array($result)) {
                         $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE property_code = " . $row['property_code'] . ""));
                     ?>
-                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo $row['property_units']; ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo round($totalAvaiable / $row['property_units'] * 100, 0) ?>%</span></h4>
+                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo totalUnits($row['property_code'],'') ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo round($totalAvaiable / (totalUnits($row['property_code'],'')) * 100, 0) ?>%</span></h4>
                         <div class="progress mb-4">
-                            <div class="progress-bar bg-primary" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $totalAvaiable / $row['property_units'] * 100 ?>%;"></div>
+                            <div class="progress-bar bg-primary" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $totalAvaiable / (totalUnits($row['property_code'],'')) * 100 ?>%;"></div>
                         </div>
                     <?php
                     }

@@ -1,4 +1,5 @@
 <?php
+require "features/functions_unit.php";
 
 if (isset($_POST['submit'])) {
     echo "<script>
@@ -21,19 +22,6 @@ if (isset($_POST['submit'])) {
     }
     if (getPropertyData($_SESSION["property_code"], 'property_type') != $_POST['propertyType']) {
         setPropertyDataSafe($_SESSION["property_code"], 'property_type', $_POST['propertyType'], 'ss');
-    }
-    if (getPropertyData($_SESSION["property_code"], 'property_units') != $_POST['units']) {
-        include 'features/functions_unit.php';
-        //Remove units
-        if ($_POST['units'] < getPropertyData($_SESSION["property_code"], 'property_units')) {
-            $totalUnits = getPropertyData($_SESSION["property_code"], 'property_units') - $_POST['units'];
-            removeUnit($_SESSION["property_code"], $totalUnits);
-        } else {
-            //Add units
-            $totalUnits = $_POST['units'] - getPropertyData($_SESSION["property_code"], 'property_units');
-            createUnit($_SESSION["agent_prs_code"],$_SESSION["property_code"], $totalUnits);
-        }
-        setPropertyDataSafe($_SESSION["property_code"], 'property_units', $_POST['units'], 'ss');
     }
     if (getPropertyData($_SESSION["property_code"], 'property_address') != $_POST['propertyAddress']) {
         setPropertyDataSafe($_SESSION["property_code"], 'property_address', $_POST['propertyAddress'], 'ss');
@@ -111,7 +99,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Units</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_units'); ?>" name="units">
+                                        <input class="form-control" value="<?php echo totalUnits($_SESSION["property_code"],'');    ?>" name="units" disabled>
                                     </div>
                                 </div>
                             </div>
