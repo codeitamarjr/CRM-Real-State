@@ -65,7 +65,7 @@ $result = mysqli_query($link, $query);
                             <th>Property</th>
                             <th>CRM#</th>
                             <th>Code</th>
-                            <th>Tenant</th>
+                            <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
                             <th>Address</th>
@@ -94,8 +94,9 @@ $result = mysqli_query($link, $query);
                     <tfoot>
                         <tr>
                             <th>Property</th>
+                            <th>CRM#</th>
                             <th>Code</th>
-                            <th>Tenant</th>
+                            <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
                             <th>Address</th>

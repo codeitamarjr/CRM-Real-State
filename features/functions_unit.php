@@ -29,7 +29,7 @@ function removeUnit($property_code, $totalUnits)
     mysqli_close($link);
 }
 
-function setUnit($test, $rowName, $newData)
+function setUnit($idunit, $rowName, $newData)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
@@ -41,10 +41,25 @@ function setUnit($test, $rowName, $newData)
         echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
     } else {
         //Bind parameters to the placeholder with the right datatype s=String i=integer b=Blob d=Double
-        mysqli_stmt_bind_param($stmt, "ss", $newData, $test);
-        //Run parametes inside DB
+        mysqli_stmt_bind_param($stmt, "ss", $newData, $idunit);
+        //Run parameters inside DB
         mysqli_stmt_execute($stmt);
         return '<center><div class="alert alert-success" role="alert">Unit #'.$idunit.' updated with success!</div></center>';
     }
     mysqli_stmt_close($stmt);
+}
+
+function getUnit($data, $rowName, $rowReturn)
+{
+    require "config/config.php";
+    $query = "SELECT $rowReturn FROM unit WHERE ($rowName = '$data')";
+    $result = mysqli_query($link, $query);
+    if ($result) {
+        while ($row = mysqli_fetch_array($result)) {
+            return $row[$rowReturn];
+        }
+    } else {
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+    }
+    mysqli_close($link);
 }

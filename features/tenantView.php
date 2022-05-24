@@ -5,6 +5,12 @@ require "features/functions_tenant.php";
 $hash = $_GET['hash'];
 $tenantscod = $_GET['tenantscod'];
 if($_POST['action'] == true){
+    //Update the unit table with null in tenant_id
+    require "features/functions_unit.php";
+    $idunit = getUnit($_GET['tenantscod'],'tenant_id','idunit');
+    setUnit($idunit, 'tenant_id', '00');
+
+    //Delete from the tenant table
     deleteTenant($_POST['tenantscod']);
 }
 

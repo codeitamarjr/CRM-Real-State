@@ -1,5 +1,5 @@
 <?php
-
+require 'features/functions_unit.php';
 if($_POST['save'] == true) {
    if(!isset($_POST['tenantscod'])) {
        $status = $_POST['status'];
@@ -22,7 +22,7 @@ if($_POST['save'] == true) {
                         <div class="card-header">Property Details</div>
                         <div class="mb-3">
                             <label class="small mb-1">Full Addres of the Property</label>
-                            <input class="form-control" type="text" placeholder="Enter the full adress of the property" name="property_full_address" <?php if(!$_GET['editor'] ?? null) echo 'disabled'; ?>>
+                            <input class="form-control" type="text" placeholder="<?php echo getUnit($_GET['tenantscod'],'tenant_id','address'); ?>" disabled>
                         </div>
                         <br>
                         <div class="card-header">Lease Info</div>
