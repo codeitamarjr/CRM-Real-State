@@ -20,15 +20,14 @@ require "../features/functions_property.php";
 $property_code = $_SESSION["property_code"];
 echo 'Start getting email from property code ' . $property_code . '.<br>';
 
-if (logTimerToDie($property_code, 'get_email', getPropertyData($property_code, 'getting_email_time'))) {
-    echo 'Script is not running for this property code ' . $property_code . '.<br>';
-    exit;
-} else echo 'Script is running for this property code ' . $property_code . '. Please wait for the script to finish.<br>';
+//Check if the script is already running
+// if (logTimerToDie($property_code, 'get_email', getPropertyData($property_code, 'getting_email_time'))) {
+//     echo 'Script is not running for this property code ' . $property_code . '.<br>';
+//     exit;
+// } else echo 'Script is running for this property code ' . $property_code . '. Please wait for the script to finish.<br>';
 
 //Saves a log of the script, it'll prevent the script from running again if it's already running
-logInsert($property_code, 1, 'get_email','Start getting email from property code ' . $property_code . '.');
-echo '<br>Log saved.<br>';
-
+logInsert($property_code, 0, 'get_email','Getting Emails','Start getting email from property code ' . $property_code . '.');
 
 //Load email settings from the property
 $query = "SELECT * FROM property WHERE property_code = $property_code";
@@ -41,34 +40,14 @@ while ($row = mysqli_fetch_array($result)) {
 
 /* Email server config based on the property settings defined above*/
 $hostname =  '{' . $property_email_hostname . ':993/ssl/novalidate-cert}INBOX';
+
 /* Open the email connection */
 $inbox = imap_open($hostname, $property_email_username, $property_email_password) or die('Cannot connect to MAIL SERVER: ' . imap_last_error());
 /* Grab emails with subject Enquiry*/
 //$emails = imap_search($inbox, 'ALL');
+
+//Get all the emails with the word "enquiry" in the subject
 $emails = imap_search($inbox, 'SUBJECT "Enquiry"');
-
-
-if (!empty($emails)) {
-    echo '<table>';
-    foreach ($emails as $emailIdent) {
-        $overview = imap_fetch_overview($inbox, $emailIdent, 0);
-        $message = imap_fetchbody($inbox, $emailIdent, 1.1);
-        $messageExcerpt = substr($message, 0, 150);
-        $partialMessage = trim(quoted_printable_decode($messageExcerpt));
-        $date = date("d F, Y", strtotime($overview[0]->date));
-        echo '<tr>
-        <td>
-        <span class="column">' . $overview[0]->from . '</span>
-        </td>
-        <td class="content-div">
-        <span class="column">' . utf8_decode(imap_utf8($overview[0]->subject)) . ' - ' . $partialMessage . '</span>
-        <span class="date">' . $date . '</span>
-        </td>
-        </tr>';
-    } // End foreach
-    echo '</table>';
-} // end if
-
 
 
 /* if emails are returned, cycle through each email... */
@@ -79,7 +58,7 @@ if ($emails) {
         $overview = imap_fetch_overview($inbox, $email_number, 0);
         $message_raw = $link->real_escape_string(imap_fetchbody($inbox, $email_number, 1));
         // Retrieve and collect just new=0 / read=1 emails
-        if (($overview[0]->seen) == 0) {
+        if (($overview[0]->seen) == 1) {
             //Prepare variables from the email to INSERT into the SQL TABLES
             $mail_from = $overview[0]->from;
             $mail_subject =  $overview[0]->subject;
@@ -127,10 +106,16 @@ if ($emails) {
             //Function to create hash from email
             $message_hash = hash('md5', $email_adress);
 
+            //Get the PRS code from property selected by session
+            $messages_prs_code = getPropertyData($property_code, 'property_prs_code');
+            //Get the address from the subject(Split by | and get the last part)
+            $message_address = end(explode('|',$mail_subject));
+            echo $message_address;
+
             //Create SQL_QUERY to insert
-            $sql_query = "INSERT INTO messages (messages_email, message_date, message_title, message_body, message_from, message_phone_number, message_sender_name, message_hash, property_code)
+            $sql_query = "INSERT INTO messages (messages_prs_code, messages_email, message_date, message_address, message_title, message_body, message_from, message_phone_number, message_sender_name, message_hash, property_code)
                 VALUES
-                ('$email_adress', '$mail_date', '$mail_subject', '$mail_message_sql', '$mail_from','$message_phone_number','$message_sender_name','$message_hash',$property_code);
+                ('$messages_prs_code','$email_adress', '$mail_date', '$message_address','$mail_subject', '$mail_message_sql', '$mail_from','$message_phone_number','$message_sender_name','$message_hash',$property_code);
                 ";
 
             //Insert and show the result
@@ -146,7 +131,7 @@ if ($emails) {
         }
     }
     // Saves a log for a success retrieving emails
-    logInsert($property_code, 1, 'get_email','Finish getting email from property code ' . $property_code . '.');
+    logInsert($property_code, 1, 'get_email','Getting Emails','Finished getting email from property code ' . $property_code . '.');
 }
 /* close the connection */
 imap_close($inbox);

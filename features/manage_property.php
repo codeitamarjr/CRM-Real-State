@@ -53,7 +53,9 @@ if (isset($_POST['submit'])) {
     if (getPropertyData($_SESSION["property_code"], 'property_email_password') != $_POST['property_email_password']) {
         setPropertyDataSafe($_SESSION["property_code"], 'property_email_password', $_POST['property_email_password'], 'ss');
     }
-    
+    if (getPropertyData($_SESSION["property_code"], 'property_calendly') != $_POST['calendly']) {
+        setPropertyDataSafe($_SESSION["property_code"], 'property_calendly', $_POST['calendly'], 'ss');
+    }
     echo '
         </center></div>
     </div>
@@ -195,7 +197,30 @@ if (isset($_POST['submit'])) {
 
                             <!-- End Getting Email Section -->
 
-
+                            <!-- Start Calendly Section -->
+                            <div class="card-header py-3">
+                                <p class="text-primary m-0">Calendly</p>
+                            </div>
+                            <p>Set the Calendly option to send the link for the applicants.</p>
+                            <div class="list-group mb-5 shadow">
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <strong class="mb-0">Calendly link</strong>
+                                            <p class="text-muted mb-0">Set the link for the Calendly:</p>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="basic-addon3">https://calendly.com/</span>
+                                                <input type="text" class="form-control" aria-describedby="basic-addon3" name=calendly value="<?php echo getPropertyData($_SESSION["property_code"], 'property_calendly'); ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Calendly Section -->
 
                             <div class="mb-3">
                                 <button class="btn btn-primary btn-sm" type="submit" name="submit">Update</button>

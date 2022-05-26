@@ -36,16 +36,45 @@ if (isset($_GET['submit'])) {
     </div>';
 }
 
+//Upload PRS Logo
+if ($_FILES['picture']['name'] != null) {
+    require "features/functions_upload.php";
+    if (getPRSData($_SESSION["agent_prs_code"], 'prs_logo') != null) {
+        unlink('features/uploads/' . getPRSData($_SESSION["agent_prs_code"], 'prs_logo') . '');
+        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'prs_email'), 'prsLogo');
+        setPRSData($_SESSION["agent_prs_code"], 'prs_logo', $fileIDName);
+        header("Refresh:0");
+    } else {
+        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'prs_email'), 'prs_logo');
+        setPRSData($_SESSION["agent_prs_code"], 'prs_logo', $fileIDName);
+        header("Refresh:0");
+    }
+}
+
 ?>
 
 
 <div class="container">
     <div class="col-lg">
         <div class="row">
+        <div class="col-xl-12">
+            <div class="card shadow mb-3">
+                <div class="text-center" style="padding: 11px;"><img class="rounded-circle mb-3 mt-4" src="features/uploads/<?php echo htmlentities(getPRSData($_SESSION["agent_prs_code"], 'prs_logo')); ?>" width="160" height="160">
+                    <br>
+                    <label class="form-label" style="margin: 0;">PRS Logo</label>
+                    <br>
+                    <form method="POST" enctype="multipart/form-data">
+                        <input class="form-control" type="file" name="picture">
+                        <div class="mb-3"></div>
+                        <button class="btn btn-primary btn-sm" type="submit" name="upload">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
             <div class="col-xl-12">
                 <div class="card shadow mb-3">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Estate Agency Info</p>
+                        <p class="text-primary m-0 fw-bold">Property Management General Info</p>
                     </div>
                     <div class="card-body">
                         <form method="GET">

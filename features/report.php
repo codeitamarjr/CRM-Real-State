@@ -4,14 +4,14 @@ require "config/config.php";
 
 $link->set_charset('utf8mb4'); // set the charset
 //Function to get the table name and column name to be used in the query
-function outputMySQLToHTMLTable(mysqli $link, string $table, string $rows)
+function outputMySQLToHTMLTable(mysqli $link, string $table, string $rows , string $extraQuery)
 {
     // Make sure that the table exists in the current database!
     $tableNames = array_column($link->query('SHOW TABLES')->fetch_all(), 0);
     if (!in_array($table, $tableNames, true)) {
         throw new UnexpectedValueException('Unknown table name provided!');
     }
-    $res = $link->query('SELECT ' . $rows . ' FROM ' . $table);
+    $res = $link->query('SELECT ' . $rows . ' FROM ' . $table .$extraQuery);
     $data = $res->fetch_all(MYSQLI_ASSOC);
 
     echo '<table id="export" class="table my-0">';
@@ -56,10 +56,17 @@ if ($_POST['report'] == 'messages' || $_POST['report'] == 'demographic') {
                 <center>
                    ';
     if ($_POST['report'] == 'messages') {
-        outputMySQLToHTMLTable($link, 'messages', '*');
+        outputMySQLToHTMLTable($link,
+        'messages',
+        'messages_email,message_date,message_title,message_body,message_retrieved,status,message_from,message_phone_number,message_sender_name',
+        '');
     }
     if ($_POST['report'] == 'demographic') {
-        outputMySQLToHTMLTable($link, 'prospect', 'prospect_id,prospect_property_code,prospect_status,prospect_email,prospect_full_name,prospect_cob,prospect_dob,prospect_phone,prospect_address	,prospect_occupants	,prospect_occupants_over18,	prospect_sector	,prospect_employer,	prospect_job_title,	prospect_income	,prospect_extra,	prospect_expectedMovein,	prospect_submission_date');
+        outputMySQLToHTMLTable(
+            $link,
+            'prospect',
+            'prospect_id,prospect_property_code,prospect_status,prospect_email,prospect_full_name,prospect_cob,prospect_dob,prospect_phone,prospect_address	,prospect_occupants	,prospect_occupants_over18,	prospect_sector	,prospect_employer,	prospect_job_title,	prospect_income	,prospect_extra,	prospect_expectedMovein,	prospect_submission_date',
+            ' WHERE prospect_property_code = '.$_SESSION["property_code"].' ');
     }
     echo '
                 </center></div>
@@ -90,8 +97,10 @@ if ($_POST['report'] == 'messages' || $_POST['report'] == 'demographic') {
             <p class="m-0">Select the option to view and download the report</p><br>
             <div class="scroll">
                 <form method="POST">
-                    <button class="btn btn-primary" name="report" value="messages">View Messages Report</button>
-                    <button class="btn btn-primary" name="report" value="demographic">View Demographic Report</button>
+                    <p> <button class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" name="report" value="messages"><i class="fas fa-database fa-sm text-white-50"></i> Generate Messages Details Report</button>
+                    </p>
+                    <p> <button class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" name="report" value="demographic"><i class="fas fa-database fa-sm text-white-50"></i> Generate Demographic Report</button>
+                    </p>
                 </form>
             </div>
         </div>

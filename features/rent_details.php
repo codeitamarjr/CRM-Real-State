@@ -22,7 +22,7 @@ if($_POST['save'] == true) {
                         <div class="card-header">Property Details</div>
                         <div class="mb-3">
                             <label class="small mb-1">Full Addres of the Property</label>
-                            <input class="form-control" type="text" placeholder="<?php echo getUnit($_GET['tenantscod'],'tenant_id','address'); ?>" disabled>
+                            <input class="form-control" type="text" placeholder="<?php echo getPropertyData(getTenantData($_GET['tenantscod'],'tenantscod','property_code'),'property_address');?>" disabled>
                         </div>
                         <br>
                         <div class="card-header">Lease Info</div>

@@ -29,8 +29,12 @@ if($_POST['action'] == true){
             <div class="profile-header-info">
                 <h4 class="m-t-sm"><?php echo getProspectData($hash, 'prospect_full_name'); ?></h4>
                 <p class="m-b-sm"><?php echo getPropertyData(getTenantData($_GET['tenantscod'], 'tenantscod', 'property_code'), 'property_name'); ?>
+                <br>
+                <?php echo getPropertyData(getTenantData($_GET['tenantscod'],'tenantscod','property_code'),'property_address');?>
                     <br>
-                    CRM#: <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'idunit'); ?>
+                    CRM#: <?php echo getTenantData($_GET['tenantscod'], 'tenantscod', 'idunit'); ?> | Code:
+                    <br>
+                    
                 </p>
             </div>
         </div>

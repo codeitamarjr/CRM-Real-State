@@ -46,11 +46,7 @@ if (isset($_POST['save'])) {
         setPropertyData($property_code, 'automail_denied', 0);
     }
  
-    if (isset($_POST['calendly'])) {
-        if ($_POST['calendly'] != getPropertyData($property_code, 'property_calendly')) {
-            setPropertyData($property_code, 'property_calendly', $_POST['calendly']);
-        }
-    }
+
 }
 
 ?>
@@ -115,36 +111,6 @@ if (isset($_POST['save'])) {
                         </div>
                     </div>
                     <!-- End of Section -->
-                    <hr class="my-4" />
-                    
-                    <hr class="my-4" />
-                    <!-- Start Calendly Section -->
-                    <strong class="mb-0">Calendly</strong>
-                    <p>Set the Calendly option to send the link for the applicants.</p>
-                    <div class="list-group mb-5 shadow">
-                        <div class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <strong class="mb-0">Calendly link</strong>
-                                    <p class="text-muted mb-0">Set the link for the Calendly:</p>
-                                </div>
-                            </div>
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="basic-addon3">https://calendly.com/</span>
-                                        <input type="text" class="form-control" aria-describedby="basic-addon3" name=calendly value="<?php echo getPropertyData($property_code, 'property_calendly'); ?>">
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- End Calendly Section -->
-
-
-
-
 
                 </div>
             </form>

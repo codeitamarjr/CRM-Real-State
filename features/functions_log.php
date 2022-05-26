@@ -1,13 +1,13 @@
 <?php
 
-function logInsert($property_code, $value, $logTitle, $content)
+function logInsert($property_code, $status, $source, $title, $content)
 {
-    echo "Loading logInsert for " + $logTitle;
-    include "../config/config.php";
-    $sql_query = "INSERT INTO log (property_code, status, source, content) VALUES ($property_code, $value, '$logTitle','$content');";
-    if ($link->query($sql_query) === TRUE) {
+    require "../config/config.php";
+    $query = "INSERT INTO log (property_code, status, source, title,content) VALUES ('$property_code', '$status', '$source', '$title', '$content')";
+    if (mysqli_query($link, $query)) {
+        echo '<center><div class="alert alert-success" role="alert">Log updated with success!</div></center>';
     } else {
-        echo "Error: " . $sql . "<br>" . $link->error;
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
     }
     mysqli_close($link);
 }

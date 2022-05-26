@@ -6,7 +6,7 @@ $property_code = $_SESSION["property_code"];
 
 //Define max of results per page 
 if (!isset($_GET['show'])) {
-    $results_per_page = 15;
+    $results_per_page = 30;
 } else {
     $results_per_page = $_GET['show'];
 }
@@ -78,18 +78,32 @@ $result = mysqli_query($link, $query);
                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;
                             <select class="d-inline-block form-select form-select-sm" onchange="javascript:handleSelect(this)">
                                 <option value="&show=10" selected=""><?php echo $results_per_page; ?> </option>
-                                <option value="&show=25">25</option>
+                                <option value="&show=25">30</option>
                                 <option value="&show=50">50</option>
                                 <option value="&show=100">100</option>
                             </select>&nbsp;</label></div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md">
+                </div>
+                <div class="col-md">
+                    <div id="dataTable_filter" class="text-md-end dataTables_filter">
+                        <label class="form-label">
+                            <form method="GET" class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" id="search_form">
+                                <input type="hidden" name="access" value="search">
+                                <div class="input-group">
+                                    <input class="form-control form-control-sm" type="search" name="search" aria-controls="dataTable" placeholder="Search" />
+                                    <button class="btn btn-primary py-0" type="submit" form="search_form" value="Submit" name="submit-search"><i class="fas fa-search"></i></button>
+                                </div>
+                            </form>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                 <table class="table my-0" id="dataTable">
                     <thead>
                         <tr>
+                            <th>Property</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
@@ -110,6 +124,7 @@ $result = mysqli_query($link, $query);
                                 echo "class='table-danger'";
                             }
                             echo " onclick=\"location.href='?access=enquiryDetails&message_id=$message_id'\" >
+    <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name'))  . "</td>
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";
@@ -133,8 +148,9 @@ $result = mysqli_query($link, $query);
                     </tbody>
                     <tfoot>
                         <tr>
+                            <td><strong>Property</strong></td>
                             <td><strong>Name</strong></td>
-                            <td><strong>Email</strong></td>
+                            <td><strong>E-mail</strong></td>
                             <td><strong>Status</strong></td>
                             <td><strong>Date Received</strong></td>
                             <td><strong>Status</strong></td>

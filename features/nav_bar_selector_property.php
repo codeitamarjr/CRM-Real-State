@@ -11,7 +11,7 @@ if (isset($_POST['select_property'])) {
 <div class="nav-item dropdown no-arrow">
     <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
         <span class="d-none d-lg-inline me-2 text-gray-600 small">
-            <form method="POST">
+            <form method="POST" name="property_selector">
                 <select class="form-select" name="select_property">
                     <optgroup>
                         <option selected><?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?></option>
@@ -21,7 +21,7 @@ if (isset($_POST['select_property'])) {
 
                         <?php
                         //List all the properties from an agent
-                        require 'config/config.php';
+                        include 'config/config.php';
                         $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
                         $result = mysqli_query($link, $select);
                         while ($row = mysqli_fetch_array($result)) {

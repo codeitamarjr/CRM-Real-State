@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
                 <div class="modal-body">
                 <center>
                    ';
-                   insertPropertyDataSafe($_POST['propertyType'],$_POST['units'],$_POST['propertyName'],$_POST['propertyAddress'],'ss',$agent_prs_code);
+                   insertPropertyDataSafe($_POST['client'],$_POST['propertyType'],$_POST['propertyName'],$_POST['propertyAddress'],'sss',$agent_prs_code);
 
     echo '
         </center></div>
@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
 </div>';
 }
 ?>
-<div class="container-fluid">
+<div class="container">
     <div class="col-lg">
         <div class="row">
             <div class="col-xl-12">
@@ -37,6 +37,11 @@ if (isset($_POST['submit'])) {
                         <form method="POST">
                             <input type="hidden" name="access" value="property">
                             <div class="row">
+                            <div class="col">
+                                    <div class="mb-3"><label class="form-label"><strong>Client</strong></label>
+                                        <input class="form-control" type="text" name="client" required>
+                                    </div>
+                                </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label"><strong>Property Name</strong></label>
                                         <input class="form-control" type="text" name="propertyName" required>
@@ -50,11 +55,6 @@ if (isset($_POST['submit'])) {
                                                 <option value="apartment">Apartment</option>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="mb-3"><label class="form-label"><strong>Units</strong></label>
-                                        <input class="form-control" type="text" name="units" required>
                                     </div>
                                 </div>
                             </div>

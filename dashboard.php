@@ -93,48 +93,6 @@ $message_id = $_GET['message_id'];
                 } else {
                     include "features/$content.php";
                 }
-                // }
-                // if ($content == 'enquiries') {
-                //     include "features/enquiries.php";
-                // }
-                // if ($content == 'tenants') {
-                //     include "features/tenants.php";
-                // }
-                // if ($content == 'message') {
-                //     include "features/message.php";
-                // }
-                // if ($content == 'details') {
-                //     include "features/details.php";
-                // }
-                // if ($content == 'report') {
-                //     include "features/report.php";
-                // }
-                // if ($content == 'automail') {
-                //     include "features/automail.php";
-                // }
-                // if ($content == 'prospect_details') {
-                //     include "features/prospect_details.php";
-                // }
-                // if ($content == 'profile') {
-                //     include "features/profile.php";
-                // }
-                // if ($content == 'search') {
-                //     include "features/search.php";
-                // }
-                // if ($content == 'calendly') {
-                //     include "features/calendly.php";
-                // }
-                // if ($content == 'system_settings') {
-                //     include "features/system_settings.php";
-                // }
-                // if ($content == 'property') {
-                //     include "features/manage_property.php";
-                // }
-                // if ($content == 'manage_property_add') {
-                //     include "features/manage_property_add.php";
-                // }
-
-
                 ?>
                 <!-- Content End-->
             </div>
@@ -148,7 +106,7 @@ $message_id = $_GET['message_id'];
         </div>
     </footer>
     <!-- New emails feature starts -->
-    <object type="text/html" data="features/getting_email.php" width="1px" height="1px"></object>
+    <!-- <object type="text/html" data="features/getting_email.php" width="1px" height="1px"></object> -->
     <!-- New emails feature end -->
 
 </body>

@@ -11,7 +11,6 @@
         <!-- Search Bar Ends -->
 
         <ul class="navbar-nav flex-nowrap ms-auto">
-            <div class="d-none d-sm-block topbar-divider"></div>
             <li class="nav-item dropdown no-arrow mx-1">
                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
@@ -61,6 +60,7 @@
                         <a class="dropdown-item" href="dashboard.php?access=prsSettings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;PRS Settings</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property_add"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Create Property</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Property Settings</a>
+                        <a class="dropdown-item" href="/features/getting_email.php" target="_blank"><i class="fas fa-file-import fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Fetching Emails</a>
                         <a class="dropdown-item" href="dashboard.php?access=system_settings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;System Settings</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
