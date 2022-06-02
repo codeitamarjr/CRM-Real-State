@@ -38,7 +38,7 @@ $result = mysqli_query($link, $query);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
-<div class="container">
+<div class="container-fluid">
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Units

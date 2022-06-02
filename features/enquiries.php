@@ -64,7 +64,7 @@ $result = mysqli_query($link, $query);
 ?>
 
 
-<div class="container">
+<div class="container-fluid">
     <h3 class="text-dark mb-4">Enquiries</h3>
     <div class="card shadow">
         <div class="card-header py-3">

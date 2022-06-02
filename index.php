@@ -146,12 +146,11 @@ if (!empty($login_err)) {
             By continuing to use this website you consent to our use of cookies.<br>
             For more information, please see our <a href="policy.html" target="_blank">Cookie Policy</a>.</p>
     </div>
-
 </body>
 
 </html>
 <style>
-    .alert{
-	width: fit-content;
-}
+    .alert {
+        width: fit-content;
+    }
 </style>

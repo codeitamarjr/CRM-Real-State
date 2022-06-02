@@ -41,11 +41,11 @@ if ($_FILES['picture']['name'] != null) {
     require "features/functions_upload.php";
     if (getPRSData($_SESSION["agent_prs_code"], 'prs_logo') != null) {
         unlink('features/uploads/' . getPRSData($_SESSION["agent_prs_code"], 'prs_logo') . '');
-        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'prs_email'), 'prsLogo');
+        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'estate_agencyid'), 'prsLogo');
         setPRSData($_SESSION["agent_prs_code"], 'prs_logo', $fileIDName);
         header("Refresh:0");
     } else {
-        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'prs_email'), 'prs_logo');
+        $fileIDName = uploadFile($_FILES['picture'], getPRSData($_SESSION["agent_prs_code"], 'estate_agencyid'), 'prs_logo');
         setPRSData($_SESSION["agent_prs_code"], 'prs_logo', $fileIDName);
         header("Refresh:0");
     }
@@ -54,7 +54,7 @@ if ($_FILES['picture']['name'] != null) {
 ?>
 
 
-<div class="container">
+<div class="container-fluid">
     <div class="col-lg">
         <div class="row">
         <div class="col-xl-12">

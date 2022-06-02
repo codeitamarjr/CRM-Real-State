@@ -56,23 +56,108 @@ if (isset($_POST['submit'])) {
     if (getPropertyData($_SESSION["property_code"], 'property_calendly') != $_POST['calendly']) {
         setPropertyDataSafe($_SESSION["property_code"], 'property_calendly', $_POST['calendly'], 'ss');
     }
+    
     echo '
         </center></div>
     </div>
 </div>
 </div>';
 }
+
+if (isset($_POST['officeUpdate'])) {
+    if (getPropertyData($_SESSION["property_code"], 'office_name') != $_POST['officeName']) {
+        echo setPropertyDataSafe($_SESSION["property_code"], 'office_name', $_POST['officeName'], 'ss');
+    }
+    if (getPropertyData($_SESSION["property_code"], 'office_email') != $_POST['officeEmail']) {
+        echo setPropertyDataSafe($_SESSION["property_code"], 'office_email', $_POST['officeEmail'], 'ss');
+    }
+    if (getPropertyData($_SESSION["property_code"], 'office_phone') != $_POST['officePhone']) {
+        echo setPropertyDataSafe($_SESSION["property_code"], 'office_phone', $_POST['officePhone'], 'ss');
+    }
+    if (getPropertyData($_SESSION["property_code"], 'office_address') != $_POST['officeAddress']) {
+        echo setPropertyDataSafe($_SESSION["property_code"], 'office_address', $_POST['officeAddress'], 'ss');
+    }
+};
+
+//Upload Property Logo
+if ($_FILES['picture']['name'] != null) {
+    require "features/functions_upload.php";
+    if (getPropertyData($_SESSION["property_code"], 'property_logo') != null) {
+        unlink('features/uploads/' . getPropertyData($_SESSION["property_code"], 'property_logo') . '');
+        $fileIDName = uploadFile($_FILES['picture'], getPropertyData($_SESSION["property_code"], 'property_code'), 'propertyLogo');
+        setPropertyDataSafe($_SESSION["property_code"], 'property_logo', $fileIDName, 'ss');
+        header("Refresh:0");
+    } else {
+        $fileIDName = uploadFile($_FILES['picture'], getPropertyData($_SESSION["property_code"], 'property_code'), 'propertyLogo');
+        setPropertyDataSafe($_SESSION["property_code"], 'property_logo', $fileIDName, 'ss');
+        header("Refresh:0");
+    }
+}
 ?>
-<div class="container">
+<div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Property Editor</h3>
         <?php require "nav_bar_selector_property.php"; ?>
     </div>
 
+
+
+
+    <div class="row">
+        <div class="col-xl-4">
+            <div class="card mb-4 mb-xl-0">
+                <div class="card-header">Property Logo</div>
+                <div class="card-body text-center">
+                    <div class="text-center" style="padding: 11px;"><img class="rounded-circle mb-3 mt-4" src="features/uploads/<?php echo htmlentities(getPropertyData($_SESSION["property_code"], 'property_logo')); ?>" width="160" height="160">
+                        <br>
+                        <label class="form-label" style="margin: 0;">Property Logo</label>
+                        <br>
+                        <form method="POST" enctype="multipart/form-data">
+                            <input class="form-control" type="file" name="picture">
+                            <div class="mb-3"></div>
+                            <button class="btn btn-primary btn-sm" type="submit" name="upload">Upload</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="card mb-4">
+                <div class="card-header">Property Office Details</div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row gx-3 mb-3">
+                            <div class="col-md-5">
+                                <label class="small mb-1">Office Name</label>
+                                <input class="form-control" type="text" name="officeName" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_name') ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small mb-1">Office e-mail</label>
+                                <input class="form-control" type="email" name="officeEmail" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_email') ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="small mb-1">Office Phone Number</label>
+                                <input class="form-control" name="officePhone" type="tel" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_phone') ?>">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1">Office Full Address</label>
+                            <input class="form-control" name="officeAddress" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_address') ?>">
+                        </div>
+                        <button class="btn btn-primary" type="submit" name="officeUpdate">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
     <div class="col-lg">
         <div class="row">
             <div class="col-xl-12">
-                <div class="card shadow mb-3">
+                <div class="card mb-3">
                     <div class="card-header py-3">
                         <p class="text-primary m-0">Edit Property</p>
                     </div>
@@ -101,7 +186,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Units</label>
-                                        <input class="form-control" value="<?php echo totalUnits($_SESSION["property_code"],'');    ?>" name="units" disabled>
+                                        <input class="form-control" value="<?php echo totalUnits($_SESSION["property_code"], '');    ?>" name="units" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +287,7 @@ if (isset($_POST['submit'])) {
                                 <p class="text-primary m-0">Calendly</p>
                             </div>
                             <p>Set the Calendly option to send the link for the applicants.</p>
-                            <div class="list-group mb-5 shadow">
+                            <div class="list-group mb-5">
                                 <div class="list-group-item">
                                     <div class="row align-items-center">
                                         <div class="col">

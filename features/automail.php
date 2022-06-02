@@ -26,7 +26,7 @@ if (!empty($_POST['tinyTextArea'])) {
 ?>
 <script src='features/tinymce/tinymce.min.js'></script>
 
-<div class="container">
+<div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Edit the Automail Response</h6>
@@ -55,7 +55,7 @@ if (!empty($_POST['tinyTextArea'])) {
     </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
     <div class="card shadow mb-4">
         <form method="POST">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -99,7 +99,7 @@ mysqli_close($link)
         plugins: 'print preview paste code fullscreen image link media table hr pagebreak nonbreaking anchor toc advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
         menubar: true,
         height: 500,
-        toolbar: 'prospectLink propertyName prospectName prospectEmail prsName prsPhone prsEmail prsAddress prsLogo',
+        toolbar: 'prospectLink propertyName propertyLogo propertyOfficeName PropertyOfficeEmail propertyOfficePhone propertyOfficeAddress prospectName prospectEmail prsName prsPhone prsEmail prsAddress prsLogo',
         setup: function(editor) {
             editor.ui.registry.addButton('prospectLink', {
                 text: '#ProspectProfileLink',
@@ -153,6 +153,36 @@ mysqli_close($link)
                 text: '#prsLogo',
                 onAction: function(_) {
                     editor.insertContent('%prsLogo%');
+                }
+            });
+            editor.ui.registry.addButton('propertyLogo', {
+                text: '#PropertyLogo',
+                onAction: function(_) {
+                    editor.insertContent('%propertyLogo%');
+                }
+            });
+            editor.ui.registry.addButton('propertyOfficeAddress', {
+                text: '#PropertyOfficeAddress',
+                onAction: function(_) {
+                    editor.insertContent('%PropertyOfficeAddress%');
+                }
+            });
+            editor.ui.registry.addButton('PropertyOfficeEmail', {
+                text: '#PropertyOfficeEmail',
+                onAction: function(_) {
+                    editor.insertContent('%PropertyOfficeEmail%');
+                }
+            });
+            editor.ui.registry.addButton('propertyOfficeName', {
+                text: '#propertyOfficeName',
+                onAction: function(_) {
+                    editor.insertContent('%propertyOfficeName%');
+                }
+            });
+            editor.ui.registry.addButton('propertyOfficePhone', {
+                text: '#propertyOfficePhone',
+                onAction: function(_) {
+                    editor.insertContent('%propertyOfficePhone%');
                 }
             });
         }

@@ -33,11 +33,11 @@ if ($_FILES['picture']['name'] != null) {
     require "features/functions_upload.php";
     if (userGetData($_SESSION["username"],'agent_pic') != null) {
         unlink('features/uploads/' . userGetData($_SESSION["username"],'agent_pic') . '');
-        $fileIDName = uploadFile($_FILES['picture'], $_SESSION["username"], 'agentPic');
+        $fileIDName = uploadFile($_FILES['picture'], userGetData($_SESSION["username"],'agent_id'), 'agentPic');
         userSetData($_SESSION["username"], 'agent_pic', $fileIDName);
         header("Refresh:0");
     } else {
-        $fileIDName = uploadFile($_FILES['picture'], $_SESSION["username"], 'agentPic');
+        $fileIDName = uploadFile($_FILES['picture'], userGetData($_SESSION["username"],'agent_id'), 'agentPic');
         userSetData($_SESSION["username"], 'agent_pic', $fileIDName);
         header("Refresh:0");
     }

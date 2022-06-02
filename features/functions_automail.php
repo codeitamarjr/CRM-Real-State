@@ -14,6 +14,11 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
         $automail_id = $row['automail_id'];
     }
     $message = str_replace('%propertyName%', getPropertyData($_SESSION["property_code"],'property_name') , $message);
+    $message = str_replace('%propertyOfficeName%', getPropertyData($_SESSION["property_code"],'office_name') , $message);
+    $message = str_replace('%propertyOfficePhone%', getPropertyData($_SESSION["property_code"],'office_phone') , $message);
+    $message = str_replace('%PropertyOfficeEmail%', getPropertyData($_SESSION["property_code"],'office_email') , $message);
+    $message = str_replace('%PropertyOfficeAddress%', getPropertyData($_SESSION["property_code"],'office_address') , $message);
+
     $message = str_replace('%prospectName%', $name , $message);
     $message = str_replace('%prospectEmail%', $email_adress , $message); 
     $base_mail = getAutomail($automail_id,'automail_website');
@@ -23,6 +28,8 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
     $message = str_replace('%prsEmail%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_email') , $message);
     $message = str_replace('%prsAddress%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_full_address') , $message);
     $message = str_replace('%prsLogo%', $base_mail . '/features/uploads/' . getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_logo') , $message);
+    $message = str_replace('%propertyLogo%', $base_mail . '/features/uploads/' . getPropertyData($_SESSION["property_code"],'property_logo') , $message);
+
     require "email_sending.php";
     mysqli_close($link);
 }

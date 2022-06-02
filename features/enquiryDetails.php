@@ -22,7 +22,33 @@ $message_id = $_GET['message_id'];
 //Check if there's a status to change on this message
 if (!isset($_GET['outcome'])) {
     // nothing happens 
-} else if ($_GET['outcome'] == 'Approved') {
+} else if ($_GET['outcome'] == 'changeProperty') {
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
+
+    echo setMessage($message_id, 'property_code', $_GET['change_property']);
+
+    echo '
+                </center></div>
+            </div>
+        </div>
+    </div>';
+}
+
+else if ($_GET['outcome'] == 'Approved') {
     // if the outcome has a variable Approved will update the status to Approved
     $outcome = $_GET['outcome'];
     echo "<script>
@@ -216,11 +242,12 @@ if ($_POST['outcome'] == 'newTenant') {
                     <i class="fas fa-ellipsis-v text-gray-400"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
-                    <h6 class="dropdown-header text-center"><strong>Change Status</strong></h6>
+                    <h6 class="dropdown-header text-center">Change Status</h6>
                     <?php if ($status == 'Approved') { ?>
                         <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;Set as Tenant</a>
-                        <div class="dropdown-divider"></div>
                     <?php }; ?>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">&nbsp;Delete</a>
@@ -291,6 +318,49 @@ if ($_POST['outcome'] == 'newTenant') {
             </div>
 
 
+        </div>
+    </div>
+</div>
+
+<!-- Change Property Modal -->
+<div class="modal fade" id="changeProperty" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change the enquirie to another property</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
+                <div class="modal-body">
+                    <p>Do you want to change the enquiry to another property?<br>
+                        Select a new property:</p>
+                    <select class="form-select" name="change_property">
+                        <optgroup>
+                            <option selected><?php echo getPropertyData(getMessage('message_id', $message_id, 'property_code'), 'property_name'); ?></option>
+                        </optgroup>
+                        <optgroup>
+                            <option disabled>Select Another Property</option>
+
+                            <?php
+                            //List all the properties from an agent
+                            include 'config/config.php';
+                            $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                            $result = mysqli_query($link, $select);
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo '<option value=' . $row['property_code'] . '>' . $row['property_name'] . '</option>';
+                            }
+                            mysqli_close($link);
+                            ?>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="access" value="enquiryDetails">
+                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
+                    <button type="submit" class="btn btn-primary" name="outcome" value="changeProperty">&nbsp;Change</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
