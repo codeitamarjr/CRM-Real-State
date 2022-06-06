@@ -55,7 +55,7 @@ if ($emails) {
         $overview = imap_fetch_overview($inbox, $singleEmail, 0);
         $message_raw = $link->real_escape_string(imap_fetchbody($inbox, $singleEmail, 1));
         // Retrieve and collect just new=0 / read=1 emails
-        if (($overview[0]->seen) == 1) {
+        if (($overview[0]->seen) == 0) {
             //Prepare variables from the email to INSERT into the SQL TABLES
             $mail_from = $overview[0]->from;
             $mail_subject =  imap_utf8($overview[0]->subject);
@@ -123,10 +123,11 @@ if ($emails) {
             mysqli_stmt_close($stmt);
 
             // Changing the email folder to specified folder
-            $imapresult = imap_mail_move($inbox, $singleEmail, 'CRM');
+            //$imapresult = imap_mail_move($inbox, $singleEmail, 'CRM');
             // if ($imapresult == false) {
             //     die(imap_last_error());
             // }
+            //imap_expunge($inbox);
 
             //--Sending the automatic welcome mail--
         }

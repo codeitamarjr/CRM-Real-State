@@ -1,7 +1,7 @@
         <?php
         require "features/functions_billings.php";
 
-        if ($_POST['action'] == 'updateBill') {
+        if ($_POST['actionButtonUpdateBill'] == 'actionUpdateBill') {
         ?>
             <script>
                 $(document).ready(function() {
@@ -13,9 +13,8 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <center>
                                 <?php
-                                 setBill($_POST['transactionID'],'billings_amount',$_POST['billings_amount']);
+                                 echo setBill($_POST['transactionID'],'billings_amount',$_POST['billings_amount']);
                                  setBill($_POST['transactionID'],'billings_charge_date',$_POST['billings_charge_date']);
                                  setBill($_POST['transactionID'],'billings_status',$_POST['billings_status']);
                                  setBill($_POST['transactionID'],'billings_note',$_POST['billings_note']);
@@ -33,7 +32,6 @@
                                             clearInterval(downloadTimer);
                                     }, 1000);
                                 </script>
-                            </center>
                         </div>
                     </div>
                 </div>
@@ -132,8 +130,8 @@
                                                                     <h4 class="mb-4 mt-0">Billing Details</h4>
                                                                     <div class="col-md-6">
                                                                         <label class="form-label">Transaction ID</label>
+                                                                        <input type="text" class="form-control" value="<?php echo htmlspecialchars($row['idbillings']); ?>" disabled="disabled">
                                                                         <input type="hidden" class="form-control" name="transactionID" value="<?php echo htmlspecialchars($row['idbillings']); ?>">
-                                                                        <input type="text" class="form-control" name="transactionID" value="<?php echo htmlspecialchars($row['idbillings']); ?>" disabled="disabled">
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label class="form-label">Transaction Date</label>
@@ -153,6 +151,7 @@
                                                                         <select class="form-control" name="billings_status" required>
                                                                             <option value="<?php echo htmlspecialchars($row['billings_status']); ?>" selected><?php echo htmlspecialchars($row['billings_status']); ?></option>
                                                                             <option value="Pending">Pending</option>
+                                                                            <option value="Review">Review</option>
                                                                             <option value="Paid">Paid</option>
                                                                             <option value="Overdue">Overdue</option>
                                                                         </select>
@@ -167,7 +166,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary" name="action" value="updateBill">&nbsp;Update</button>
+                                                        <button type="submit" class="btn btn-primary" name="actionButtonUpdateBill" value="actionUpdateBill">&nbsp;Update</button>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </form>
