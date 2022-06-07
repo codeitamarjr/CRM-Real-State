@@ -63,7 +63,6 @@ $result = mysqli_query($link, $query);
                     <thead>
                         <tr>
                             <th>Property</th>
-                            <th>Code</th>
                             <th>Lease starts</th>
                             <th>Tenant</th>
                             <th>Status</th>
@@ -74,7 +73,6 @@ $result = mysqli_query($link, $query);
                             $tenantscod = $row['tenantscod'];
                             echo "<tr class=\"showsRow\" onclick=\"location.href='?access=tenantView&content=prospect_details&tenantscod=".$tenantscod ."&hash=".getProspectData2($row['prospect_id'], 'prospect_id', 'hash')."'\">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
-    <td>" . htmlspecialchars($row['unit_rented_code']) . "</td>
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['lease_starts']))) . "</td>
     <td>" . htmlspecialchars(getProspectData2($row['prospect_id'], 'prospect_id', 'prospect_full_name')) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
@@ -84,7 +82,6 @@ $result = mysqli_query($link, $query);
                     <tfoot>
                         <tr>
                             <th>Property</th>
-                            <th>Code</th>
                             <th>Lease starts</th>
                             <th>Tenant</th>
                             <th>Status</th>

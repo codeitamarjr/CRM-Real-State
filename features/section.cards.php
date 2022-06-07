@@ -116,7 +116,7 @@ require "features/functions_unit.php";
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-2">
-                    <h6 class="text-primary fw-bold m-0">Availabitity</h6>
+                    <h6 class="text-primary fw-bold m-0">Occupancy</h6>
                 </div>
                 <div class="card-body">
                     <?php

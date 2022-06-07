@@ -219,6 +219,7 @@ if ($_POST['outcome'] == 'newTenant') {
         //Update the tenant with the unit
         require "features/functions_unit.php";
         setUnit($_POST['idunit'], 'tenant_id', $tenantscod);
+        setUnit($_POST['idunit'], 'status', 'Rented');
     }
 
     //$from = getMessage('message_id', $message_id, 'messages_email');

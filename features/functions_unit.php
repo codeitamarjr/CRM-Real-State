@@ -17,6 +17,28 @@ function createUnit($prs_code,$property_code, $totalUnits)
     mysqli_close($link);
 }
 
+function createSingleUnit($prs_code, $property_code, $unit_customCode, $description, $floor, $unit_block, $unit_number, $postal_code, $bedrooms,$date_available, $status, $carpark, $rental_price)
+{
+    require "config/config.php";
+    //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
+    $sql = "INSERT INTO unit (prs_code, property_code, unit_customCode, description, floor, unit_block, unit_number, postal_code, bedrooms, date_available ,status, carpark, rental_price)
+    VALUES
+    (?, ?, ?, ?, ?, ?,?,?, ?, ?, ?, ?, ?)";
+    //Start the prepare statement into the DB
+    $stmt = mysqli_stmt_init($link);
+    //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
+    } else {
+        //Bind parameters to the placeholder with the right datatype s=String i=integer b=Blob d=Double
+        mysqli_stmt_bind_param($stmt, "sssssssssssss", $prs_code, $property_code, $unit_customCode, $description, $floor, $unit_block, $unit_number, $postal_code, $bedrooms, $date_available,$status, $carpark, $rental_price);
+        //Run parameters inside DB
+        mysqli_stmt_execute($stmt);
+        return '<center><div class="alert alert-success" role="alert">Unit #' . $idunit . ' updated with success!</div></center>';
+    }
+    mysqli_stmt_close($stmt);
+}
+
 function removeUnit($property_code, $totalUnits)
 {
     require "config/config.php";

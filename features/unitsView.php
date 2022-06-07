@@ -2,6 +2,7 @@
 // Include config file
 require "config/config.php";
 require "features/functions_prospect.php";
+require "features/functions_tenant.php";
 
 //Define max of results per page 
 if (!isset($_GET['show'])) {
@@ -29,6 +30,26 @@ if (!isset($_GET['page'])) {
     $page = $_GET['page'];
 }
 
+//Add new unit
+if (isset($_POST['addUnit'])) {
+    require "features/functions_unit.php";
+    createSingleUnit(
+        $_SESSION["agent_prs_code"],
+        $_POST['property_code_create_unit'],
+        $_POST['customCode'],
+        $_POST['description'],
+        $_POST['floor'],
+        $_POST['block'],
+        $_POST['unitNumber'],
+        $_POST['eirCode'],
+        $_POST['bedrooms'],
+        $_POST['dateAvailable'],
+        $_POST['statusUnit'],
+        $_POST['carParking'],
+        $_POST['rent']
+    );
+};
+
 //determine the sql LIMIT starting number for the results on the displaying page  
 $page_first_result = ($page - 1) * $results_per_page;
 
@@ -42,6 +63,8 @@ $result = mysqli_query($link, $query);
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Units
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newUnit"> + Add New Unit</button>
+
             </p>
         </div>
         <div class="card-body">
@@ -68,9 +91,11 @@ $result = mysqli_query($link, $query);
                             <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
+                            <th>Eircode</th>
                             <th>Address</th>
                             <th>Bedroons</th>
                             <th>Availability Date</th>
+                            <th>Rent</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -81,13 +106,19 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
-    <td>" . htmlspecialchars($row['tenant_id']) . "</td>
+    <td>" . htmlspecialchars(getProspectData2(getTenantData($row['tenant_id'], 'tenantscod', 'prospect_id'), 'prospect_id', 'prospect_full_name')) . "</td>
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
-    <td>" . htmlspecialchars($row['address']) . "</td>
+    <td>" . htmlspecialchars($row['postal_code']) . "</td>
+    <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_address')) . "</td>
     <td>" . htmlspecialchars($row['bedrooms']) . "</td>
-    <td>" . htmlspecialchars($row['date_available']) . "</td>
-    <td>" . htmlspecialchars($row['status']) . "</td>
+    <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
+    <td>" . htmlspecialchars($row['rental_price']) . "</td>
+    <td class=\"";
+    if ($row['status'] == 'Available') {
+        echo "text-success";
+    } 
+    echo "\">" . htmlspecialchars($row['status']) . "</td>
     </tr>";
                         } ?>
                     </tbody>
@@ -99,9 +130,11 @@ $result = mysqli_query($link, $query);
                             <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
+                            <th>Eircode</th>
                             <th>Address</th>
                             <th>Bedroons</th>
                             <th>Availability Date</th>
+                            <th>Rent</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
@@ -130,6 +163,113 @@ $result = mysqli_query($link, $query);
                 </div>
 
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Enquiry Modal -->
+<div class="modal fade" id="newUnit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Unit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="col-lg">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row mb-3">
+                                            <p>
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Property</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <select class="form-select" name="property_code_create_unit">
+                                                    <?php
+                                                    //List all the properties from an agent
+                                                    require 'config/config.php';
+                                                    $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                                                    $result = mysqli_query($link, $select);
+                                                    while ($row = mysqli_fetch_array($result)) {
+                                                        echo '<option value="' . $row['property_code'] . '">' . $row['property_name'] . '</option>';
+                                                    }
+                                                    mysqli_close($link);
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            </p>
+
+                                            <p>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Label</label>
+                                                <input type="text" class="form-control" name="customCode">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Floor</label>
+                                                <input type="number" class="form-control" name="floor">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Block</label>
+                                                <input type="text" class="form-control" name="block">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Unit</label>
+                                                <input type="number" class="form-control" name="unitNumber">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Eircode</label>
+                                                <input type="text" class="form-control" name="eirCode">
+                                            </div>
+                                            </p>
+
+                                            <p>
+                                            <div class="col-md">
+                                                <label class="form-label">Bedrooms</label>
+                                                <input type="number" class="form-control" name="bedrooms">
+                                            </div>
+                                            <div class="col-md">
+                                                <label class="form-label">Car Parking</label>
+                                                <select class="form-select" name="carParking">
+                                                    <option selected>Choose...</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md">
+                                                <label class="form-label">Date Available</label>
+                                                <input type="date" class="form-control" name="dateAvailable">
+                                            </div>
+                                            </p>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Status</label>
+                                                <select class="form-select" name="statusUnit">
+                                                    <option selected>Choose...</option>
+                                                    <option value="Available">Available</option>
+                                                    <option value="Maintenance">Maintenance</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Rent</label>
+                                                <input type="text" data-type="currency" class="form-control" name="rent">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="addUnit" value="Add Unit" class="btn btn-primary" value="Insert">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -35,6 +35,7 @@ if ($_POST['insert'] == true) {
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_title', $mail_subject);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_body', $_POST['message_text']);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'messages_prs_code', $_SESSION["agent_prs_code"]);
+        setMessage(getMessage('messages_email', $email, 'message_id'), 'property_address', getPropertyData($_SESSION["property_code"], 'property_name'));
     }
 };
 
