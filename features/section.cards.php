@@ -99,7 +99,11 @@ require "features/functions_unit.php";
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
-                            <div class="col"><canvas id="enquiriesChart" width="450" height="60"></canvas></div>
+                            <div class="col">
+                                <canvas id="enquiriesChart" width="450" height="60">
+
+                                </canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

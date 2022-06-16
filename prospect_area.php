@@ -137,6 +137,38 @@ if (isset($_POST['removeProofOfPayment4'])) {
     setProspectDataSafe($hash, 'prospect_attach_proofpayment4', '', 'ss');
 };
 
+// Upload the documents
+if ($_POST['save'] == 'uploadAttachments') {
+    //Set profileID
+    $profileID = $_SESSION['profileID'];
+
+    //If user select a file for ID
+    if ($_FILES['ID']['name'] != null) {
+        require "features/functions_upload.php";
+
+        //Upload the file
+        uploadProfileAttachments($profileID, 'ID of the Applicant', $_FILES['ID'], 'ID', 'profileID');
+        uploadProfileAttachments($profileID, 'Landlord Reference Letter', $_FILES['landlordReference'], 'landlordReference', 'landlordReferenceLetter');
+        uploadProfileAttachments($profileID, 'Work Reference Letter', $_FILES['workReference'], 'workReference', 'workReferenceLetter');
+        uploadProfileAttachments($profileID, 'Payslip', $_FILES['payslip'], 'payslip', 'payslip');
+        uploadProfileAttachments($profileID, 'Bank Statements', $_FILES['bankStatements'], 'bankStatements', 'bankStatements');
+    }
+};
+
+// Remove the documents
+if ($_POST['save'] == 'removeProfileAttachments') {
+    //Set profileID
+    $profileID = $_SESSION['profileID'];
+
+    require "features/functions_upload.php";
+    //Delete the file
+    $idprofileAttachments = $_POST['idprofileAttachments'];
+    $fileNumber = $_POST['fileNumber'];
+    $category = $_POST['category'];
+    removeProfileAttachments($profileID, $idprofileAttachments, $fileNumber, $category);
+};
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

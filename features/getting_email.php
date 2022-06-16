@@ -22,10 +22,10 @@ $property_code = $_SESSION["property_code"];
 echo 'Start getting email from property code ' . $property_code . '.<br>';
 
 //Check if the script is already running
-if (logTimerToDie($property_code, 'get_email', getPropertyData($property_code, 'getting_email_time'))) {
-    echo 'Script is not running for this property code ' . $property_code . '.<br>';
-    exit;
-} else echo 'Script is running for this property code ' . $property_code . '. Please wait for the script to finish.<br>';
+// if (logTimerToDie($property_code, 'get_email', getPropertyData($property_code, 'getting_email_time'))) {
+//     echo 'Script is not running for this property code ' . $property_code . '.<br>';
+//     exit;
+// } else echo 'Script is running for this property code ' . $property_code . '. Please wait for the script to finish.<br>';
 
 //Saves a log of the script, it'll prevent the script from running again if it's already running
 logInsert($property_code, 1, 'get_email','Getting Emails','Start getting email from property code ' . $property_code . '.');

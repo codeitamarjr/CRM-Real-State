@@ -25,7 +25,7 @@ while ($row = mysqli_fetch_array($result)) {
 
 try {
     // Server settings
-    //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER; // for detailed debug output
     $mail->isSMTP();
     $mail->Host = $property_email_hostname ;
     $mail->SMTPAuth = true;
