@@ -4,31 +4,7 @@ require "config/config.php";
 require "features/functions_prospect.php";
 require "features/functions_tenant.php";
 
-//Define max of results per page 
-if (!isset($_GET['show'])) {
-    $results_per_page = 15;
-} else {
-    $results_per_page = $_GET['show'];
-}
-
 $prs_code = $_SESSION["agent_prs_code"];
-
-//Select all data from tenant table
-$query = "SELECT * FROM unit WHERE prs_code = '$prs_code' ORDER BY idunit DESC";
-$result = mysqli_query($link, $query);
-
-//find the total number of results
-$number_of_result = mysqli_num_rows($result);
-
-//total number of pages in total
-$number_of_page = ceil($number_of_result / $results_per_page);
-
-//which page number visitor is currently on  
-if (!isset($_GET['page'])) {
-    $page = 1;
-} else {
-    $page = $_GET['page'];
-}
 
 //Add new unit
 if (isset($_POST['addUnit'])) {
@@ -50,13 +26,15 @@ if (isset($_POST['addUnit'])) {
     );
 };
 
-//determine the sql LIMIT starting number for the results on the displaying page  
-$page_first_result = ($page - 1) * $results_per_page;
 
-$query = "SELECT * FROM unit ORDER BY property_code DESC LIMIT " . $page_first_result . ',' . $results_per_page;
+$query = "SELECT * FROM unit ORDER BY property_code DESC ";
 $result = mysqli_query($link, $query);
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/r-2.3.0/sb-1.3.4/sr-1.1.1/datatables.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/r-2.3.0/sb-1.3.4/sr-1.1.1/datatables.min.js"></script>
 
 
 <div class="container-fluid">
@@ -68,21 +46,7 @@ $result = mysqli_query($link, $query);
             </p>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 text-nowrap">
-                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;
-                            <select class="d-inline-block form-select form-select-sm" onchange="javascript:handleSelect(this)">
-                                <option value="&show=10" selected=""><?php echo $results_per_page; ?> </option>
-                                <option value="&show=25">25</option>
-                                <option value="&show=50">50</option>
-                                <option value="&show=100">100</option>
-                            </select>&nbsp;</label></div>
-                </div>
-                <div class="col-md-6">
-                </div>
-            </div>
-            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table my-0" id="dataTable">
+                <table id="dataTable" class="table dt-responsive" style="width:100%">
                     <thead>
                         <tr>
                             <th>Property</th>
@@ -91,9 +55,10 @@ $result = mysqli_query($link, $query);
                             <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
+                            <th>Floor</th>
+                            <th>Type</th>
                             <th>Eircode</th>
                             <th>Address</th>
-                            <th>Bedroons</th>
                             <th>Availability Date</th>
                             <th>Rent</th>
                             <th>Status</th>
@@ -101,17 +66,17 @@ $result = mysqli_query($link, $query);
                     </thead>
                     <tbody>
                         <?php while ($row = mysqli_fetch_array($result)) {
-                            $tenantscod = $row['tenantscod'];
                             echo "<tr class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
-    <td>" . htmlspecialchars(getProspectData2(getTenantData($row['tenant_id'], 'tenantscod', 'prospect_id'), 'prospect_id', 'prospect_full_name')) . "</td>
+    <td>" . htmlspecialchars(getTenantData($row['tenant_id'], 'tenantscod', 'prospect_id')) . "</td>
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
+    <td>" . htmlspecialchars($row['floor']) . "</td>
+    <td>" . htmlspecialchars($row['type']) . "</td>
     <td>" . htmlspecialchars($row['postal_code']) . "</td>
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_address')) . "</td>
-    <td>" . htmlspecialchars($row['bedrooms']) . "</td>
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
     <td>" . htmlspecialchars($row['rental_price']) . "</td>
     <td class=\"";
@@ -124,50 +89,28 @@ $result = mysqli_query($link, $query);
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th>Property</th>
+                        <th>Property</th>
                             <th>CRM#</th>
                             <th>Code</th>
                             <th>Resident</th>
                             <th>Block</th>
                             <th>Unit</th>
+                            <th>Floor</th>
+                            <th>Type</th>
                             <th>Eircode</th>
                             <th>Address</th>
-                            <th>Bedroons</th>
                             <th>Availability Date</th>
                             <th>Rent</th>
                             <th>Status</th>
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 align-self-center">
-                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?></p>
-                </div>
-
-                <div class="col-md-6">
-                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                        <ul class="pagination">
-                            <?php
-                            //display the link of the pages in URL  
-                            for ($page = 1; $page <= $number_of_page;) {
-                                echo '<li class="page-item"><a class="page-link" href="?access=unitsView&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
-                                $page++;
-                            }
-                            //Close SQL connection
-                            mysqli_close($link);
-                            ?>
-                        </ul>
-                    </nav>
-                </div>
-
-            </div>
+        </div>
         </div>
     </div>
 </div>
 
-<!-- New Enquiry Modal -->
+<!-- New Unit Modal -->
 <div class="modal fade" id="newUnit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -274,12 +217,18 @@ $result = mysqli_query($link, $query);
     </div>
 </div>
 
-<script type="text/javascript">
-    //auto click on pagination
-    function handleSelect(elm) {
-        window.location = "?access=unitsView&" + elm.value;
-    }
-    //autoedit
+<script>
+    //Format Tables
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            stateSave: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+
+        });
+    }); 
 </script>
 
 <style>

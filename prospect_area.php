@@ -1,164 +1,89 @@
 <?php
-//Load config
-require "features/functions_prospect.php";
+session_start();
+
+// Load config
 require "features/functions_messages.php";
+require "features/functions_prospect.php";
+require "features/functions_profile.php";
+require "features/functions_property.php";
+require "config/config.php";
 
-//Load variable key into hash
-$hash = $_GET['key'];
+// GET propertyCode for template
+$propertyCode = $_GET['propertyCode'];
 
-if (isset($_POST['save']) | isset($_POST['proceed'])) {
-
-    //Create the profile in the prospect table in case of the hash is valid and the user has not created a profile yet
-    if (getProspectData($hash, 'hash') === null && getMessage('message_hash', $hash, 'message_sender_name') !== null) {
-        insertProspectDataSafe('hash', $hash, 's');
-        //After the profile is created, set the prospect_property_code
-        $prospect_property_code = getMessage('message_hash', $hash, 'property_code');
-        setProspectDataSafe($hash, 'prospect_property_code', $prospect_property_code, 'ss');
-    }
-
-    if ($_POST['prospectName'] != getProspectData($hash, 'prospect_full_name')) {
-        setProspectDataSafe($hash, 'prospect_full_name', $_POST['prospectName'], 'ss');
-    }
-    if ($_POST['country_of_birth'] != getProspectData($hash, 'prospect_cob')) {
-        setProspectDataSafe($hash, 'prospect_cob', $_POST['country_of_birth'], 'ss');
-    }
-    if ($_POST['dateOfBirth'] != getProspectData($hash, 'prospect_dob')) {
-        setProspectDataSafe($hash, 'prospect_dob', $_POST['dateOfBirth'], 'ss');
-    }
-    if ($_POST['phone'] != getProspectData($hash, 'prospect_phone')) {
-        setProspectDataSafe($hash, 'prospect_phone', $_POST['phone'], 'ss');
-    }
-    if ($_POST['expectedMovein'] != getProspectData($hash, 'prospect_expectedMovein')) {
-        setProspectDataSafe($hash, 'prospect_expectedMovein', $_POST['expectedMovein'], 'ss');
-    }
-    if ($_POST['employement_Sector'] != getProspectData($hash, 'prospect_sector')) {
-        setProspectDataSafe($hash, 'prospect_sector', $_POST['employement_Sector'], 'ss');
-    }
-    if ($_POST['employer'] != getProspectData($hash, 'prospect_employer')) {
-        setProspectDataSafe($hash, 'prospect_employer', $_POST['employer'], 'ss');
-    }
-    if ($_POST['job_title'] != getProspectData($hash, 'prospect_job_title')) {
-        setProspectDataSafe($hash, 'prospect_job_title', $_POST['job_title'], 'ss');
-    }
-    if ($_POST['monthly_income'] != getProspectData($hash, 'prospect_income')) {
-        setProspectDataSafe($hash, 'prospect_income', $_POST['monthly_income'], 'ss');
-    }
-    if ($_POST['occupants'] != getProspectData($hash, 'prospect_occupants')) {
-        setProspectDataSafe($hash, 'prospect_occupants', $_POST['occupants'], 'ss');
-    }
-    if ($_POST['occupants_over18'] != getProspectData($hash, 'prospect_occupants_over18')) {
-        setProspectDataSafe($hash, 'prospect_occupants_over18', $_POST['occupants_over18'], 'ss');
-    }
-    if ($_POST['extra'] != getProspectData($hash, 'prospect_extra')) {
-        setProspectDataSafe($hash, 'prospect_extra', $_POST['extra'], 'ss');
-    }
-    if ($_POST['carpark'] != getProspectData($hash, 'prospect_carpark')) {
-        setProspectDataSafe($hash, 'prospect_carpark', $_POST['carpark'], 'ss');
-    }
-    if ($_POST['pet'] != getProspectData($hash, 'prospect_pet')) {
-        setProspectDataSafe($hash, 'prospect_pet', $_POST['pet'], 'ss');
-    }
-}
-
-if (isset($_POST['upload'])) {
-    //require "features/upload.php";
-    require "features/functions_upload.php";
-    if ($_FILES['ID']['name'] != null) {
-        //If the prospect already uploaded a file, delete it, upload a new one and update the database
-        if (getProspectData($hash, 'prospect_attach_id') != null) {
-            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_id') . '');
-            $fileIDName = uploadFile($_FILES['ID'], $hash, 'ID');
-            setProspectDataSafe($hash, 'prospect_attach_id', $fileIDName, 'ss');
-        } else {
-            $fileIDName = uploadFile($_FILES['ID'], $hash, 'ID');
-            setProspectDataSafe($hash, 'prospect_attach_id', $fileIDName, 'ss');
-        }
-    }
-    if ($_FILES['applicantProofOfPayment1']['name'] != null) {
-        if (getProspectData($hash, 'prospect_attach_proofpayment1') != null) {
-            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment1') . '');
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment1'], $hash, 'ProofOfPayment1');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment1', $fileIDName, 'ss');
-        } else {
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment1'], $hash, 'ProofOfPayment1');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment1', $fileIDName, 'ss');
-        }
-    }
-    if ($_FILES['applicantProofOfPayment2']['name'] != null) {
-        if (getProspectData($hash, 'prospect_attach_proofpayment2') != null) {
-            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment2') . '');
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment2'], $hash, 'ProofOfPayment2');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment2', $fileIDName, 'ss');
-        } else {
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment2'], $hash, 'ProofOfPayment2');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment2', $fileIDName, 'ss');
-        }
-    }
-    if ($_FILES['applicantProofOfPayment3']['name'] != null) {
-        if (getProspectData($hash, 'prospect_attach_proofpayment3') != null) {
-            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment3') . '');
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment3'], $hash, 'ProofOfPayment3');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment3', $fileIDName, 'ss');
-        } else {
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment3'], $hash, 'ProofOfPayment3');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment3', $fileIDName, 'ss');
-        }
-    }
-    if ($_FILES['applicantProofOfPayment4']['name'] != null) {
-        if (getProspectData($hash, 'prospect_attach_proofpayment4') != null) {
-            unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment4') . '');
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment4'], $hash, 'ProofOfPayment4');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment4', $fileIDName, 'ss');
-        } else {
-            $fileIDName = uploadFile($_FILES['applicantProofOfPayment4'], $hash, 'ProofOfPayment4');
-            setProspectDataSafe($hash, 'prospect_attach_proofpayment4', $fileIDName, 'ss');
-        }
-    }
+if ($_POST['save'] == 'start') {
+    // Check if the email is already in the database
+    if (getProfile('email', $_POST['email'], 'email') != null) {
+        echo '<center><div class="alert alert-danger" role="alert">This email is already in the system<br>
+            Your application has been restored!</div></center>';
+        // Set profileID
+        $profileID = getProfile('email', $_POST['email'], 'profileID');
+    } else {
+        //Create a new profile
+        insertProfile($propertyCode, 'M', $_POST['email']);
+        //Set the profileID
+        $profileID = getProfile('email', $_POST['email'], 'profileID');
+    };
+};
+if ($_POST['save'] == 'reference') {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+    //Set values to the profile
+    if($_POST['firstName'] != null) setProfile($profileID, 'firstName', $_POST['firstName']);
+    if($_POST['lastName'] != null) setProfile($profileID, 'lastName', $_POST['lastName']);
+    if($_POST['address'] != null) setProfile($profileID, 'address', $_POST['address']);
+    if($_POST['city'] != null) setProfile($profileID, 'city', $_POST['city']);
+    if($_POST['postalCode'] != null) setProfile($profileID, 'postalCode', $_POST['postalCode']);
+    if($_POST['DOB'] != null) setProfile($profileID, 'DOB', $_POST['DOB']);
+    if($_POST['ppsNumber'] != null) setProfile($profileID, 'ppsNumber', $_POST['ppsNumber']);
+    if($_POST['expectedMoveinDate'] != null) setProfile($profileID, 'expectedMoveinDate', $_POST['expectedMoveinDate']);
+    if($_POST['carParking'] != null) setProfile($profileID, 'carParking', $_POST['carParking']);
+    if($_POST['pet'] != null) setProfile($profileID, 'pet', $_POST['pet']);
+    if($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
+    if($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
+    if($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
+    if($_POST['notes'] != null) setProfile($profileID, 'notes', $_POST['notes']);
+};
+if ($_POST['save'] == 'documents' || $_POST['save'] == 'PAG1') {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+    //Set values to the profile
+    if($_POST['employementSector'] != null) setProfile($profileID, 'employementSector', $_POST['employementSector']);
+    if($_POST['employementStatus'] != null) setProfile($profileID, 'employementStatus', $_POST['employementStatus']);
+    if($_POST['employementSince'] != null) setProfile($profileID, 'employementSince', $_POST['employementSince']);
+    if($_POST['employeer'] != null) setProfile($profileID, 'employeer', $_POST['employeer']);
+    if($_POST['jobTitle'] != null) setProfile($profileID, 'jobTitle', $_POST['jobTitle']);
+    if($_POST['employerPhone'] != null) setProfile($profileID, 'employerPhone', $_POST['employerPhone']);
+    if($_POST['netIncome'] != null) setProfile($profileID, 'netIncome', $_POST['netIncome']);
+    if($_POST['extraIncome'] != null) setProfile($profileID, 'extraIncome', $_POST['extraIncome']);
+    if($_POST['landlordName'] != null) setProfile($profileID, 'landlordName', $_POST['landlordName']);
+    if($_POST['landlordPhone'] != null) setProfile($profileID, 'landlordPhone', $_POST['landlordPhone']);
+    if($_POST['expectedNotice'] != null) setProfile($profileID, 'expectedNotice', $_POST['expectedNotice']);
 };
 
-if (isset($_POST['removeID'])) {
-    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_id') . '');
-    setProspectDataSafe($hash, 'prospect_attach_id', '', 'ss');
-};
-if (isset($_POST['removeProofOfPayment1'])) {
-    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment1') . '');
-    setProspectDataSafe($hash, 'prospect_attach_proofpayment1', '', 'ss');
-};
-if (isset($_POST['removeProofOfPayment2'])) {
-    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment2') . '');
-    setProspectDataSafe($hash, 'prospect_attach_proofpayment2', '', 'ss');
-};
-if (isset($_POST['removeProofOfPayment3'])) {
-    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment3') . '');
-    setProspectDataSafe($hash, 'prospect_attach_proofpayment3', '', 'ss');
-};
-if (isset($_POST['removeProofOfPayment4'])) {
-    unlink('features/uploads/' . getProspectData($hash, 'prospect_attach_proofpayment4') . '');
-    setProspectDataSafe($hash, 'prospect_attach_proofpayment4', '', 'ss');
-};
 
 // Upload the documents
-if ($_POST['save'] == 'uploadAttachments') {
+if ($_POST['save'] == 'uploadAttachments' || $_POST['save'] == 'finish' || $_POST['save'] == 'PAG2') {
     //Set profileID
-    $profileID = $_SESSION['profileID'];
+    $profileID = $_POST['profileID'];
 
     //If user select a file for ID
     if ($_FILES['ID']['name'] != null) {
         require "features/functions_upload.php";
 
         //Upload the file
-        uploadProfileAttachments($profileID, 'ID of the Applicant', $_FILES['ID'], 'ID', 'profileID');
-        uploadProfileAttachments($profileID, 'Landlord Reference Letter', $_FILES['landlordReference'], 'landlordReference', 'landlordReferenceLetter');
-        uploadProfileAttachments($profileID, 'Work Reference Letter', $_FILES['workReference'], 'workReference', 'workReferenceLetter');
-        uploadProfileAttachments($profileID, 'Payslip', $_FILES['payslip'], 'payslip', 'payslip');
-        uploadProfileAttachments($profileID, 'Bank Statements', $_FILES['bankStatements'], 'bankStatements', 'bankStatements');
+        if($_FILES['ID'] != null) uploadProfileAttachments($profileID, 'ID of the Applicant', $_FILES['ID'], 'ID', 'profileID');
+        if($_FILES['landlordReference'] != null) uploadProfileAttachments($profileID, 'Landlord Reference Letter', $_FILES['landlordReference'], 'landlordReference', 'landlordReferenceLetter');
+        if($_FILES['workReference'] != null) uploadProfileAttachments($profileID, 'Work Reference Letter', $_FILES['workReference'], 'workReference', 'workReferenceLetter');
+        if($_FILES['payslip'] != null) uploadProfileAttachments($profileID, 'Payslip', $_FILES['payslip'], 'payslip', 'payslip');
+        if($_FILES['bankStatements'] != null) uploadProfileAttachments($profileID, 'Bank Statements', $_FILES['bankStatements'], 'bankStatements', 'bankStatements');
     }
 };
 
 // Remove the documents
 if ($_POST['save'] == 'removeProfileAttachments') {
     //Set profileID
-    $profileID = $_SESSION['profileID'];
+    $profileID = $_POST['profileID'];
 
     require "features/functions_upload.php";
     //Delete the file
@@ -168,6 +93,17 @@ if ($_POST['save'] == 'removeProfileAttachments') {
     removeProfileAttachments($profileID, $idprofileAttachments, $fileNumber, $category);
 };
 
+if ($_POST['save'] == 'finish' || $_POST['save'] == 'addApplicant' || $_POST['save'] == 'PAG2' ) {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+};
+
+if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+    //Create a new profile for occupant
+    if($_POST['occupantFirstName'] != null) insertProfileOccupant($propertyCode, $profileID, 'O', $_POST['occupantEmail'], $_POST['occupantFirstName'], $_POST['occupantPhone']);
+};
 
 ?>
 <!DOCTYPE html>
@@ -180,6 +116,7 @@ if ($_POST['save'] == 'removeProfileAttachments') {
     <meta content="Customer Relationship Management for Real State Agents - Privacy Policy">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=093230e10e41709a7a3d6ba7f3b3b116">
     <link type="text/css" rel="stylesheet" href="https://cdn01.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?themeRevisionID=5eb3b4ae85bd2e1e2966db96" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
 </head>
 
 <body class="bg-gradient-primary">
@@ -195,932 +132,645 @@ if ($_POST['save'] == 'removeProfileAttachments') {
                             </div>
                             <div class="col-lg-6">
 
-                                <?php //Stop the page if the hash is not valid as one of the hashes from the enquiries table
-                                if (getMessage('message_hash', $hash, 'message_sender_name') === null) {
-                                    echo '<div class="p-5"><div class="alert alert-danger" role="alert"><strong>Error!</strong> The link you are trying to access is not valid.</div></div>';
-                                    die;
-                                } ?>
+                                <?php if ($_POST['save'] == null) { ?>
 
-                                <?php if (!isset($_POST['proceed']) && !isset($_POST['upload']) && !isset($_POST['start'])) { ?>
-
-                                    <div class="p-5">
-                                        <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="POST">
-                                            <div class="text-center">
-                                                <h1 class="text-dark mb-4">On-line Application</h1>
+                                    <form method="POST">
+                                        <div class="container-fluid">
+                                            <div class="col">
+                                                <div class="row g-0">
+                                                    <div class="card-body text-black">
+                                                        <div class="text-center">
+                                                            <h2 class="mt-0"><i class="mdi mdi-check-all"></i></h2>
+                                                            <h4 class="mt-0">Online Application</h4>
+                                                            <div class="text-center">
+                                                                <img src="features/uploads/<?php echo getPropertyData($propertyCode, 'property_logo'); ?>" class="rounded" alt="Property Logo">
+                                                            </div>
+                                                            <p class="w-75 mb-2 mx-auto">Welcome to your application for<br><?php echo getPropertyData($propertyCode, 'property_name'); ?>.<br><br><br>
+                                                                Let's start, what's your e-mail address?<br>
+                                                            <div class="mb-3 col-md">
+                                                                <label class="form-label">Email</label>
+                                                                <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                                            </div>
+                                                            <p>
+                                                        </div>
+                                                        <ul class="list-inline wizard mb-0">
+                                                            <button type="submit" class="btn btn-primary float-end" name="save" value="start">Start</button>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <ul class="form-section page-section">
-                                                <div id="subHeader_1" class="form-subHeader">
-                                                    <p>Welcome to your online application <?php echo getMessage('message_hash', $hash, 'message_sender_name'); ?>.</p>
-                                                    <p>Your application has been started with success.</p>
-                                                </div>
-                                            </ul>
-                                            <li class="form-line" data-type="control_button" id="id_2">
-                                                <div id="cid_2" class="form-input-wide" data-layout="full">
-                                                    <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
-                                                        <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="start">
-                                                            Start
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </form>
-                                    </div>
-
-                                <?php } elseif (!isset($_POST['upload']) && isset($_POST['start'])) { ?>
-
-                                    <div class="p-5">
-                                        <div class="text-center">
-                                            <h1 class="text-dark mb-4">Prospect Application Area</h1>
                                         </div>
-                                        <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]); ?>" method="POST">
-                                            <ul class="form-section page-section">
-                                                <div id="subHeader_1" class="form-subHeader">
-                                                    Welcome to your on-line application
-                                                    <?php echo getProspectData($hash, 'prospect_full_name'); ?>, here you can add extra information to support a quick and positive outcome.
+                                    </form>
+
+                                <?php } elseif ($_POST['save'] == 'start' || $_POST['save'] == 'PAG1') { ?>
+
+                                    <form method="POST">
+                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
+                                        <div class="container-fluid">
+                                            <div class="row d-flex justify-content-center align-items-center h-100">
+                                                <div class="col">
+                                                    <div class="row g-0">
+                                                        <div class="card-body text-black">
+                                                            <h4 class="mb-3">Basic Information</h4>
+
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label class="form-label">First Name</label>
+                                                                    <input type="text" class="form-control" required placeholder="First Name" name="firstName" <?php if (getProfile('profileID', $profileID, 'firstName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'firstName')) . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-6">
+                                                                    <label class="form-label">Last Name</label>
+                                                                    <input type="text" class="form-control" required placeholder="Surname" name="lastName" <?php if (getProfile('profileID', $profileID, 'lastName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'lastName')) . '"';  ?>>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Address</label>
+                                                                <input type="text" class="form-control" required placeholder="1234 Main St" name="address" <?php if (getProfile('profileID', $profileID, 'address') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'address')) . '"';  ?>>
+                                                            </div>
+
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-5">
+                                                                    <label class="form-label">City</label>
+                                                                    <input type="text" class="form-control" required name="city" <?php if (getProfile('profileID', $profileID, 'city') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'city')) . '"';  ?>>
+                                                                </div>
+
+                                                                <div class="mb-3 col-md-3">
+                                                                    <label class="form-label">Postal Code</label>
+                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="A00-AAAA" maxlength="7" name="postalCode" <?php if (getProfile('profileID', $profileID, 'postalCode') != null) echo 'value="' . getProfile('profileID', $profileID, 'postalCode') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "xxx-xxxx"</span><br>
+                                                                    <span class="font-13 text-muted"><a href="https://finder.eircode.ie/" target="_blank">Find Eircode</a></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Date of Birth</label>
+                                                                    <input type="date" class="form-control" required name="DOB" <?php if (getProfile('profileID', $profileID, 'DOB') != null) echo 'value="' . getProfile('profileID', $profileID, 'DOB') . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">PPS Number</label>
+                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "xxxxxx-xx"</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <h4 class="mb-3">Aditional Information</h4>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Expected Move-in Date</label>
+                                                                    <input type="date" class="form-control" required name="expectedMoveinDate" <?php if (getProfile('profileID', $profileID, 'expectedMoveinDate') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedMoveinDate') . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Car Parking</label>
+                                                                    <select id="inputState" class="form-select" required name="carParking">
+                                                                        <option disabled>Choose</option>
+                                                                        <option value="0">No</option>
+                                                                        <option value="1">Yes 1 Car Space</option>
+                                                                        <option value="2">Yes 2 Car Space</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">pet</label>
+                                                                    <select id="inputState" class="form-select" required name="pet">
+                                                                        <option disabled>Choose</option>
+                                                                        <option value="0">No</option>
+                                                                        <option value="1">Yes 1 pet</option>
+                                                                        <option value="2">Yes 2 pets</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <h4 class="mb-3">Contact Details</h4>
+
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Mobile Number</label>
+                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="mobilePhone" <?php if (getProfile('profileID', $profileID, 'mobilePhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'mobilePhone') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Contact Number</label>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="contactNumber" <?php if (getProfile('profileID', $profileID, 'contactNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'contactNumber') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Alternative Email</label>
+                                                                    <input type="email" class="form-control" name="alternativeEmail" <?php if (getProfile('profileID', $profileID, 'alternativeEmail') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'alternativeEmail')) . '"';  ?>>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-3 col-md">
+                                                                <label class="form-label">Notes</label>
+                                                                <textarea class="form-control" id="example-textarea" rows="5" name="notes" maxlength="255"><?php if (getProfile('profileID', $profileID, 'notes') != null) echo htmlspecialchars(getProfile('profileID', $profileID, 'notes'));  ?></textarea>
+                                                            </div>
+                                                            <ul class="list-inline wizard mb-0">
+                                                                <button type="submit" class="btn btn-primary float-end" name="save" value="reference">Next</button>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <li class="form-line jf-required" data-type="control_fullname" id="id_3">
-                                                    <label class="form-label form-label-top form-label-auto" id="label_3" for="first_3">
-                                                        Full Name
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_3" class="form-input-wide jf-required" data-layout="full">
-                                                        <div data-wrapper-react="true">
-                                                            <span class="form-sub-label-container" style="vertical-align:top" data-input-type="first">
-                                                                <input type="text" name="prospectName" class="form-textbox validate[required]" autoComplete="section-input_3 given-name" size="10" value="<?php echo getProspectData($hash, 'prospect_full_name') ?>" aria-labelledby="label_3 sublabel_3_first" required="" />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_dropdown" id="id_15">
-                                                    <label class="form-label form-label-top" id="label_15" for="input_15">
-                                                        Country of Birth
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_15" class="form-input-wide jf-required" data-layout="half">
-                                                        <select class="form-dropdown validate[required]" name="country_of_birth" style="width:310px" data-component="dropdown" required="">
-                                                            <option value="<?php echo getProspectData($hash, 'prospect_cob'); ?>">
-                                                                <?php if (getProspectData($hash, 'prospect_cob') != null) {
-                                                                    echo getProspectData($hash, 'prospect_cob');
-                                                                } else echo 'Select a Country'; ?></option>
-                                                            <option value="China">China</option>
-                                                            <option value="India">India</option>
-                                                            <option value="United States">United States</option>
-                                                            <option value="Indonesia">Indonesia</option>
-                                                            <option value="Brazil">Brazil</option>
-                                                            <option value="Pakistan">Pakistan</option>
-                                                            <option value="Nigeria">Nigeria</option>
-                                                            <option value="Bangladesh">Bangladesh</option>
-                                                            <option value="Russia">Russia</option>
-                                                            <option value="Japan">Japan</option>
-                                                            <option value="Mexico">Mexico</option>
-                                                            <option value="Philippines">Philippines</option>
-                                                            <option value="Vietnam">Vietnam</option>
-                                                            <option value="Ethiopia">Ethiopia</option>
-                                                            <option value="Egypt">Egypt</option>
-                                                            <option value="Germany">Germany</option>
-                                                            <option value="Iran">Iran</option>
-                                                            <option value="Turkey">Turkey</option>
-                                                            <option value="Democratic Republic of the Congo">Democratic
-                                                                Republic of the Congo</option>
-                                                            <option value="Thailand">Thailand</option>
-                                                            <option value="France">France</option>
-                                                            <option value="United Kingdom">United Kingdom</option>
-                                                            <option value="Italy">Italy</option>
-                                                            <option value="Burma">Burma</option>
-                                                            <option value="South Africa">South Africa</option>
-                                                            <option value="South Korea">South Korea</option>
-                                                            <option value="Colombia">Colombia</option>
-                                                            <option value="Spain">Spain</option>
-                                                            <option value="Ukraine">Ukraine</option>
-                                                            <option value="Tanzania">Tanzania</option>
-                                                            <option value="Kenya">Kenya</option>
-                                                            <option value="Argentina">Argentina</option>
-                                                            <option value="Algeria">Algeria</option>
-                                                            <option value="Poland">Poland</option>
-                                                            <option value="Sudan">Sudan</option>
-                                                            <option value="Uganda">Uganda</option>
-                                                            <option value="Canada">Canada</option>
-                                                            <option value="Iraq">Iraq</option>
-                                                            <option value="Morocco">Morocco</option>
-                                                            <option value="Peru">Peru</option>
-                                                            <option value="Uzbekistan">Uzbekistan</option>
-                                                            <option value="Saudi Arabia">Saudi Arabia</option>
-                                                            <option value="Malaysia">Malaysia</option>
-                                                            <option value="Venezuela">Venezuela</option>
-                                                            <option value="Nepal">Nepal</option>
-                                                            <option value="Afghanistan">Afghanistan</option>
-                                                            <option value="Yemen">Yemen</option>
-                                                            <option value="North Korea">North Korea</option>
-                                                            <option value="Ghana">Ghana</option>
-                                                            <option value="Mozambique">Mozambique</option>
-                                                            <option value="Taiwan">Taiwan</option>
-                                                            <option value="Australia">Australia</option>
-                                                            <option value="Ivory Coast">Ivory Coast</option>
-                                                            <option value="Syria">Syria</option>
-                                                            <option value="Madagascar">Madagascar</option>
-                                                            <option value="Angola">Angola</option>
-                                                            <option value="Cameroon">Cameroon</option>
-                                                            <option value="Sri Lanka">Sri Lanka</option>
-                                                            <option value="Romania">Romania</option>
-                                                            <option value="Burkina Faso">Burkina Faso</option>
-                                                            <option value="Niger">Niger</option>
-                                                            <option value="Kazakhstan">Kazakhstan</option>
-                                                            <option value="Netherlands">Netherlands</option>
-                                                            <option value="Chile">Chile</option>
-                                                            <option value="Malawi">Malawi</option>
-                                                            <option value="Ecuador">Ecuador</option>
-                                                            <option value="Guatemala">Guatemala</option>
-                                                            <option value="Mali">Mali</option>
-                                                            <option value="Cambodia">Cambodia</option>
-                                                            <option value="Senegal">Senegal</option>
-                                                            <option value="Zambia">Zambia</option>
-                                                            <option value="Zimbabwe">Zimbabwe</option>
-                                                            <option value="Chad">Chad</option>
-                                                            <option value="South Sudan">South Sudan</option>
-                                                            <option value="Belgium">Belgium</option>
-                                                            <option value="Cuba">Cuba</option>
-                                                            <option value="Tunisia">Tunisia</option>
-                                                            <option value="Guinea">Guinea</option>
-                                                            <option value="Greece">Greece</option>
-                                                            <option value="Portugal">Portugal</option>
-                                                            <option value="Rwanda">Rwanda</option>
-                                                            <option value="Czech Republic">Czech Republic</option>
-                                                            <option value="Somalia">Somalia</option>
-                                                            <option value="Haiti">Haiti</option>
-                                                            <option value="Benin">Benin</option>
-                                                            <option value="Burundi">Burundi</option>
-                                                            <option value="Bolivia">Bolivia</option>
-                                                            <option value="Hungary">Hungary</option>
-                                                            <option value="Sweden">Sweden</option>
-                                                            <option value="Belarus">Belarus</option>
-                                                            <option value="Dominican Republic">Dominican Republic
-                                                            </option>
-                                                            <option value="Azerbaijan">Azerbaijan</option>
-                                                            <option value="Honduras">Honduras</option>
-                                                            <option value="Austria">Austria</option>
-                                                            <option value="United Arab Emirates">United Arab Emirates
-                                                            </option>
-                                                            <option value="Israel">Israel</option>
-                                                            <option value="Switzerland">Switzerland</option>
-                                                            <option value="Tajikistan">Tajikistan</option>
-                                                            <option value="Bulgaria">Bulgaria</option>
-                                                            <option value="Hong Kong (China)">Hong Kong (China)</option>
-                                                            <option value="Serbia">Serbia</option>
-                                                            <option value="Papua New Guinea">Papua New Guinea</option>
-                                                            <option value="Paraguay">Paraguay</option>
-                                                            <option value="Laos">Laos</option>
-                                                            <option value="Jordan">Jordan</option>
-                                                            <option value="El Salvador">El Salvador</option>
-                                                            <option value="Eritrea">Eritrea</option>
-                                                            <option value="Libya">Libya</option>
-                                                            <option value="Togo">Togo</option>
-                                                            <option value="Sierra Leone">Sierra Leone</option>
-                                                            <option value="Nicaragua">Nicaragua</option>
-                                                            <option value="Kyrgyzstan">Kyrgyzstan</option>
-                                                            <option value="Denmark">Denmark</option>
-                                                            <option value="Finland">Finland</option>
-                                                            <option value="Slovakia">Slovakia</option>
-                                                            <option value="Singapore">Singapore</option>
-                                                            <option value="Turkmenistan">Turkmenistan</option>
-                                                            <option value="Norway">Norway</option>
-                                                            <option value="Lebanon">Lebanon</option>
-                                                            <option value="Costa Rica">Costa Rica</option>
-                                                            <option value="Central African Republic">Central African
-                                                                Republic</option>
-                                                            <option value="Ireland">Ireland</option>
-                                                            <option value="Georgia">Georgia</option>
-                                                            <option value="New Zealand">New Zealand</option>
-                                                            <option value="Republic of the Congo">Republic of the Congo
-                                                            </option>
-                                                            <option value="Palestine">Palestine</option>
-                                                            <option value="Liberia">Liberia</option>
-                                                            <option value="Croatia">Croatia</option>
-                                                            <option value="Oman">Oman</option>
-                                                            <option value="Bosnia and Herzegovina">Bosnia and
-                                                                Herzegovina</option>
-                                                            <option value="Puerto Rico">Puerto Rico</option>
-                                                            <option value="Kuwait">Kuwait</option>
-                                                            <option value="Moldov">Moldov</option>
-                                                            <option value="Mauritania">Mauritania</option>
-                                                            <option value="Panama">Panama</option>
-                                                            <option value="Uruguay">Uruguay</option>
-                                                            <option value="Armenia">Armenia</option>
-                                                            <option value="Lithuania">Lithuania</option>
-                                                            <option value="Albania">Albania</option>
-                                                            <option value="Mongolia">Mongolia</option>
-                                                            <option value="Jamaica">Jamaica</option>
-                                                            <option value="Namibia">Namibia</option>
-                                                            <option value="Lesotho">Lesotho</option>
-                                                            <option value="Qatar">Qatar</option>
-                                                            <option value="Macedonia">Macedonia</option>
-                                                            <option value="Slovenia">Slovenia</option>
-                                                            <option value="Botswana">Botswana</option>
-                                                            <option value="Latvia">Latvia</option>
-                                                            <option value="Gambia">Gambia</option>
-                                                            <option value="Kosovo">Kosovo</option>
-                                                            <option value="Guinea-Bissau">Guinea-Bissau</option>
-                                                            <option value="Gabon">Gabon</option>
-                                                            <option value="Equatorial Guinea">Equatorial Guinea</option>
-                                                            <option value="Trinidad and Tobago">Trinidad and Tobago
-                                                            </option>
-                                                            <option value="Estonia">Estonia</option>
-                                                            <option value="Mauritius">Mauritius</option>
-                                                            <option value="Swaziland">Swaziland</option>
-                                                            <option value="Bahrain">Bahrain</option>
-                                                            <option value="Timor-Leste">Timor-Leste</option>
-                                                            <option value="Djibouti">Djibouti</option>
-                                                            <option value="Cyprus">Cyprus</option>
-                                                            <option value="Fiji">Fiji</option>
-                                                            <option value="Reunion (France)">Reunion (France)</option>
-                                                            <option value="Guyana">Guyana</option>
-                                                            <option value="Comoros">Comoros</option>
-                                                            <option value="Bhutan">Bhutan</option>
-                                                            <option value="Montenegro">Montenegro</option>
-                                                            <option value="Macau (China)">Macau (China)</option>
-                                                            <option value="Solomon Islands">Solomon Islands</option>
-                                                            <option value="Western Sahara">Western Sahara</option>
-                                                            <option value="Luxembourg">Luxembourg</option>
-                                                            <option value="Suriname">Suriname</option>
-                                                            <option value="Cape Verde">Cape Verde</option>
-                                                            <option value="Malta">Malta</option>
-                                                            <option value="Guadeloupe (France)">Guadeloupe (France)
-                                                            </option>
-                                                            <option value="Martinique (France)">Martinique (France)
-                                                            </option>
-                                                            <option value="Brunei">Brunei</option>
-                                                            <option value="Bahamas">Bahamas</option>
-                                                            <option value="Iceland">Iceland</option>
-                                                            <option value="Maldives">Maldives</option>
-                                                            <option value="Belize">Belize</option>
-                                                            <option value="Barbados">Barbados</option>
-                                                            <option value="French Polynesia (France)">French Polynesia
-                                                                (France)</option>
-                                                            <option value="Vanuatu">Vanuatu</option>
-                                                            <option value="New Caledonia (France)">New Caledonia
-                                                                (France)</option>
-                                                            <option value="French Guiana (France)">French Guiana
-                                                                (France)</option>
-                                                            <option value="Mayotte (France)">Mayotte (France)</option>
-                                                            <option value="Samoa">Samoa</option>
-                                                            <option value="Sao Tom and Principe">Sao Tom and Principe
-                                                            </option>
-                                                            <option value="Saint Lucia">Saint Lucia</option>
-                                                            <option value="Guam (USA)">Guam (USA)</option>
-                                                            <option value="Curacao (Netherlands)">Curacao (Netherlands)
-                                                            </option>
-                                                            <option value="Saint Vincent and the Grenadines">Saint
-                                                                Vincent and the Grenadines</option>
-                                                            <option value="Kiribati">Kiribati</option>
-                                                            <option value="United States Virgin Islands (USA)">United
-                                                                States Virgin Islands (USA)</option>
-                                                            <option value="Grenada">Grenada</option>
-                                                            <option value="Tonga">Tonga</option>
-                                                            <option value="Aruba (Netherlands)">Aruba (Netherlands)
-                                                            </option>
-                                                            <option value="Federated States of Micronesia">Federated
-                                                                States of Micronesia</option>
-                                                            <option value="Jersey (UK)">Jersey (UK)</option>
-                                                            <option value="Seychelles">Seychelles</option>
-                                                            <option value="Antigua and Barbuda">Antigua and Barbuda
-                                                            </option>
-                                                            <option value="Isle of Man (UK)">Isle of Man (UK)</option>
-                                                            <option value="Andorra">Andorra</option>
-                                                            <option value="Dominica">Dominica</option>
-                                                            <option value="Bermuda (UK)">Bermuda (UK)</option>
-                                                            <option value="Guernsey (UK)">Guernsey (UK)</option>
-                                                            <option value="Greenland (Denmark)">Greenland (Denmark)
-                                                            </option>
-                                                            <option value="Marshall Islands">Marshall Islands</option>
-                                                            <option value="American Samoa (USA)">American Samoa (USA)
-                                                            </option>
-                                                            <option value="Cayman Islands (UK)">Cayman Islands (UK)
-                                                            </option>
-                                                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis
-                                                            </option>
-                                                            <option value="Northern Mariana Islands (USA)">Northern
-                                                                Mariana Islands (USA)</option>
-                                                            <option value="Faroe Islands (Denmark)">Faroe Islands
-                                                                (Denmark)</option>
-                                                            <option value="Sint Maarten (Netherlands)">Sint Maarten
-                                                                (Netherlands)</option>
-                                                            <option value="Saint Martin (France)">Saint Martin (France)
-                                                            </option>
-                                                            <option value="Liechtenstein">Liechtenstein</option>
-                                                            <option value="Monaco">Monaco</option>
-                                                            <option value="San Marino">San Marino</option>
-                                                            <option value="Turks and Caicos Islands (UK)">Turks and
-                                                                Caicos Islands (UK)</option>
-                                                            <option value="Gibraltar (UK)">Gibraltar (UK)</option>
-                                                            <option value="British Virgin Islands (UK)">British Virgin
-                                                                Islands (UK)</option>
-                                                            <option value="Aland Islands (Finland)">Aland Islands
-                                                                (Finland)</option>
-                                                            <option value="Caribbean Netherlands (Netherlands)">
-                                                                Caribbean Netherlands (Netherlands)</option>
-                                                            <option value="Palau">Palau</option>
-                                                            <option value="Cook Islands (NZ)">Cook Islands (NZ)</option>
-                                                            <option value="Anguilla (UK)">Anguilla (UK)</option>
-                                                            <option value="Wallis and Futuna (France)">Wallis and Futuna
-                                                                (France)</option>
-                                                            <option value="Tuvalu">Tuvalu</option>
-                                                            <option value="Nauru">Nauru</option>
-                                                            <option value="Saint Barthelemy (France)">Saint Barthelemy
-                                                                (France)</option>
-                                                            <option value="Saint Pierre and Miquelon (France)">Saint
-                                                                Pierre and Miquelon (France)</option>
-                                                            <option value="Montserrat (UK)">Montserrat (UK)</option>
-                                                            <option value="Saint Helena, Ascension and Tristan da Cunha (UK)">
-                                                                Saint Helena, Ascension and Tristan da Cunha (UK)
-                                                            </option>
-                                                            <option value="Svalbard and Jan Mayen (Norway)">Svalbard and
-                                                                Jan Mayen (Norway)</option>
-                                                            <option value="Falkland Islands (UK)">Falkland Islands (UK)
-                                                            </option>
-                                                            <option value="Norfolk Island (Australia)">Norfolk Island
-                                                                (Australia)</option>
-                                                            <option value="Christmas Island (Australia)">Christmas
-                                                                Island (Australia)</option>
-                                                            <option value="Niue (NZ)">Niue (NZ)</option>
-                                                            <option value="Tokelau (NZ)">Tokelau (NZ)</option>
-                                                            <option value="Vatican City">Vatican City</option>
-                                                            <option value="Cocos (Keeling) Islands (Australia)">Cocos
-                                                                (Keeling) Islands (Australia)</option>
-                                                            <option value="Pitcairn Islands (UK)">Pitcairn Islands (UK)
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_datetime" id="id_16">
-                                                    <label class="form-label form-label-top" id="label_16" for="lite_mode_16">
-                                                        Date of Birth
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_16" class="form-input-wide jf-required" data-layout="half">
-                                                        <div data-wrapper-react="true">
-                                                            <span class="form-sub-label-container" style="vertical-align:top">
-                                                                <input name="dateOfBirth" type="date" class="form-textbox validate[required, limitDate, validateLiteDate]" id="lite_mode_16" size="12" data-maxlength="12" maxLength="12" data-age="" value="<?php echo getProspectData($hash, 'prospect_dob') ?>" required="" data-format="mmddyyyy" data-seperator="-" placeholder="MM-DD-YYYY" autoComplete="section-input_16 off" aria-labelledby="label_16 sublabel_16_litemode" />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-3 jf-required" data-type="control_phone" id="id_5">
-                                                    <label class="form-label form-label-top" id="label_5" for="input_5_full">
-                                                        Phone Number
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_5" class="form-input-wide jf-required" data-layout="half">
-                                                        <span class="form-sub-label-container" style="vertical-align:top">
-                                                            <input name="phone" type="tel" data-type="mask-number" class="mask-phone-number form-textbox validate[required, Fill Mask]" data-defaultvalue="" autoComplete="section-input_5 tel-national" style="width:310px" data-masked="true" value="<?php echo getProspectData($hash, 'prospect_phone'); ?>" placeholder="(000) 000-0000" data-component="phone" aria-labelledby="label_5" required="" />
-                                                            <label class="form-sub-label is-empty" for="input_5_full" id="sublabel_5_masked" style="min-height:13px" aria-hidden="false"> </label>
-                                                        </span>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_datetime" id="id_16">
-                                                    <label class="form-label form-label-top" id="label_16" for="lite_mode_16">
-                                                        Expected Move-in
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_16" class="form-input-wide jf-required" data-layout="half">
-                                                        <div data-wrapper-react="true">
-                                                            <span class="form-sub-label-container" style="vertical-align:top">
-                                                                <input name="expectedMovein" type="date" class="form-textbox validate[required, limitDate, validateLiteDate]" id="lite_mode_16" size="12" data-maxlength="12" maxLength="12" data-age="" value="<?php echo getProspectData($hash, 'prospect_expectedMovein'); ?>" required="" data-format="mmddyyyy" data-seperator="-" placeholder="MM-DD-YYYY" autoComplete="section-input_16 off" aria-labelledby="label_16 sublabel_16_litemode" />
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li id="cid_18" class="form-input-wide" data-type="control_head">
-                                                    <div class="form-header-group  header-default">
-                                                        <div class="header-text httal htvam">
-                                                            <h2 id="header_18" class="form-header" data-component="header">
-                                                                Employment Status
-                                                            </h2>
-                                                            <div id="subHeader_18" class="form-subHeader">
-                                                                Give us extra information about your financial status
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_dropdown">
-                                                    <label class="form-label form-label-top form-label-auto" id="label_21" for="input_21">
-                                                        Sector
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_21" class="form-input-wide jf-required" data-layout="half">
-                                                        <select class="form-dropdown validate[required]" name="employement_Sector" style="width:310px" data-component="dropdown" required="">
-                                                            <option value="<?php echo getProspectData($hash, 'prospect_sector'); ?>">
-                                                                <?php if (getProspectData($hash, 'prospect_sector') != null) {
-                                                                    echo getProspectData($hash, 'prospect_sector');
-                                                                } else echo 'Select a Sector'; ?></option>
-                                                            <option value="Accounting">Accounting</option>
-                                                            <option value="Airlines/Aviation">Airlines/Aviation</option>
-                                                            <option value="Alternative Dispute Resolution">Alternative
-                                                                Dispute Resolution</option>
-                                                            <option value="Alternative Medicine">Alternative Medicine
-                                                            </option>
-                                                            <option value="Animation">Animation</option>
-                                                            <option value="Apparel & Fashion">Apparel & Fashion</option>
-                                                            <option value="Architecture & Planning">Architecture &
-                                                                Planning</option>
-                                                            <option value="Arts and Crafts">Arts and Crafts</option>
-                                                            <option value="Automotive">Automotive</option>
-                                                            <option value="Aviation & Aerospace">Aviation & Aerospace
-                                                            </option>
-                                                            <option value="Banking">Banking</option>
-                                                            <option value="Biotechnology">Biotechnology</option>
-                                                            <option value="Broadcast Media">Broadcast Media</option>
-                                                            <option value="Building Materials">Building Materials
-                                                            </option>
-                                                            <option value="Business Supplies and Equipment">Business
-                                                                Supplies and Equipment</option>
-                                                            <option value="Capital Markets">Capital Markets</option>
-                                                            <option value="Chemicals">Chemicals</option>
-                                                            <option value="Civic & Social Organization">Civic & Social
-                                                                Organization</option>
-                                                            <option value="Civil Engineering">Civil Engineering</option>
-                                                            <option value="Commercial Real Estate">Commercial Real
-                                                                Estate</option>
-                                                            <option value="Computer & Network Security">Computer &
-                                                                Network Security</option>
-                                                            <option value="Computer Games">Computer Games</option>
-                                                            <option value="Computer Hardware">Computer Hardware</option>
-                                                            <option value="Computer Networking">Computer Networking
-                                                            </option>
-                                                            <option value="Computer Software">Computer Software</option>
-                                                            <option value="Construction">Construction</option>
-                                                            <option value="Consumer Electronics">Consumer Electronics
-                                                            </option>
-                                                            <option value="Consumer Goods">Consumer Goods</option>
-                                                            <option value="Consumer Services">Consumer Services</option>
-                                                            <option value="Cosmetics">Cosmetics</option>
-                                                            <option value="Dairy">Dairy</option>
-                                                            <option value="Defense & Space">Defense & Space</option>
-                                                            <option value="Design">Design</option>
-                                                            <option value="Education Management">Education Management
-                                                            </option>
-                                                            <option value="E-Learning">E-Learning</option>
-                                                            <option value="Electrical/Electronic Manufacturing">
-                                                                Electrical/Electronic Manufacturing</option>
-                                                            <option value="Entertainment">Entertainment</option>
-                                                            <option value="Environmental Services">Environmental
-                                                                Services</option>
-                                                            <option value="Events Services">Events Services</option>
-                                                            <option value="Executive Office">Executive Office</option>
-                                                            <option value="Facilities Services">Facilities Services
-                                                            </option>
-                                                            <option value="Farming">Farming</option>
-                                                            <option value="Financial Services">Financial Services
-                                                            </option>
-                                                            <option value="Fine Art">Fine Art</option>
-                                                            <option value="Fishery">Fishery</option>
-                                                            <option value="Food & Beverages">Food & Beverages</option>
-                                                            <option value="Food Production">Food Production</option>
-                                                            <option value="Fund-Raising">Fund-Raising</option>
-                                                            <option value="Furniture">Furniture</option>
-                                                            <option value="Gambling & Casinos">Gambling & Casinos
-                                                            </option>
-                                                            <option value="Glass, Ceramics & Concrete">Glass, Ceramics &
-                                                                Concrete</option>
-                                                            <option value="Government Administration">Government
-                                                                Administration</option>
-                                                            <option value="Government Relations">Government Relations
-                                                            </option>
-                                                            <option value="Graphic Design">Graphic Design</option>
-                                                            <option value="Health, Wellness and Fitness">Health,
-                                                                Wellness and Fitness</option>
-                                                            <option value="Higher Education">Higher Education</option>
-                                                            <option value="Hospital & Health Care">Hospital & Health
-                                                                Care</option>
-                                                            <option value="Hospitality">Hospitality</option>
-                                                            <option value="Human Resources">Human Resources</option>
-                                                            <option value="Import and Export">Import and Export</option>
-                                                            <option value="Individual & Family Services">Individual &
-                                                                Family Services</option>
-                                                            <option value="Industrial Automation">Industrial Automation
-                                                            </option>
-                                                            <option value="Information Services">Information Services
-                                                            </option>
-                                                            <option value="Information Technology and Services">
-                                                                Information Technology and Services</option>
-                                                            <option value="Insurance">Insurance</option>
-                                                            <option value="International Affairs">International Affairs
-                                                            </option>
-                                                            <option value="International Trade and Development">
-                                                                International Trade and Development</option>
-                                                            <option value="Internet">Internet</option>
-                                                            <option value="Investment Banking">Investment Banking
-                                                            </option>
-                                                            <option value="Investment Management">Investment Management
-                                                            </option>
-                                                            <option value="Judiciary">Judiciary</option>
-                                                            <option value="Law Enforcement">Law Enforcement</option>
-                                                            <option value="Law Practice">Law Practice</option>
-                                                            <option value="Legal Services">Legal Services</option>
-                                                            <option value="Legislative Office">Legislative Office
-                                                            </option>
-                                                            <option value="Leisure, Travel & Tourism">Leisure, Travel &
-                                                                Tourism</option>
-                                                            <option value="Libraries">Libraries</option>
-                                                            <option value="Logistics and Supply Chain">Logistics and
-                                                                Supply Chain</option>
-                                                            <option value="Luxury Goods & Jewelry">Luxury Goods &
-                                                                Jewelry</option>
-                                                            <option value="Machinery">Machinery</option>
-                                                            <option value="Management Consulting">Management Consulting
-                                                            </option>
-                                                            <option value="Maritime">Maritime</option>
-                                                            <option value="Marketing and Advertising">Marketing and
-                                                                Advertising</option>
-                                                            <option value="Market Research">Market Research</option>
-                                                            <option value="Mechanical or Industrial Engineering">
-                                                                Mechanical or Industrial Engineering</option>
-                                                            <option value="Media Production">Media Production</option>
-                                                            <option value="Medical Devices">Medical Devices</option>
-                                                            <option value="Medical Practice">Medical Practice</option>
-                                                            <option value="Mental Health Care">Mental Health Care
-                                                            </option>
-                                                            <option value="Military">Military</option>
-                                                            <option value="Mining & Metals">Mining & Metals</option>
-                                                            <option value="Motion Pictures and Film">Motion Pictures and
-                                                                Film</option>
-                                                            <option value="Museums and Institutions">Museums and
-                                                                Institutions</option>
-                                                            <option value="Music">Music</option>
-                                                            <option value="Nanotechnology">Nanotechnology</option>
-                                                            <option value="Newspapers">Newspapers</option>
-                                                            <option value="Nonprofit Organization Management">Nonprofit
-                                                                Organization Management</option>
-                                                            <option value="Oil & Energy">Oil & Energy</option>
-                                                            <option value="Online Media">Online Media</option>
-                                                            <option value="Outsourcing/Offshoring">
-                                                                Outsourcing/Offshoring</option>
-                                                            <option value="Package/Freight Delivery">Package/Freight
-                                                                Delivery</option>
-                                                            <option value="Packaging and Containers">Packaging and
-                                                                Containers</option>
-                                                            <option value="Paper & Forest Products">Paper & Forest
-                                                                Products</option>
-                                                            <option value="Performing Arts">Performing Arts</option>
-                                                            <option value="Pharmaceuticals">Pharmaceuticals</option>
-                                                            <option value="Philanthropy">Philanthropy</option>
-                                                            <option value="Photography">Photography</option>
-                                                            <option value="Plastics">Plastics</option>
-                                                            <option value="Political Organization">Political
-                                                                Organization</option>
-                                                            <option value="Primary/Secondary Education">
-                                                                Primary/Secondary Education</option>
-                                                            <option value="Printing">Printing</option>
-                                                            <option value="Professional Training & Coaching">
-                                                                Professional Training & Coaching</option>
-                                                            <option value="Program Development">Program Development
-                                                            </option>
-                                                            <option value="Public Policy">Public Policy</option>
-                                                            <option value="Public Relations and Communications">Public
-                                                                Relations and Communications</option>
-                                                            <option value="Public Safety">Public Safety</option>
-                                                            <option value="Publishing">Publishing</option>
-                                                            <option value="Railroad Manufacture">Railroad Manufacture
-                                                            </option>
-                                                            <option value="Ranching">Ranching</option>
-                                                            <option value="Real Estate">Real Estate</option>
-                                                            <option value="Recreational Facilities and Services">
-                                                                Recreational Facilities and Services</option>
-                                                            <option value="Religious Institutions">Religious
-                                                                Institutions</option>
-                                                            <option value="Renewables & Environment">Renewables &
-                                                                Environment</option>
-                                                            <option value="Research">Research</option>
-                                                            <option value="Restaurants">Restaurants</option>
-                                                            <option value="Retail">Retail</option>
-                                                            <option value="Security and Investigations">Security and
-                                                                Investigations</option>
-                                                            <option value="Semiconductors">Semiconductors</option>
-                                                            <option value="Shipbuilding">Shipbuilding</option>
-                                                            <option value="Sporting Goods">Sporting Goods</option>
-                                                            <option value="Sports">Sports</option>
-                                                            <option value="Staffing and Recruiting">Staffing and
-                                                                Recruiting</option>
-                                                            <option value="Supermarkets">Supermarkets</option>
-                                                            <option value="Telecommunications">Telecommunications
-                                                            </option>
-                                                            <option value="Textiles">Textiles</option>
-                                                            <option value="Think Tanks">Think Tanks</option>
-                                                            <option value="Tobacco">Tobacco</option>
-                                                            <option value="Translation and Localization">Translation and
-                                                                Localization</option>
-                                                            <option value="Transportation/Trucking/Railroad">
-                                                                Transportation/Trucking/Railroad </option>
-                                                            <option value="Utilities">Utilities</option>
-                                                            <option value="Venture Capital & Private Equity">Venture
-                                                                Capital & Private Equity </option>
-                                                            <option value="Veterinary">Veterinary</option>
-                                                            <option value="Warehousing">Warehousing</option>
-                                                            <option value="Wholesale">Wholesale</option>
-                                                            <option value="Wine and Spirits">Wine and Spirits</option>
-                                                            <option value="Wireless">Wireless</option>
-                                                            <option value="Writing and Editing">Writing and Editing
-                                                            </option>
-                                                            <option value="NA">NA</option>
-                                                            <option value="Empty">Empty</option>
-                                                            <option value="Unknown">Unknown</option>
-                                                        </select>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox">
-                                                    <label class="form-label form-label-top" id="label_20" for="input_20">
-                                                        Employer
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_20" class="form-input-wide jf-required" data-layout="half">
-                                                        <input type="text" name="employer" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_employer'); ?>" data-component="textbox" aria-labelledby="label_20" required="" />
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_textbox">
-                                                    <label class="form-label form-label-top" id="label_22" for="input_22">
-                                                        Job Title
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_22" class="form-input-wide jf-required" data-layout="half">
-                                                        <input type="text" name="job_title" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_job_title'); ?>" data-component="textbox" aria-labelledby="label_22" required="" />
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2 jf-required" data-type="control_textbox">
-                                                    <label class="form-label form-label-top" id="label_23" for="input_23">
-                                                        Monthly Net Income
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div class="form-input-wide jf-required" data-layout="half">
-                                                        <input type="number" name="monthly_income" data-type="input-textbox" class="form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_income'); ?>" data-component="number" aria-labelledby="label_23" required="" />
-                                                    </div>
+                                            </div>
+                                        </div>
 
-                                                <li id="cid_24" class="form-input-wide" data-type="control_head">
-                                                    <div class="form-header-group  header-default">
-                                                        <div class="header-text httal htvam">
-                                                            <h2 id="header_24" class="form-header" data-component="header">
-                                                                Occupants
-                                                            </h2>
-                                                            <div id="subHeader_18" class="form-subHeader">
-                                                                How many occupants will live in this property?
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_number" id="id_25">
-                                                    <label class="form-label form-label-top" id="label_25" for="input_25">
-                                                        Total of Occupants
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_25" class="form-input-wide jf-required" data-layout="half">
-                                                        <input type="number" name="occupants" data-type="input-number" class=" form-number-input form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_occupants'); ?>" placeholder="ex: 2" data-component="number" aria-labelledby="label_25" required="" step="any" />
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2" data-type="control_number" id="id_26">
-                                                    <label class="form-label form-label-top" id="label_26" for="input_26">
-                                                        Occupants over 18 years </label>
-                                                    <div id="cid_26" class="form-input-wide" data-layout="half">
-                                                        <input type="number" name="occupants_over18" data-type="input-number" class=" form-number-input form-textbox" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_occupants_over18'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_26" step="any" />
-                                                    </div>
-                                                </li>
-
-                                                <li id="cid_24" class="form-input-wide" data-type="control_head">
-                                                    <div class="form-header-group  header-default">
-                                                        <div class="header-text httal htvam">
-                                                            <h2 id="header_24" class="form-header" data-component="header">
-                                                                Extra Requests
-                                                            </h2>
-                                                            <div id="subHeader_18" class="form-subHeader">
-                                                                Extra information about your lease
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-1 jf-required" data-type="control_number" id="id_25">
-                                                    <label class="form-label form-label-top" id="label_25" for="input_25">
-                                                        Car Parking
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_25" class="form-input-wide jf-required" data-layout="half">
-                                                        <input type="number" name="carpark" data-type="input-number" class=" form-number-input form-textbox validate[required]" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_carpark'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_25" required="" step="any" />
-                                                    </div>
-                                                </li>
-                                                <li class="form-line form-line-column form-col-2" data-type="control_number" id="id_26">
-                                                    <label class="form-label form-label-top" id="label_26" for="input_26">
-                                                        Pet</label>
-                                                    <div id="cid_26" class="form-input-wide" data-layout="half">
-                                                        <input type="number" name="pet" data-type="input-number" class=" form-number-input form-textbox" data-defaultvalue="" style="width:310px" size="310" value="<?php echo getProspectData($hash, 'prospect_pet'); ?>" placeholder="ex: 1" data-component="number" aria-labelledby="label_26" step="any" />
-                                                    </div>
-                                                </li>
-
-                                                <li class="form-line" data-type="control_textarea" id="id_11">
-                                                    <label class="form-label form-label-top form-label-auto" id="label_11" for="input_11"> Extra info: </label>
-                                                    <div id="cid_11" class="form-input-wide" data-layout="full">
-                                                        <textarea id="input_11" name="extra" style="width:100%;height:150px" data-component="textarea" aria-labelledby="label_11"><?php echo getProspectData($hash, 'prospect_extra'); ?></textarea>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line" data-type="control_button" id="id_2">
-                                                    <div id="cid_2" class="form-input-wide" data-layout="full">
-                                                        <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
-                                                            <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="save">
-                                                                Save
-                                                            </button>
-                                                            <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="proceed">
-                                                                Continue
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </form>
-                                    </div>
+                                    </form>
 
                                 <?php }; ?>
 
-                                <?php if (isset($_POST['proceed'])) { ?>
+                                <?php if ($_POST['save'] == 'reference' || $_POST['save'] == 'PAG2') { ?>
 
-                                    <div class="p-5">
-                                        <div class="text-center">
-                                            <h1 class="text-dark mb-4">Prospect Application Area</h1>
-                                        </div>
-                                        <form method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="id" value="<?php echo $hash; ?>">
-                                            <input type="hidden" name="category" value="prospectID">
-                                            <ul class="form-section page-section">
-                                                <div id="subHeader_1" class="form-subHeader">
-                                                    <p>In order to be considered for an apartment, you need to upload the following documents:</p>
+                                    <form method="POST">
+                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                        <div class="container-fluid">
+                                            <div class="row d-flex justify-content-center align-items-center h-100">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="card-body text-black">
+
+                                                            <h4 class="mb-3">Work Reference</h4>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Employement Sector</label>
+                                                                    <select id="inputState" class="form-select" name="employementSector" required>
+                                                                        <?php if (getProfile('profileID', $profileID, 'employementSector') != null) { ?>
+                                                                            <option value="<?php echo getProfile('profileID', $profileID, 'employementSector'); ?>"><?php echo getProfile('profileID', $profileID, 'employementSector'); ?></option>
+                                                                        <?php }; ?>
+                                                                        <option>Choose</option>
+                                                                        <option value="Administration">Administration</option>
+                                                                        <option value="Construction">Construction</option>
+                                                                        <option value="Civil Service">Civil Service</option>
+                                                                        <option value="Domestic Worker">Domestic Worker</option>
+                                                                        <option value="Education">Education</option>
+                                                                        <option value="Engineering">Engineering</option>
+                                                                        <option value="Health Care">Health Care</option>
+                                                                        <option value="Hospitality">Hospitality</option>
+                                                                        <option value="Information&Technology">Information&Technology</option>
+                                                                        <option value="Oil&Gas">Oil&Gas</option>
+                                                                        <option value="Pharmaceutical">Pharmaceutical</option>
+                                                                        <option value="Professional Advisory">Professional Advisory</option>
+                                                                        <option value="Retail">Retail</option>
+                                                                        <option value="Self Employed">Self Employed</option>
+                                                                        <option value="Social Welfare">Social Welfare</option>
+                                                                        <option value="Property">Property</option>
+                                                                        <option value="Other">Other</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Employement Status</label>
+                                                                    <select id="inputState" class="form-select" name="employementStatus" required>
+                                                                        <?php if (getProfile('profileID', $profileID, 'employementStatus') != null) { ?>
+                                                                            <option value="<?php echo getProfile('profileID', $profileID, 'employementStatus'); ?>"><?php echo getProfile('profileID', $profileID, 'employementStatus'); ?></option>
+                                                                        <?php }; ?>
+                                                                        <option value="Choose">Choose</option>
+                                                                        <option value="Employed">Employed</option>
+                                                                        <option value="Retired">Retired</option>
+                                                                        <option value="Student">Student</option>
+                                                                        <option value="Home maker">Home maker</option>
+                                                                        <option value="Self Employed">Self Employed</option>
+                                                                        <option value="Part time Employment">Part time Employment</option>
+                                                                        <option value="Not Employed">Not Employed</option>
+                                                                        <option value="Other">Other</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Employed Since</label>
+                                                                    <input type="date" class="form-control" required name="employementSince" <?php if (getProfile('profileID', $profileID, 'employementSince') != null) echo 'value="' . getProfile('profileID', $profileID, 'employementSince') . '"';  ?>>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Name of Employeer</label>
+                                                                    <input type="text" class="form-control" required placeholder="Employer Name" name="employeer" <?php if (getProfile('profileID', $profileID, 'employeer') != null) echo 'value="' . getProfile('profileID', $profileID, 'employeer') . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Job Title</label>
+                                                                    <input type="text" class="form-control" required placeholder="Job Title" name="jobTitle" <?php if (getProfile('profileID', $profileID, 'jobTitle') != null) echo 'value="' . getProfile('profileID', $profileID, 'jobTitle') . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Employeer Phone Number</label>
+                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Net Income</label>
+                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "Your net income after tax(The salary paid into your account)"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Extra Income</label>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "Your extra income after tax"</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <h4 class="mb-3">Landlord Reference</h4>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Landlord Name</label>
+                                                                    <input type="text" class="form-control" placeholder="Landlord Name" name="landlordName" <?php if (getProfile('profileID', $profileID, 'landlordName') != null) echo 'value="' . getProfile('profileID', $profileID, 'landlordName') . '"';  ?>>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Contact Number</label>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="landlordPhone" <?php if (getProfile('profileID', $profileID, 'landlordPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'landlordPhone') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label for="inputState" class="form-label">Expected Notice</label>
+                                                                    <input type="date" class="form-control" required name="expectedNotice" <?php if (getProfile('profileID', $profileID, 'expectedNotice') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedNotice') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">Or expected move-in date"</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <ul class="list-inline wizard mb-0">
+                                                                <button type="submit" class="btn btn-primary" name="save" value="PAG1">Go Back</button>
+                                                                <button type="submit" class="btn btn-primary float-end" name="save" value="documents">Next</button>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <li id="cid_18" class="form-input-wide" data-type="control_head">
-                                                    <div class="form-header-group  header-default">
-                                                        <div class="header-text httal htvam">
-                                                            <h2 id="header_18" class="form-header" data-component="header">
-                                                                Upload ID
-                                                            </h2>
-                                                            <div id="subHeader_18" class="form-subHeader">
-                                                                <p>Please upload an image of your ID (Passport, driver licence, national ID)</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line jf-required">
-                                                    <label class="form-label form-label-top form-label-auto">
-                                                        ID
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_3" class="form-input-wide jf-required">
-                                                        <div data-wrapper-react="true">
-                                                            <span class="form-sub-label-container" style="vertical-align:top">
+                                            </div>
+                                        </div>
 
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div>
-                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_id'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_id'); ?></a>
-                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeID">X</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input class="form-control" type="file" name="ID">
-                                                                <label class="form-sub-label" style="min-height:13px" aria-hidden="false">The following files are accepted: 'jpg', 'jpeg', 'png', 'pdf', 'webp', 'docx', 'doc', 'xlsx', 'xls'.</label>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-
-                                                <li id="cid_18" class="form-input-wide" data-type="control_head">
-                                                    <div class="form-header-group  header-default">
-                                                        <div class="header-text httal htvam">
-                                                            <h2 id="header_18" class="form-header" data-component="header">
-                                                                Upload proof of income
-                                                            </h2>
-                                                            <div id="subHeader_18" class="form-subHeader">
-                                                                <p>Upload three months of recent bank statements (preferred), or three months of recent payslips as a proof of income</p>
-                                                                <p>Applications without proof of sufficient income will not be approved.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line jf-required" data-type="control_fullname" id="id_3">
-                                                    <label class="form-label form-label-top form-label-auto" id="label_3" for="first_3">
-                                                        Proof of income
-                                                        <span class="form-required">
-                                                            *
-                                                        </span>
-                                                    </label>
-                                                    <div id="cid_3" class="form-input-wide jf-required" data-layout="full">
-                                                        <div data-wrapper-react="true">
-                                                            <span class="form-sub-label-container" style="vertical-align:top" data-input-type="first">
-
-                                                                <p>
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div>
-                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment1'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment1'); ?></a>
-                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment1">X</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input class="form-control" type="file" name="applicantProofOfPayment1">
-                                                                </p>
-
-                                                                <p>
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div>
-                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment2'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment2'); ?></a>
-                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment2">X</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input class="form-control" type="file" name="applicantProofOfPayment2">
-                                                                </p>
-
-                                                                <p>
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div>
-                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment3'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment3'); ?></a>
-                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment3">X</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input class="form-control" type="file" name="applicantProofOfPayment3">
-                                                                </p>
-
-                                                                <p>
-                                                                <div class="card">
-                                                                    <div class="card-body">
-                                                                        <div>
-                                                                            <a href="features/uploads/<?php echo getProspectData($hash, 'prospect_attach_proofpayment4'); ?>" download><?php echo getProspectData($hash, 'prospect_attach_proofpayment4'); ?></a>
-                                                                            <button type="submit" class="btn btn-danger btn-sm" name="removeProofOfPayment4">X</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input class="form-control" type="file" name="applicantProofOfPayment4">
-                                                                </p>
-
-                                                                <label class="form-sub-label" for="first_3" id="sublabel_3_first" style="min-height:13px" aria-hidden="false">The following files are accepted: 'jpg', 'jpeg', 'png', 'pdf', 'webp', 'docx', 'doc', 'xlsx', 'xls'.</label>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="form-line" data-type="control_button" id="id_2">
-                                                    <div id="cid_2" class="form-input-wide" data-layout="full">
-                                                        <div data-align="left" class="form-buttons-wrapper form-buttons-left   jsTest-button-wrapperField">
-                                                            <button type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" name="upload">
-                                                                Upload files and Finish
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </form>
-                                    </div>
+                                    </form>
 
                                 <?php }; ?>
 
-                                <?php if (isset($_POST['upload'])) { ?>
+                                <?php if ($_POST['save'] == 'documents' || $_POST['save'] == 'uploadAttachments' || $_POST['save'] == 'removeProfileAttachments' || $_POST['save'] == 'PAG3') { ?>
 
-                                    <div class="p-5">
-                                        <div class="text-center">
-                                            <h1 class="text-dark mb-4">On-line Application</h1>
-                                        </div>
-                                        <input type="hidden" name="id" value="<?php echo $hash; ?>">
-                                        <input type="hidden" name="category" value="prospectID">
-                                        <ul class="form-section page-section">
-                                            <div id="subHeader_1" class="form-subHeader">
-                                                <p>Thank you <?php echo getProspectData($hash, 'prospect_full_name'); ?>.</p>
-                                                <p>Your online application has been submitted with succes!</p>
-                                                <p>One of our agents will be in touch shortly on your email address or phone number.</p>
-                                                <p>Please keep your application data updated and if you need you can come back using your personal link and edit or add more information.</p>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                        <div class="container-fluid">
+                                            <div class="row d-flex justify-content-center align-items-center h-100">
+                                                <div class="col">
+                                                    <div class="row g-0">
+                                                        <div class="card-body text-black">
+                                                            <h4 class="mb-3">Documents</h4>
+                                                            <p>On this section you will be required to upload your documents. Please note that all documents must be in PDF/JPG/JPEG format.</p>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md">
+                                                                    <label class="form-label">ID</label>
+                                                                    <input type="file" id="ID" class="form-control" name="ID[]">
+                                                                    <span class="font-13 text-muted">It can be a passport, driving licence, national ID, etc.<br>
+                                                                        One single file is allowed!</span>
+
+                                                                    <?php
+                                                                    require "config/config.php";
+
+                                                                    $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'profileID'";
+                                                                    $result = mysqli_query($link, $query);
+                                                                    while ($row = mysqli_fetch_array($result)) { ?>
+
+                                                                        <div class="card mb-1 shadow-none border">
+                                                                            <div class="p-2">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <div class="avatar-sm">
+                                                                                            <span class="avatar-title rounded">
+                                                                                                ID:<?php echo htmlspecialchars($row['fileNumber']); ?>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col ps-0">
+                                                                                        <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="text-muted fw-bold">View/Download</a>
+                                                                                    </div>
+                                                                                    <div class="col-auto">
+                                                                                        <!-- Button -->
+                                                                                        <form method="POST">
+                                                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                                <i class="fa fa-trash"></i>
+                                                                                            </button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md">
+                                                                    <label class="form-label">Landlord Reference</label>
+                                                                    <input type="file" class="form-control" name="landlordReference[]">
+                                                                    <?php
+
+                                                                    $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'landlordReferenceLetter'";
+                                                                    $result = mysqli_query($link, $query);
+                                                                    while ($row = mysqli_fetch_array($result)) { ?>
+
+                                                                        <div class="card mb-1 shadow-none border">
+                                                                            <div class="p-2">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <div class="avatar-sm">
+                                                                                            <span class="avatar-title rounded">
+                                                                                                LRL:<?php echo htmlspecialchars($row['fileNumber']); ?>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col ps-0">
+                                                                                        <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="text-muted fw-bold">View/Download</a>
+                                                                                    </div>
+                                                                                    <div class="col-auto">
+                                                                                        <!-- Button -->
+                                                                                        <form method="POST">
+                                                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                                <i class="fa fa-trash"></i>
+                                                                                            </button>
+                                                                                            <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="btn btn-link btn-lg text-muted">
+                                                                                                <i class="dripicons-download"></i>
+                                                                                            </a>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md">
+                                                                    <label class="form-label">Work Reference</label>
+                                                                    <input type="file" class="form-control" name="workReference[]">
+                                                                    <span class="font-13 text-muted">In a headed paper, stating your name, job title, employer name, annual income,and employer phone number.</span>
+                                                                    <?php
+
+                                                                    $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'workReferenceLetter'";
+                                                                    $result = mysqli_query($link, $query);
+                                                                    while ($row = mysqli_fetch_array($result)) { ?>
+
+                                                                        <div class="card mb-1 shadow-none border">
+                                                                            <div class="p-2">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <div class="avatar-sm">
+                                                                                            <span class="avatar-title rounded">
+                                                                                                WRF:<?php echo htmlspecialchars($row['fileNumber']); ?>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col ps-0">
+                                                                                        <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="text-muted fw-bold">View/Download</a>
+                                                                                    </div>
+                                                                                    <div class="col-auto">
+                                                                                        <!-- Button -->
+                                                                                        <form method="POST">
+                                                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                                <i class="fa fa-trash"></i>
+                                                                                            </button>
+                                                                                            <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="btn btn-link btn-lg text-muted">
+                                                                                                <i class="dripicons-download"></i>
+                                                                                            </a>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md">
+                                                                    <label class="form-label">Payslip</label>
+                                                                    <input class="form-control" type="file" id="formFileMultiple01" multiple="" name="payslip[]">
+                                                                    <span class="font-13 text-muted">The latest payslip(If it's monthly just one, if it's weekly, four, etc.)</span>
+                                                                    <?php
+
+                                                                    $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'payslip'";
+                                                                    $result = mysqli_query($link, $query);
+                                                                    while ($row = mysqli_fetch_array($result)) { ?>
+
+                                                                        <div class="card mb-1 shadow-none border">
+                                                                            <div class="p-2">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <div class="avatar-sm">
+                                                                                            <span class="avatar-title rounded">
+                                                                                                WRF:<?php echo htmlspecialchars($row['fileNumber']); ?>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col ps-0">
+                                                                                        <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="text-muted fw-bold">View/Download</a>
+                                                                                    </div>
+                                                                                    <div class="col-auto">
+                                                                                        <!-- Button -->
+                                                                                        <form method="POST">
+                                                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                                <i class="fa fa-trash"></i>
+                                                                                            </button>
+                                                                                            <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="btn btn-link btn-lg text-muted">
+                                                                                                <i class="dripicons-download"></i>
+                                                                                            </a>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row g-2">
+                                                                <div class="mb-3 col-md">
+                                                                    <label class="form-label">Bank Statement</label>
+                                                                    <input class="form-control" type="file" id="formFileMultiple01" multiple="" name="bankStatements[]">
+                                                                    <span class="font-13 text-muted">The latest bank statement, showing the entire last month.</span>
+                                                                    <?php
+
+                                                                    $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'bankStatements'";
+                                                                    $result = mysqli_query($link, $query);
+                                                                    while ($row = mysqli_fetch_array($result)) { ?>
+
+                                                                        <div class="card mb-1 shadow-none border">
+                                                                            <div class="p-2">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-auto">
+                                                                                        <div class="avatar-sm">
+                                                                                            <span class="avatar-title rounded">
+                                                                                                BS:<?php echo htmlspecialchars($row['fileNumber']); ?>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col ps-0">
+                                                                                        <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="text-muted fw-bold">View/Download</a>
+                                                                                    </div>
+                                                                                    <div class="col-auto">
+                                                                                        <!-- Button -->
+                                                                                        <form method="POST">
+                                                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                                <i class="fa fa-trash"></i>
+                                                                                            </button>
+                                                                                            <a href="features/uploads/profileAttachments/<?php echo htmlspecialchars($row['fileName']); ?>" class="btn btn-link btn-lg text-muted">
+                                                                                                <i class="dripicons-download"></i>
+                                                                                            </a>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+
+                                                            <ul class="list-inline wizard mb-0">
+                                                                <button type="submit" class="btn btn-primary" name="save" value="PAG2">Go Back</button>
+                                                                <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
+                                                                <button type="submit" class="btn btn-primary float-end" name="save" value="finish">Next</button>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </ul>
+                                        </div>
+                                    </form>
+
+                                <?php }; ?>
+
+                                <?php if ($_POST['save'] == 'finish' || $_POST['save'] == 'addApplicant' || $_POST['save'] == 'includeOccupant') { ?>
+
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                        <div class="container-fluid">
+                                            <div class="row d-flex justify-content-center align-items-center h-100">
+                                                <div class="col">
+                                                    <div class="row g-0">
+                                                        <div class="card-body text-black">
+
+                                                            <div class="p-5">
+                                                                <div class="text-center">
+                                                                    <h1 class="text-dark mb-4">On-line Application</h1>
+                                                                </div>
+                                                                <input type="hidden" name="id" value="<?php echo $hash; ?>">
+                                                                <input type="hidden" name="category" value="prospectID">
+                                                                <ul class="form-section page-section">
+                                                                    <div id="subHeader_1" class="form-subHeader">
+                                                                        <p>Thank you for applying with us <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>.</p>
+
+                                                                        <?php if(getProfile('profileID', $profileID, 'type') == 'M') { ?>
+
+                                                                        <p>Before you finish your online application, are you applying to live with another occupant?</p>
+                                                                        <p>
+                                                                            If so we will require that the second applicant also submit his data, to add another applicant click on the buttom bellow.<br>
+                                                                            <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
+                                                                            <br>
+                                                                        <div <?php if ($_POST['save'] != 'addApplicant') echo 'style="display:none;"'; ?>>
+                                                                            <div class="row g-2">
+                                                                                <div class="mb-3 col-md-4">
+                                                                                    <label class="form-label">First Name</label>
+                                                                                    <input type="text" name="occupantFirstName" class="form-control" placeholder="First Name" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                </div>
+
+                                                                                <div class="mb-3 col-md-3">
+                                                                                    <label class="form-label">Phone</label>
+                                                                                    <input type="text" name="occupantPhone" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                                </div>
+                                                                                <div class="mb-3 col-md-5">
+                                                                                    <label class="form-label">Email</label>
+                                                                                    <input type="email" name="occupantEmail" class="form-control" placeholder="Email" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                </div>
+                                                                            </div>
+                                                                            <button type="submit" class="btn btn-primary" name="save" value="includeOccupant">Save Occupant</button>
+                                                                        </div>
+                                                                        </p>
+                                                                        <p>
+                                                                        <table class="table">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Name</th>
+                                                                                    <th scope="col">Phone</th>
+                                                                                    <th scope="col">Email</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <?php
+                                                                                $query = "SELECT * FROM profile WHERE mainApplicantID = '$profileID'";
+                                                                                $result = mysqli_query($link, $query);
+                                                                                while ($row = mysqli_fetch_array($result)) {
+                                                                                    echo "<tr>
+                                                                            <td>" . htmlspecialchars($row['firstName']) . "</td>
+                                                                            <td>" . htmlspecialchars($row['mobilePhone']) . "</td>
+                                                                            <td>" . htmlspecialchars($row['email']) . "</td>
+                                                                            <td>" . htmlspecialchars($row['email']) . "</td>
+
+                                                                            </tr>";
+                                                                                }
+                                                                                ?>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        </p>
+
+                                                                        <?php } ?>
+                                                                    </div>
+                                                                </ul>
+                                                            </div>
+
+                                                            <ul class="list-inline wizard mb-0">
+                                                                <button type="submit" class="btn btn-primary" name="save" value="PAG3">Go Back</button>
+                                                                <button type="submit" class="btn btn-primary float-end" name="save" value="complete">Finish</button>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                <?php }; ?>
+
+                                <?php if ($_POST['save'] == 'complete') { ?>
+
+                                    <div class="container-fluid">
+                                        <div class="row d-flex justify-content-center align-items-center h-100">
+                                            <div class="col">
+                                                <div class="row g-0">
+                                                    <div class="card-body text-black">
+
+                                                        <div class="p-5">
+                                                            <div class="text-center">
+                                                                <h1 class="text-dark mb-4">On-line Application</h1>
+                                                            </div>
+                                                            <input type="hidden" name="id" value="<?php echo $hash; ?>">
+                                                            <input type="hidden" name="category" value="prospectID">
+                                                            <ul class="form-section page-section">
+                                                                <div id="subHeader_1" class="form-subHeader">
+                                                                    <p>Your online application has been submitted with succes!</p>
+                                                                    <p>One of our agents will be in touch shortly on your email address or phone number.</p>
+                                                                    <p>Please keep your application data updated and if you need you can come back and edit again using your e-mail address.</p>
+                                                                </div>
+                                                            </ul>
+                                                        </div>
+
+                                                        <ul class="list-inline wizard mb-0">
+                                                            <input type="button" value="Go back" class="btn btn-primary" onclick="history.back()">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 <?php }; ?>

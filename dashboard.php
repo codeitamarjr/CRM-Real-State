@@ -31,8 +31,14 @@ if (!isset($_GET['access'])) {
     $content =   $_GET['access'];
 
 //to pass to child pages
-$page =   $_GET['page'];
-$message_id = $_GET['message_id'];
+if(!isset($_GET['page'])){
+    $page =  $_GET['page'];
+}
+if(!$_GET['message_id']){
+    $message_id = $_GET['message_id'];
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -69,6 +75,7 @@ $message_id = $_GET['message_id'];
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboard.php"><i class="fas fa-tachometer-alt" style="font-size: 20px;"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboard.php?access=enquiries"><i class="fa fa-list" style="font-size: 20px;"></i><span>Enquiries</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'applications') { echo 'active';}?>" href="dashboard.php?access=applications"><i class="fa fa-address-card" style="font-size: 20px;"></i><span>Applicationss</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboard.php?access=tenants"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'unitsView') { echo 'active';}?>" href="dashboard.php?access=unitsView"><i class="fa fa-building-o" style="font-size: 20px;"></i><span>Units</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboard.php?access=report"><i class="fa fa-file-excel-o" style="font-size: 20px;"></i><span>Reports</span></a></li>

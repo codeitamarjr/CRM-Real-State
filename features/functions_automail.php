@@ -1,11 +1,11 @@
 <?php
 
 
-function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sender_name,$automail_id,$status){
+function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sender_name,$prs_code,$status){
     require "config/config.php";
     require "features/functions_prs.php";
     //select message from automail_id
-    $query = "SELECT * FROM automail WHERE automail_id = '$automail_id' OR automail_autosender = '$status'";
+    $query = "SELECT * FROM automail WHERE prs_code = '$prs_code' AND automail_autosender = '$status'";
     $result = mysqli_query($link, $query);
     while ($row = mysqli_fetch_array($result)) {
         //Creates a loop to loop through results
@@ -18,7 +18,6 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
     $message = str_replace('%propertyOfficePhone%', getPropertyData($_SESSION["property_code"],'office_phone') , $message);
     $message = str_replace('%PropertyOfficeEmail%', getPropertyData($_SESSION["property_code"],'office_email') , $message);
     $message = str_replace('%PropertyOfficeAddress%', getPropertyData($_SESSION["property_code"],'office_address') , $message);
-
     $message = str_replace('%prospectName%', $name , $message);
     $message = str_replace('%prospectEmail%', $email_adress , $message); 
     $base_mail = getAutomail($automail_id,'automail_website');
@@ -30,6 +29,7 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
     $message = str_replace('%prsLogo%', $base_mail . '/features/uploads/' . getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_logo') , $message);
     $message = str_replace('%propertyLogo%', $base_mail . '/features/uploads/' . getPropertyData($_SESSION["property_code"],'property_logo') , $message);
 
+    //require "composer.SES.php";
     require "email_sending.php";
     mysqli_close($link);
 }

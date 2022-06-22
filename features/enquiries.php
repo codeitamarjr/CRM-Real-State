@@ -129,16 +129,6 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";
-                            //Check if the prospect fillout his data on prospect table, if so shows an clickable link to show his profile
-                            $message_hash = $row['message_hash'];
-                            $query_prospect = "SELECT * FROM prospect WHERE hash = '$message_hash'";
-                            $result_prospect = mysqli_query($link, $query_prospect);
-                            while ($row_prospect = mysqli_fetch_array($result_prospect)) {
-                                $hash = $row_prospect['hash'];
-                                if (!empty($hash)) {
-                                    echo '<a data-toggle="tooltip" title="This application has been received"><i class="fa fa-address-card"></i></a>';
-                                }
-                            };
                             echo "</td>
     <td>" . htmlspecialchars($row['message_date']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>

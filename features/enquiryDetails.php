@@ -3,7 +3,8 @@
 //Load automail functions
 require "functions_automail.php";
 require "config/config.php";
-include "features/functions_prospect.php";
+
+$message_id = $_GET['message_id'];
 
 //select all data from the mail_income sql table
 
@@ -16,8 +17,6 @@ $hash = getMessage('message_id', $message_id, 'message_hash');
 $name = getMessage('message_id', $message_id, 'message_sender_name');
 $property = getMessage('message_id', $message_id, 'property_code');
 
-
-$message_id = $_GET['message_id'];
 
 //Check if there's a status to change on this message
 if (!isset($_GET['outcome'])) {
@@ -157,7 +156,7 @@ else if ($_GET['outcome'] == 'Approved') {
                 <center>
                    ';
     $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, $property_name, $from, $from, '', 'welcome');
+    sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'welcome');
     echo '
                 </center></div>
             </div>
@@ -552,6 +551,6 @@ if ($_POST['outcome'] == 'newTenant') {
 <p>
 
     <?php
-    include "prospect_details.php";
+    //include "prospect_details.php";
     ?>
 </p>
