@@ -211,7 +211,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">PPS Number</label>
-                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "xxxxxx-xx"</span>
                                                                 </div>
                                                             </div>

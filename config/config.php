@@ -1,6 +1,6 @@
 <?php
 /* Database credentials.*/
-include "settings.php";
+include __DIR__ . "/settings.php";
 define('DB_SERVER', $HOST);
 define('DB_USERNAME', $USERNAME);
 define('DB_PASSWORD', $DBPASSWORD);

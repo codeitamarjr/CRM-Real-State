@@ -2,7 +2,8 @@
 
 function getPRSData($PRSCode, $rowName)
 {
-    require "config/config.php";
+    include "config/config.php";
+    include "../config/config.php";
     $query = "SELECT * FROM estate_agency WHERE (prs_code = '$PRSCode')";
     $result = mysqli_query($link, $query);
     if (mysqli_query($link, $query)) {

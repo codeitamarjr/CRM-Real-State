@@ -60,7 +60,7 @@
                         <a class="dropdown-item" href="dashboard.php?access=prsSettings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;PRS Settings</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property_add"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Create Property</a>
                         <a class="dropdown-item" href="dashboard.php?access=manage_property"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Property Settings</a>
-                        <a class="dropdown-item" href="/features/getting_email.php" target="_blank"><i class="fas fa-file-import fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Fetching Emails</a>
+                        <a class="dropdown-item" href="/features/fetchingEmail.php" target="_blank"><i class="fas fa-file-import fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Fetching Emails</a>
                         <a class="dropdown-item" href="dashboard.php?access=system_settings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;System Settings</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>

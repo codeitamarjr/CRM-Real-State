@@ -10,7 +10,8 @@ require_once __DIR__ . '/PHPMailer/src/Exception.php';
 require_once __DIR__ . '/PHPMailer/src/PHPMailer.php';
 require_once __DIR__ . '/PHPMailer/src/SMTP.php';
 
-require "config/config.php";
+include "config/config.php";
+include "../config/config.php";
 //Load email settings from DB
 $property_code = $_SESSION["property_code"];
 $query = "SELECT * FROM property WHERE property_code = $property_code";
@@ -34,7 +35,7 @@ while ($row = mysqli_fetch_array($result)) {
 
 // Replace recipient@example.com with a "To" address. If your account
 // is still in the sandbox, this address must be verified.
-$recipient = 'contact@realenquiries.com';
+//$recipient = 'contact@realenquiries.com';
 
 // Replace smtp_username with your Amazon SES SMTP user name.
 //$usernameSmtp = '';
@@ -75,7 +76,7 @@ try {
     $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
 
     // Specify the message recipients.
-    $mail->addAddress($recipient);
+    $mail->addAddress($email_adress, $message_sender_name);
     // You can also add CC, BCC, and additional To recipients here.
 
     // Specify the content of the message.

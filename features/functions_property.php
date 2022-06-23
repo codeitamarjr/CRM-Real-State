@@ -17,6 +17,23 @@ function getPropertyData($property_code, $rowName)
     mysqli_close($link);
 }
 
+function getPropertyDataConditional($conditional, $test, $rowReturn)
+{
+    include "config/config.php";
+    include "../config/config.php";
+
+    $query = "SELECT * FROM property WHERE $conditional = '$test'";
+    $result = mysqli_query($link, $query);
+    if ($result) {
+        while ($row = mysqli_fetch_array($result)) {
+            return $row[$rowReturn];
+        }
+    } else {
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+    }
+    mysqli_close($link);
+}
+
 function setPropertyData($property_code, $rowName, $newData)
 {
     require "config/config.php";

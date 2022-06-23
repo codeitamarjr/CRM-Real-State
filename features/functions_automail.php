@@ -2,8 +2,9 @@
 
 
 function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sender_name,$prs_code,$status){
-    require "config/config.php";
-    require "features/functions_prs.php";
+    include "config/config.php";
+    include __DIR__ ."/functions_prs.php";
+    include "../config/config.php";
     //select message from automail_id
     $query = "SELECT * FROM automail WHERE prs_code = '$prs_code' AND automail_autosender = '$status'";
     $result = mysqli_query($link, $query);
@@ -21,7 +22,7 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
     $message = str_replace('%prospectName%', $name , $message);
     $message = str_replace('%prospectEmail%', $email_adress , $message); 
     $base_mail = getAutomail($automail_id,'automail_website');
-    $message = str_replace('%link%', ''.$base_mail.'/prospect_area.php?key='.$hash.'', $message);
+    $message = str_replace('%link%', ''.$base_mail.'/prospect_area.php?propertyCode='.$prs_code.'', $message);
     $message = str_replace('%prsName%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_name') , $message);
     $message = str_replace('%prsPhone%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_phone') , $message);
     $message = str_replace('%prsEmail%', getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_email') , $message);
@@ -29,8 +30,9 @@ function sendAutomail($name ,$hash ,$property_name,$email_adress, $message_sende
     $message = str_replace('%prsLogo%', $base_mail . '/features/uploads/' . getPRSData(getPropertyData($_SESSION["property_code"],'property_prs_code'),'prs_logo') , $message);
     $message = str_replace('%propertyLogo%', $base_mail . '/features/uploads/' . getPropertyData($_SESSION["property_code"],'property_logo') , $message);
 
-    //require "composer.SES.php";
-    require "email_sending.php";
+    include "composer.SES.php";
+    include "../composer.SES.php";
+    //require "email_sending.php";
     mysqli_close($link);
 }
 
@@ -46,7 +48,8 @@ function setAutomail($automail_id,$rowName,$newData){
 }
 
 function getAutomail($automail_id,$rowName){
-    require "config/config.php";
+    include "config/config.php";
+    include "../config/config.php";
     $query = "SELECT * FROM automail WHERE (automail_id = '$automail_id')";
     $result = mysqli_query($link, $query);
     if ($result) {
