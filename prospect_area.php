@@ -201,7 +201,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
 
                                                                 <div class="mb-3 col-md-3">
                                                                     <label class="form-label">Postal Code</label>
-                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="A00-AAAA" maxlength="7" name="postalCode" <?php if (getProfile('profileID', $profileID, 'postalCode') != null) echo 'value="' . getProfile('profileID', $profileID, 'postalCode') . '"';  ?>>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="A00-AAAA" maxlength="7" name="postalCode" <?php if (getProfile('profileID', $profileID, 'postalCode') != null) echo 'value="' . getProfile('profileID', $profileID, 'postalCode') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "xxx-xxxx"</span><br>
                                                                     <span class="font-13 text-muted"><a href="https://finder.eircode.ie/" target="_blank">Find Eircode</a></span>
                                                                 </div>
@@ -356,21 +356,21 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Employeer Phone Number</label>
-                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
                                                                 </div>
 
                                                             </div>
                                                             <div class="row g-2">
                                                                 <div class="mb-3 col-md-4">
-                                                                    <label class="form-label">Net Income</label>
+                                                                    <label class="form-label">Net Income Monthly</label>
                                                                     <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
-                                                                    <span class="font-13 text-muted">e.g "Your net income after tax(The salary paid into your account)"</span>
+                                                                    <span class="font-13 text-muted">e.g "Your net income after tax(The salary paid into your bank account monthly)"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Extra Income</label>
                                                                     <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
-                                                                    <span class="font-13 text-muted">e.g "Your extra income after tax"</span>
+                                                                    <span class="font-13 text-muted">e.g "Extra income that came into your bank statement"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Social Housing Support</label>
@@ -387,7 +387,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                             <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>></p>
                                                                         </label>
                                                                     </div>
-                                                                    <span class="font-13 text-muted">e.g "Do you receive any allowance?"</span>
+                                                                    <span class="font-13 text-muted">e.g "Housing Assistance Payment or Homeless Housing Assistance Payment"</span>
                                                                 </div>
                                                             </div>
 
@@ -398,14 +398,14 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <input type="text" class="form-control" placeholder="Landlord Name" name="landlordName" <?php if (getProfile('profileID', $profileID, 'landlordName') != null) echo 'value="' . getProfile('profileID', $profileID, 'landlordName') . '"';  ?>>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
-                                                                    <label class="form-label">Contact Number</label>
+                                                                    <label class="form-label">Landlord Phone Number</label>
                                                                     <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="landlordPhone" <?php if (getProfile('profileID', $profileID, 'landlordPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'landlordPhone') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label for="inputState" class="form-label">Expected Notice</label>
-                                                                    <input type="date" class="form-control" required name="expectedNotice" <?php if (getProfile('profileID', $profileID, 'expectedNotice') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedNotice') . '"';  ?>>
-                                                                    <span class="font-13 text-muted">Or expected move-in date"</span>
+                                                                    <input type="date" class="form-control" name="expectedNotice" <?php if (getProfile('profileID', $profileID, 'expectedNotice') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedNotice') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">If you gave a notice to your currently landlord, when you must leave the property?"</span>
                                                                 </div>
                                                             </div>
 
