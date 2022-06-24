@@ -47,7 +47,7 @@ $result = mysqli_query($link, $query);
             </p>
         </div>
         <div class="card-body">
-                <table id="dataTable" class="table dt-responsive" style="width:100%">
+                <table id="dataTable" class="table dt-responsive nowrap" style="width:100%">
                     <thead>
                         <tr>
                             <th>Property</th>
@@ -57,10 +57,11 @@ $result = mysqli_query($link, $query);
                             <th>Block</th>
                             <th>Unit</th>
                             <th>Floor</th>
+                            <th>Bed</th>
                             <th>Type</th>
                             <th>Eircode</th>
                             <th>Address</th>
-                            <th>Availability Date</th>
+                            <th>Availability</th>
                             <th>Rent</th>
                             <th>Status</th>
                         </tr>
@@ -75,6 +76,7 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
     <td>" . htmlspecialchars($row['floor']) . "</td>
+    <td>" . htmlspecialchars($row['bedrooms']) . "</td>
     <td>" . htmlspecialchars($row['type']) . "</td>
     <td>" . htmlspecialchars($row['postal_code']) . "</td>
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_address')) . "</td>
@@ -97,10 +99,11 @@ $result = mysqli_query($link, $query);
                             <th>Block</th>
                             <th>Unit</th>
                             <th>Floor</th>
+                            <th>Bed</th>
                             <th>Type</th>
                             <th>Eircode</th>
                             <th>Address</th>
-                            <th>Availability Date</th>
+                            <th>Availability</th>
                             <th>Rent</th>
                             <th>Status</th>
                         </tr>

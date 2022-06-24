@@ -158,7 +158,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND property_code = ' . $property_codeNavSelector) . ',';
                             echo ',';
                         }
                         ?>
@@ -170,7 +170,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\' AND property_code = ' . $property_codeNavSelector) . ',';
                             echo ',';
                         }
                         ?>
@@ -181,7 +181,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\' AND property_code = ' . $property_codeNavSelector) . ',';
                             echo ',';
                         }
                         ?>
@@ -192,7 +192,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     data: [
                         <?php
                         for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\'');
+                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\' AND property_code = ' . $property_codeNavSelector) . ',';
                             echo ',';
                         }
                         ?>

@@ -64,12 +64,12 @@ else if ($_GET['outcome'] == 'Approved') {
                    ';
     echo setMessage($message_id, 'status', $outcome);
     $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, $property_name, $from, $from, '', 'viewing');
+    sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'viewing');
     echo '
 
     <p> Redirect in <span id="countdowntimer">3 </span> seconds</p>
     <meta http-equiv="refresh" content="3;?access=enquiries" />
-<script type="text/javascript">
+    <script type="text/javascript">
     var timeleft = 5;
     var downloadTimer = setInterval(function(){
     timeleft--;
@@ -77,7 +77,7 @@ else if ($_GET['outcome'] == 'Approved') {
     if(timeleft <= 0)
         clearInterval(downloadTimer);
     },1000);
-</script>
+    </script>
                 </center></div>
             </div>
         </div>
@@ -102,7 +102,7 @@ else if ($_GET['outcome'] == 'Approved') {
                    ';
     echo setMessage($message_id, 'status', $outcome);
     $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, '', $from, $from, '', 'denied');
+    sendAutomail($name, $hash, '', $from, $from, $_SESSION["property_code"], 'denied');
     echo '
                 </center></div>
             </div>

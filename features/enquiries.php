@@ -1,6 +1,7 @@
 <?php
 // Include config file
 require "config/config.php";
+require "features/functions_profile.php";
 //Get property code definied at the start of the login SESSION
 $property_code = $_SESSION["property_code"];
 
@@ -107,7 +108,7 @@ $result = mysqli_query($link, $query);
                             <th>Property</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Status</th>
+                            <th>App</th>
                             <th>Date Received</th>
                             <th>Status</th>
                         </tr>
@@ -128,7 +129,11 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name'))  . "</td>
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
-    <td>";
+    <td>";  if(getProfile('email',$row['messages_email'],'propertyCode') == $_SESSION["property_code"])echo '<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="This prospect already submitted his application, click to view.">
+    <a href="?access=applicationsDetail&profileID='.getProfile('email',$row['messages_email'],'profileID').'" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
+        <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+        <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+      </svg></a></span>';
                             echo "</td>
     <td>" . htmlspecialchars($row['message_date']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
@@ -142,7 +147,7 @@ $result = mysqli_query($link, $query);
                             <td><strong>Property</strong></td>
                             <td><strong>Name</strong></td>
                             <td><strong>E-mail</strong></td>
-                            <td><strong>Status</strong></td>
+                            <td><strong>App</strong></td>
                             <td><strong>Date Received</strong></td>
                             <td><strong>Status</strong></td>
                         </tr>

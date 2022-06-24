@@ -97,7 +97,6 @@ if ($_FILES['picture']['name'] != null) {
 <div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Property Editor</h3>
-        <?php require "nav_bar_selector_property.php"; ?>
     </div>
 
 

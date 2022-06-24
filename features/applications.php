@@ -6,6 +6,8 @@ require "config/config.php";
 $property_code = $_SESSION["property_code"];
 
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/r-2.3.0/sb-1.3.4/sr-1.1.1/datatables.min.css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
@@ -24,6 +26,9 @@ $property_code = $_SESSION["property_code"];
                     <tr>
                         <th>Property</th>
                         <th>First Name</th>
+                        <th>Sector</th>
+                        <th>Position</th>
+                        <th>Salary</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,9 +37,12 @@ $property_code = $_SESSION["property_code"];
                     $result = mysqli_query($link, $query);
                     while ($row = mysqli_fetch_array($result)) {
                         $tenantscod = $row['tenantscod'];
-                        echo "<tr class=\"showsRow\" href=\"?access=applicationsDetail&profileID=". htmlspecialchars($row['profileID']) ."\" \">
+                        echo "<tr class=\"showsRow\" onclick=\"location.href='?access=applicationsDetail&profileID=". htmlspecialchars($row['profileID']) ."'\" >
     <td>" . htmlspecialchars(getPropertyData($row['propertyCode'],'property_name')) . "</td>
     <td>" . htmlspecialchars($row['firstName']) . "</td>
+    <td>" . htmlspecialchars($row['employementSector']) . "</td>
+    <td>" . htmlspecialchars($row['jobTitle']) . "</td>
+    <td>" . htmlspecialchars($row['netIncome']+$row['extraIncome']) . "</td>
     </tr>";
                     } ?>
                 </tbody>
@@ -42,6 +50,9 @@ $property_code = $_SESSION["property_code"];
                     <tr>
                         <th>Property</th>
                         <th>First Name</th>
+                        <th>Sector</th>
+                        <th>Position</th>
+                        <th>Salary</th>
                     </tr>
                 </tfoot>
             </table>
@@ -61,14 +72,6 @@ $property_code = $_SESSION["property_code"];
 
         });
     });
-
-    //Handle row clicks
-    $(document).ready(function(){
-    $('table tr').click(function(){
-        window.location = $(this).attr('href');
-        return false;
-    });
-}); 
 </script>
 
 <style>
