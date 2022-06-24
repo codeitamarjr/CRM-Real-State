@@ -29,36 +29,39 @@ if ($_POST['save'] == 'reference') {
     //Set profileID
     $profileID = $_POST['profileID'];
     //Set values to the profile
-    if($_POST['firstName'] != null) setProfile($profileID, 'firstName', $_POST['firstName']);
-    if($_POST['lastName'] != null) setProfile($profileID, 'lastName', $_POST['lastName']);
-    if($_POST['address'] != null) setProfile($profileID, 'address', $_POST['address']);
-    if($_POST['city'] != null) setProfile($profileID, 'city', $_POST['city']);
-    if($_POST['postalCode'] != null) setProfile($profileID, 'postalCode', $_POST['postalCode']);
-    if($_POST['DOB'] != null) setProfile($profileID, 'DOB', $_POST['DOB']);
-    if($_POST['ppsNumber'] != null) setProfile($profileID, 'ppsNumber', $_POST['ppsNumber']);
-    if($_POST['expectedMoveinDate'] != null) setProfile($profileID, 'expectedMoveinDate', $_POST['expectedMoveinDate']);
-    if($_POST['carParking'] != null) setProfile($profileID, 'carParking', $_POST['carParking']);
-    if($_POST['pet'] != null) setProfile($profileID, 'pet', $_POST['pet']);
-    if($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
-    if($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
-    if($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
-    if($_POST['notes'] != null) setProfile($profileID, 'notes', $_POST['notes']);
+    if ($_POST['firstName'] != null) setProfile($profileID, 'firstName', $_POST['firstName']);
+    if ($_POST['lastName'] != null) setProfile($profileID, 'lastName', $_POST['lastName']);
+    if ($_POST['address'] != null) setProfile($profileID, 'address', $_POST['address']);
+    if ($_POST['city'] != null) setProfile($profileID, 'city', $_POST['city']);
+    if ($_POST['postalCode'] != null) setProfile($profileID, 'postalCode', $_POST['postalCode']);
+    if ($_POST['DOB'] != null) setProfile($profileID, 'DOB', $_POST['DOB']);
+    if ($_POST['ppsNumber'] != null) setProfile($profileID, 'ppsNumber', $_POST['ppsNumber']);
+    if ($_POST['children'] != null) setProfile($profileID, 'children', $_POST['children']);
+    if ($_POST['expectedMoveinDate'] != null) setProfile($profileID, 'expectedMoveinDate', $_POST['expectedMoveinDate']);
+    if ($_POST['carParking'] != null) setProfile($profileID, 'carParking', $_POST['carParking']);
+    if ($_POST['pet'] != null) setProfile($profileID, 'pet', $_POST['pet']);
+    if ($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
+    if ($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
+    if ($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
+    if ($_POST['notes'] != null) setProfile($profileID, 'notes', $_POST['notes']);
 };
 if ($_POST['save'] == 'documents' || $_POST['save'] == 'PAG1') {
     //Set profileID
     $profileID = $_POST['profileID'];
     //Set values to the profile
-    if($_POST['employementSector'] != null) setProfile($profileID, 'employementSector', $_POST['employementSector']);
-    if($_POST['employementStatus'] != null) setProfile($profileID, 'employementStatus', $_POST['employementStatus']);
-    if($_POST['employementSince'] != null) setProfile($profileID, 'employementSince', $_POST['employementSince']);
-    if($_POST['employeer'] != null) setProfile($profileID, 'employeer', $_POST['employeer']);
-    if($_POST['jobTitle'] != null) setProfile($profileID, 'jobTitle', $_POST['jobTitle']);
-    if($_POST['employerPhone'] != null) setProfile($profileID, 'employerPhone', $_POST['employerPhone']);
-    if($_POST['netIncome'] != null) setProfile($profileID, 'netIncome', $_POST['netIncome']);
-    if($_POST['extraIncome'] != null) setProfile($profileID, 'extraIncome', $_POST['extraIncome']);
-    if($_POST['landlordName'] != null) setProfile($profileID, 'landlordName', $_POST['landlordName']);
-    if($_POST['landlordPhone'] != null) setProfile($profileID, 'landlordPhone', $_POST['landlordPhone']);
-    if($_POST['expectedNotice'] != null) setProfile($profileID, 'expectedNotice', $_POST['expectedNotice']);
+    if ($_POST['employementSector'] != null) setProfile($profileID, 'employementSector', $_POST['employementSector']);
+    if ($_POST['employementStatus'] != null) setProfile($profileID, 'employementStatus', $_POST['employementStatus']);
+    if ($_POST['employementSince'] != null) setProfile($profileID, 'employementSince', $_POST['employementSince']);
+    if ($_POST['employeer'] != null) setProfile($profileID, 'employeer', $_POST['employeer']);
+    if ($_POST['jobTitle'] != null) setProfile($profileID, 'jobTitle', $_POST['jobTitle']);
+    if ($_POST['employerPhone'] != null) setProfile($profileID, 'employerPhone', $_POST['employerPhone']);
+    if ($_POST['netIncome'] != null) setProfile($profileID, 'netIncome', $_POST['netIncome']);
+    if ($_POST['extraIncome'] != null) setProfile($profileID, 'extraIncome', $_POST['extraIncome']);
+    if ($_POST['HAP'] != null) setProfile($profileID, 'HAP', $_POST['HAP']);
+    if ($_POST['HAPAllowance'] != null) setProfile($profileID, 'HAPAllowance', $_POST['HAPAllowance']);
+    if ($_POST['landlordName'] != null) setProfile($profileID, 'landlordName', $_POST['landlordName']);
+    if ($_POST['landlordPhone'] != null) setProfile($profileID, 'landlordPhone', $_POST['landlordPhone']);
+    if ($_POST['expectedNotice'] != null) setProfile($profileID, 'expectedNotice', $_POST['expectedNotice']);
 };
 
 
@@ -72,11 +75,11 @@ if ($_POST['save'] == 'uploadAttachments' || $_POST['save'] == 'finish' || $_POS
         require "features/functions_upload.php";
 
         //Upload the file
-        if($_FILES['ID'] != null) uploadProfileAttachments($profileID, 'ID of the Applicant', $_FILES['ID'], 'ID', 'profileID');
-        if($_FILES['landlordReference'] != null) uploadProfileAttachments($profileID, 'Landlord Reference Letter', $_FILES['landlordReference'], 'landlordReference', 'landlordReferenceLetter');
-        if($_FILES['workReference'] != null) uploadProfileAttachments($profileID, 'Work Reference Letter', $_FILES['workReference'], 'workReference', 'workReferenceLetter');
-        if($_FILES['payslip'] != null) uploadProfileAttachments($profileID, 'Payslip', $_FILES['payslip'], 'payslip', 'payslip');
-        if($_FILES['bankStatements'] != null) uploadProfileAttachments($profileID, 'Bank Statements', $_FILES['bankStatements'], 'bankStatements', 'bankStatements');
+        if ($_FILES['ID'] != null) uploadProfileAttachments($profileID, 'ID of the Applicant', $_FILES['ID'], 'ID', 'profileID');
+        if ($_FILES['landlordReference'] != null) uploadProfileAttachments($profileID, 'Landlord Reference Letter', $_FILES['landlordReference'], 'landlordReference', 'landlordReferenceLetter');
+        if ($_FILES['workReference'] != null) uploadProfileAttachments($profileID, 'Work Reference Letter', $_FILES['workReference'], 'workReference', 'workReferenceLetter');
+        if ($_FILES['payslip'] != null) uploadProfileAttachments($profileID, 'Payslip', $_FILES['payslip'], 'payslip', 'payslip');
+        if ($_FILES['bankStatements'] != null) uploadProfileAttachments($profileID, 'Bank Statements', $_FILES['bankStatements'], 'bankStatements', 'bankStatements');
     }
 };
 
@@ -93,7 +96,7 @@ if ($_POST['save'] == 'removeProfileAttachments') {
     removeProfileAttachments($profileID, $idprofileAttachments, $fileNumber, $category);
 };
 
-if ($_POST['save'] == 'finish' || $_POST['save'] == 'addApplicant' || $_POST['save'] == 'PAG2' ) {
+if ($_POST['save'] == 'finish' || $_POST['save'] == 'addApplicant' || $_POST['save'] == 'PAG2') {
     //Set profileID
     $profileID = $_POST['profileID'];
 };
@@ -102,7 +105,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
     //Set profileID
     $profileID = $_POST['profileID'];
     //Create a new profile for occupant
-    if($_POST['occupantFirstName'] != null) insertProfileOccupant($propertyCode, $profileID, 'O', $_POST['occupantEmail'], $_POST['occupantFirstName'], $_POST['occupantPhone']);
+    if ($_POST['occupantFirstName'] != null) insertProfileOccupant($propertyCode, $profileID, 'O', $_POST['occupantEmail'], $_POST['occupantFirstName'], $_POST['occupantPhone']);
 };
 
 ?>
@@ -211,8 +214,13 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">PPS Number</label>
-                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
+                                                                    <input type="number" class="form-control" data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "xxxxxx-xx"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-3">
+                                                                    <label class="form-label">Childrens</label>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" maxlength="1" name="children" <?php if (getProfile('profileID', $profileID, 'children') != null) echo 'value="' . getProfile('profileID', $profileID, 'children') . '"';  ?>>
+                                                                    <span class="font-13 text-muted">Any occupant below 18 years old</span>
                                                                 </div>
                                                             </div>
 
@@ -363,6 +371,23 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <label class="form-label">Extra Income</label>
                                                                     <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "Your extra income after tax"</span>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Social Housing Support</label>
+                                                                    <label>No
+                                                                        <input type="radio" name="HAP" id="fixHeight" value="Market" <?php if(getProfile('profileID', $profileID, 'HAP') == "Market") echo 'checked';?>>
+                                                                    </label>
+                                                                    <label>HAP
+                                                                        <input type="radio" name="HAP" id="adjustableHeight" value="HAP" <?php if(getProfile('profileID', $profileID, 'HAP') == "HAP") echo 'checked';?>>
+                                                                    </label>
+                                                                    <br>
+                                                                    <div id="<?php if(getProfile('profileID', $profileID, 'HAP') == "Market") echo 'max-height';?>">
+                                                                        <label>
+                                                                            <p>HAP Allowance<br>
+                                                                            <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>></p>
+                                                                        </label>
+                                                                    </div>
+                                                                    <span class="font-13 text-muted">e.g "Do you receive any allowance?"</span>
                                                                 </div>
                                                             </div>
 
@@ -669,59 +694,59 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <div id="subHeader_1" class="form-subHeader">
                                                                         <p>Thank you for applying with us <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>.</p>
 
-                                                                        <?php if(getProfile('profileID', $profileID, 'type') == 'M') { ?>
+                                                                        <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
 
-                                                                        <p>Before you finish your online application, are you applying to live with another occupant?</p>
-                                                                        <p>
-                                                                            If so we will require that the second applicant also submit his data, to add another applicant click on the buttom bellow.<br>
-                                                                            <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
-                                                                            <br>
-                                                                        <div <?php if ($_POST['save'] != 'addApplicant') echo 'style="display:none;"'; ?>>
-                                                                            <div class="row g-2">
-                                                                                <div class="mb-3 col-md-4">
-                                                                                    <label class="form-label">First Name</label>
-                                                                                    <input type="text" name="occupantFirstName" class="form-control" placeholder="First Name" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                </div>
+                                                                            <p>Before you finish your online application, are you applying to live with another occupant?</p>
+                                                                            <p>
+                                                                                If so we will require that the second applicant also submit his data, to add another applicant click on the buttom bellow.<br>
+                                                                                <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
+                                                                                <br>
+                                                                            <div <?php if ($_POST['save'] != 'addApplicant') echo 'style="display:none;"'; ?>>
+                                                                                <div class="row g-2">
+                                                                                    <div class="mb-3 col-md-4">
+                                                                                        <label class="form-label">First Name</label>
+                                                                                        <input type="text" name="occupantFirstName" class="form-control" placeholder="First Name" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                    </div>
 
-                                                                                <div class="mb-3 col-md-3">
-                                                                                    <label class="form-label">Phone</label>
-                                                                                    <input type="text" name="occupantPhone" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                    <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                                    <div class="mb-3 col-md-3">
+                                                                                        <label class="form-label">Phone</label>
+                                                                                        <input type="text" name="occupantPhone" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                        <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                                    </div>
+                                                                                    <div class="mb-3 col-md-5">
+                                                                                        <label class="form-label">Email</label>
+                                                                                        <input type="email" name="occupantEmail" class="form-control" placeholder="Email" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div class="mb-3 col-md-5">
-                                                                                    <label class="form-label">Email</label>
-                                                                                    <input type="email" name="occupantEmail" class="form-control" placeholder="Email" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                </div>
+                                                                                <button type="submit" class="btn btn-primary" name="save" value="includeOccupant">Save Occupant</button>
                                                                             </div>
-                                                                            <button type="submit" class="btn btn-primary" name="save" value="includeOccupant">Save Occupant</button>
-                                                                        </div>
-                                                                        </p>
-                                                                        <p>
-                                                                        <table class="table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th scope="col">Name</th>
-                                                                                    <th scope="col">Phone</th>
-                                                                                    <th scope="col">Email</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                <?php
-                                                                                $query = "SELECT * FROM profile WHERE mainApplicantID = '$profileID'";
-                                                                                $result = mysqli_query($link, $query);
-                                                                                while ($row = mysqli_fetch_array($result)) {
-                                                                                    echo "<tr>
+                                                                            </p>
+                                                                            <p>
+                                                                            <table class="table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th scope="col">Name</th>
+                                                                                        <th scope="col">Phone</th>
+                                                                                        <th scope="col">Email</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <?php
+                                                                                    $query = "SELECT * FROM profile WHERE mainApplicantID = '$profileID'";
+                                                                                    $result = mysqli_query($link, $query);
+                                                                                    while ($row = mysqli_fetch_array($result)) {
+                                                                                        echo "<tr>
                                                                             <td>" . htmlspecialchars($row['firstName']) . "</td>
                                                                             <td>" . htmlspecialchars($row['mobilePhone']) . "</td>
                                                                             <td>" . htmlspecialchars($row['email']) . "</td>
                                                                             <td>" . htmlspecialchars($row['email']) . "</td>
 
                                                                             </tr>";
-                                                                                }
-                                                                                ?>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        </p>
+                                                                                    }
+                                                                                    ?>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            </p>
 
                                                                         <?php } ?>
                                                                     </div>
@@ -816,4 +841,28 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
     }
 
     /* Injected CSS Code */
+
+    /* Injected CSS Code for HAP form */
+    #max-height {
+        display: none;
+    }
 </style>
+
+<script>
+    // Select HAP form
+    const fixHeight = document.querySelector('#fixHeight');
+    const adjustableHeight = document.querySelector('#adjustableHeight');
+
+    fixHeight.addEventListener('change', adjustableHeightCheck);
+    adjustableHeight.addEventListener('change', adjustableHeightCheck);
+
+    function adjustableHeightCheck() {
+        if (document.getElementById("adjustableHeight").checked) {
+            document.getElementById("max-height").style.display = "block";
+            document.getElementById("height").innerHTML = "Niedrigste Höhe in mm";
+        } else {
+            document.getElementById("max-height").style.display = "none";
+            document.getElementById("height").innerHTML = "Höhe";
+        }
+    }
+</script>

@@ -28,7 +28,7 @@ $property_code = $_SESSION["property_code"];
                 </thead>
                 <tbody>
                     <?php
-                    $query = "SELECT * FROM profile WHERE type = 'M' ORDER BY date DESC";
+                    $query = "SELECT * FROM profile WHERE type = 'M' AND propertyCode = $property_code ORDER BY date DESC";
                     $result = mysqli_query($link, $query);
                     while ($row = mysqli_fetch_array($result)) {
                         $tenantscod = $row['tenantscod'];

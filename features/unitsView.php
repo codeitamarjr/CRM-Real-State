@@ -26,8 +26,9 @@ if (isset($_POST['addUnit'])) {
     );
 };
 
+$property_codeUnitView = $_SESSION["property_code"];
 
-$query = "SELECT * FROM unit ORDER BY property_code DESC ";
+$query = "SELECT * FROM unit WHERE property_code = $property_codeUnitView ORDER BY property_code DESC";
 $result = mysqli_query($link, $query);
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

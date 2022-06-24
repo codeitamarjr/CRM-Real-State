@@ -1,5 +1,6 @@
 <?php
 require "features/functions_unit.php";
+$property_codeNavSelector = $_SESSION["property_code"];
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -17,7 +18,7 @@ require "features/functions_unit.php";
                             <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total
                                     Enquiries</span></div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], ''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND property_code = $property_codeNavSelector"); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-mailbox fa-2x text-gray-300">
@@ -38,7 +39,7 @@ require "features/functions_unit.php";
                             <div class="row g-0 align-items-center">
                                 <div class="col-auto">
                                     <div class="text-dark fw-bold h5 mb-0 me-3"><span>
-                                            <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Queue\''); ?>
+                                            <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND status = 'Queue' AND property_code = $property_codeNavSelector"); ?>
                                         </span></div>
                                 </div>
                                 <div class="col">
@@ -65,7 +66,7 @@ require "features/functions_unit.php";
                                 <span>Approved</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Approved\''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND status = 'Approved' AND property_code = $property_codeNavSelector"); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -83,7 +84,7 @@ require "features/functions_unit.php";
                                 <span>Denied</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], 'AND status = \'Denied\''); ?>
+                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND status = 'Denied' AND property_code = $property_codeNavSelector"); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
