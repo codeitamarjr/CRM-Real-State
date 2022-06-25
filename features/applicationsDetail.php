@@ -1,6 +1,7 @@
 <?php
 //Functions profile
 require "features/functions_profile.php";
+require "config/config.php";
 
 //Define profile ID
 $profileID = $_GET['profileID'];
@@ -48,7 +49,28 @@ if ($_POST['save'] == 'update') {
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Application Details
             </p>
-        </div>
+        </div><br>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link <?php if(getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if(getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID='.getProfile('profileID', $profileID, 'mainApplicantID').'"'; ?>>Primary Applicant</a>
+            </li>
+            <?php
+            $mainProfileID = getProfile('profileID', $profileID, 'mainApplicantID');
+            if($mainProfileID == null)$mainProfileID=$profileID;
+            $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
+            $result = mysqli_query($link, $query);
+            while ($row = mysqli_fetch_array($result)) {
+                echo '<li class="nav-item">
+                <a class="nav-link ';
+                if(htmlspecialchars($row['profileID']) == $profileID) echo 'active';
+                echo '" href="?access=applicationsDetail&profileID='.htmlspecialchars($row['profileID']).'" tabindex="-1">Occupant['.htmlspecialchars($row['firstName']).']</a>
+            </li>';
+            }
+            ?>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Notes</a>
+            </li>
+        </ul>
         <div class="card-body">
             <div class="row">
                 <div class="row gutters-sm">
@@ -302,22 +324,23 @@ if ($_POST['save'] == 'update') {
                                                 <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
-                                                                    <label class="form-label">Social Housing Support</label>
-                                                                    <br>
-                                                                    <label>No
-                                                                        <input type="radio" name="HAP" id="fixHeight" value="Market" <?php if(getProfile('profileID', $profileID, 'HAP') == "Market") echo 'checked';?>>
-                                                                    </label>
-                                                                    <label>HAP
-                                                                        <input type="radio" name="HAP" id="adjustableHeight" value="HAP" <?php if(getProfile('profileID', $profileID, 'HAP') == "HAP") echo 'checked';?>>
-                                                                    </label>
-                                                                    <br>
-                                                                    <div id="<?php if(getProfile('profileID', $profileID, 'HAP') == "Market") echo 'max-height';?>">
-                                                                        <label>
-                                                                            <p>HAP Allowance<br>
-                                                                            <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>></p>
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
+                                                <label class="form-label">Social Housing Support</label>
+                                                <br>
+                                                <label>No
+                                                    <input type="radio" name="HAP" id="fixHeight" value="Market" <?php if (getProfile('profileID', $profileID, 'HAP') == "Market") echo 'checked'; ?>>
+                                                </label>
+                                                <label>HAP
+                                                    <input type="radio" name="HAP" id="adjustableHeight" value="HAP" <?php if (getProfile('profileID', $profileID, 'HAP') == "HAP") echo 'checked'; ?>>
+                                                </label>
+                                                <br>
+                                                <div id="<?php if (getProfile('profileID', $profileID, 'HAP') == "Market") echo 'max-height'; ?>">
+                                                    <label>
+                                                        <p>HAP Allowance<br>
+                                                            <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>>
+                                                        </p>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <hr>
@@ -351,7 +374,7 @@ if ($_POST['save'] == 'update') {
     </div>
 </div>
 <style>
-/* Injected CSS Code for HAP form */
+    /* Injected CSS Code for HAP form */
     #max-height {
         display: none;
     }
