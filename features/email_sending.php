@@ -21,6 +21,7 @@ while ($row = mysqli_fetch_array($result)) {
     $property_email_port = $row['property_email_port'];
     $property_email_username = $row['property_email_username'];
     $property_email_password = $row['property_email_password'];
+    $addReplyTo = $row['office_email'];
 }
 
 try {
@@ -37,9 +38,12 @@ try {
     $mail->Password = $property_email_password; // Password from DB
 
     // Sender and recipient settings
+    
     $mail->setFrom($property_email_username, 'Real Enquiries'); //From
     $mail->addAddress($email_adress, $message_sender_name); // To
-    $mail->addReplyTo($property_email_username, 'Real Enquiries'); // to set the reply to
+    $mail->addReplyTo($addReplyTo, 'Real Enquiries'); // to set the reply to
+    echo $addReplyTo;
+    
 
     // Setting the email content
     $mail->IsHTML(true);

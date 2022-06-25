@@ -29,6 +29,7 @@ $property_code = $_SESSION["property_code"];
                         <th>Sector</th>
                         <th>Position</th>
                         <th>Salary</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,8 @@ $property_code = $_SESSION["property_code"];
     <td>" . htmlspecialchars($row['employementSector']) . "</td>
     <td>" . htmlspecialchars($row['jobTitle']) . "</td>
     <td>" . htmlspecialchars($row['netIncome']+$row['extraIncome']) . "</td>
+    <td>" . htmlspecialchars($row['status']) . "</td>
+
     </tr>";
                     } ?>
                 </tbody>
@@ -53,6 +56,7 @@ $property_code = $_SESSION["property_code"];
                         <th>Sector</th>
                         <th>Position</th>
                         <th>Salary</th>
+                        <th>Status</th>
                     </tr>
                 </tfoot>
             </table>

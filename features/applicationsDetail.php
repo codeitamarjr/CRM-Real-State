@@ -52,23 +52,35 @@ if ($_POST['save'] == 'update') {
         </div><br>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link <?php if(getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if(getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID='.getProfile('profileID', $profileID, 'mainApplicantID').'"'; ?>>Primary Applicant</a>
+                <a class="nav-link <?php if (getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if (getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID=' . getProfile('profileID', $profileID, 'mainApplicantID') . '"'; ?>>Primary Applicant</a>
             </li>
             <?php
             $mainProfileID = getProfile('profileID', $profileID, 'mainApplicantID');
-            if($mainProfileID == null)$mainProfileID=$profileID;
+            if ($mainProfileID == null) $mainProfileID = $profileID;
             $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
             $result = mysqli_query($link, $query);
             while ($row = mysqli_fetch_array($result)) {
                 echo '<li class="nav-item">
                 <a class="nav-link ';
-                if(htmlspecialchars($row['profileID']) == $profileID) echo 'active';
-                echo '" href="?access=applicationsDetail&profileID='.htmlspecialchars($row['profileID']).'" tabindex="-1">Occupant['.htmlspecialchars($row['firstName']).']</a>
+                if (htmlspecialchars($row['profileID']) == $profileID) echo 'active';
+                echo '" href="?access=applicationsDetail&profileID=' . htmlspecialchars($row['profileID']) . '" tabindex="-1">Occupant[' . htmlspecialchars($row['firstName']) . ']</a>
             </li>';
             }
             ?>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Notes</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Outcome</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
             </li>
         </ul>
         <div class="card-body">

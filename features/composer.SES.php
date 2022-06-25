@@ -26,6 +26,7 @@ while ($row = mysqli_fetch_array($result)) {
     $host = $row['SMTPHost'];
     $port = $row['SMTPPort'];
     $passwordSmtp = $row['SMTPPassword'];
+    $addReplyTo = $row['office_email'];
 }
 
 // Replace sender@example.com with your "From" address.
@@ -77,6 +78,7 @@ try {
 
     // Specify the message recipients.
     $mail->addAddress($email_adress, $message_sender_name);
+    $mail->addReplyTo($addReplyTo); // to set the reply to
     // You can also add CC, BCC, and additional To recipients here.
 
     // Specify the content of the message.
