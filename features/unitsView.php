@@ -19,6 +19,7 @@ if (isset($_POST['addUnit'])) {
         $_POST['unitNumber'],
         $_POST['eirCode'],
         $_POST['bedrooms'],
+        $_POST['type'],
         $_POST['dateAvailable'],
         $_POST['statusUnit'],
         $_POST['carParking'],
@@ -47,28 +48,28 @@ $result = mysqli_query($link, $query);
             </p>
         </div>
         <div class="card-body">
-                <table id="dataTable" class="table dt-responsive nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Property</th>
-                            <th>CRM#</th>
-                            <th>Code</th>
-                            <th>Resident</th>
-                            <th>Block</th>
-                            <th>Unit</th>
-                            <th>Floor</th>
-                            <th>Bed</th>
-                            <th>Type</th>
-                            <th>Eircode</th>
-                            <th>Address</th>
-                            <th>Availability</th>
-                            <th>Rent</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = mysqli_fetch_array($result)) {
-                            echo "<tr class=\"showsRow\" \">
+            <table id="dataTable" class="table dt-responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>CRM#</th>
+                        <th>Code</th>
+                        <th>Resident</th>
+                        <th>Block</th>
+                        <th>Unit</th>
+                        <th>Floor</th>
+                        <th>Bed</th>
+                        <th>Type</th>
+                        <th>Eircode</th>
+                        <th>Address</th>
+                        <th>Availability</th>
+                        <th>Rent</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_array($result)) {
+                        echo "<tr class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
@@ -83,40 +84,40 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
     <td>" . htmlspecialchars($row['rental_price']) . "</td>
     <td class=\"";
-    if ($row['status'] == 'Available') {
-        echo "text-success";
-    } 
-    echo "\">" . htmlspecialchars($row['status']) . "</td>
+                        if ($row['status'] == 'Available') {
+                            echo "text-success";
+                        }
+                        echo "\">" . htmlspecialchars($row['status']) . "</td>
     </tr>";
-                        } ?>
-                    </tbody>
-                    <tfoot>
-                        <tr>
+                    } ?>
+                </tbody>
+                <tfoot>
+                    <tr>
                         <th>Property</th>
-                            <th>CRM#</th>
-                            <th>Code</th>
-                            <th>Resident</th>
-                            <th>Block</th>
-                            <th>Unit</th>
-                            <th>Floor</th>
-                            <th>Bed</th>
-                            <th>Type</th>
-                            <th>Eircode</th>
-                            <th>Address</th>
-                            <th>Availability</th>
-                            <th>Rent</th>
-                            <th>Status</th>
-                        </tr>
-                    </tfoot>
-                </table>
-        </div>
+                        <th>CRM#</th>
+                        <th>Code</th>
+                        <th>Resident</th>
+                        <th>Block</th>
+                        <th>Unit</th>
+                        <th>Floor</th>
+                        <th>Bed</th>
+                        <th>Type</th>
+                        <th>Eircode</th>
+                        <th>Address</th>
+                        <th>Availability</th>
+                        <th>Rent</th>
+                        <th>Status</th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
+</div>
 </div>
 
 <!-- New Unit Modal -->
 <div class="modal fade" id="newUnit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form method="POST">
                 <div class="modal-header">
@@ -152,13 +153,30 @@ $result = mysqli_query($link, $query);
                                             </p>
 
                                             <p>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <label class="form-label">Label</label>
                                                 <input type="text" class="form-control" name="customCode">
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-3">
                                                 <label class="form-label">Floor</label>
-                                                <input type="number" class="form-control" name="floor">
+                                                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="floor">
+                                                <datalist id="datalistOptions">
+                                                    <option value="1">
+                                                    <option value="2">
+                                                    <option value="3">
+                                                    <option value="4">
+                                                    <option value="5">
+                                                    <option value="6">
+                                                    <option value="7">
+                                                    <option value="8">
+                                                    <option value="9">
+                                                    <option value="10">
+                                                    <option value="Basement">
+                                                    <option value="Ground Floor">
+                                                    <option value="1st Floor Return">
+                                                    <option value="2nd Floor Return">
+                                                    <option value="3rd Floor Return">
+                                                </datalist>
                                             </div>
                                             <div class="col-md-2">
                                                 <label class="form-label">Block</label>
@@ -175,9 +193,23 @@ $result = mysqli_query($link, $query);
                                             </p>
 
                                             <p>
-                                            <div class="col-md">
+                                            <div class="col-md-2">
                                                 <label class="form-label">Bedrooms</label>
                                                 <input type="number" class="form-control" name="bedrooms">
+                                            </div>
+                                            <div class="col-md">
+                                                <label class="form-label">Type</label>
+                                                <select class="form-select" name="type">
+                                                    <option selected>Choose...</option>
+                                                    <option value="1 Bedroom">1 Bedroom</option>
+                                                    <option value="2 Bedroom">2 Bedroom</option>
+                                                    <option value="3 Bedroom">3 Bedroom</option>
+                                                    <option value="Studio">Studio</option>
+                                                    <option value="Double Studio">Double Studio</option>
+                                                    <option value="1 Double bedroom">1 Double bedroom</option>
+                                                    <option value="2 Double bedroom">2 Double bedroom</option>
+                                                    <option value="3 Double bedroom">3 Double bedroom</option>
+                                                </select>
                                             </div>
                                             <div class="col-md">
                                                 <label class="form-label">Car Parking</label>
@@ -232,7 +264,7 @@ $result = mysqli_query($link, $query);
             ]
 
         });
-    }); 
+    });
 </script>
 
 <style>

@@ -4,6 +4,7 @@ require "config/config.php";
 require "features/functions_profile.php";
 //Get property code definied at the start of the login SESSION
 $property_code = $_SESSION["property_code"];
+$prs_code_enquiry = $_SESSION["agent_prs_code"];
 
 //Define max of results per page 
 if (!isset($_GET['show'])) {
@@ -30,8 +31,8 @@ if ($_POST['insert'] == true) {
         echo '<center><div class="alert alert-danger" role="alert">Error: This email is already in the database!</div></center>';
     } else {
         //Insert new enquiry
-        insertMessage($prs_code_enquiry, $email, $property_code_enquiry);
-        setMessage(getMessage('messages_email', $email, 'message_id'), 'message_sender_name', $message_sender_name);
+        echo insertMessage($prs_code_enquiry, $email, $property_code_enquiry);
+        echo setMessage(getMessage('messages_email', $email, 'message_id'), 'message_sender_name', $message_sender_name);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_phone_number', $message_phone_number);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_title', $mail_subject);
         setMessage(getMessage('messages_email', $email, 'message_id'), 'message_body', $_POST['message_text']);
