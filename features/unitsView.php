@@ -25,6 +25,7 @@ if (isset($_POST['addUnit'])) {
         $_POST['carParking'],
         $_POST['rent']
     );
+    
 };
 
 $property_codeUnitView = $_SESSION["property_code"];
@@ -159,8 +160,8 @@ $result = mysqli_query($link, $query);
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Floor</label>
-                                                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." name="floor">
-                                                <datalist id="datalistOptions">
+                                                <input class="form-control" list="floorList" placeholder="Type to search..." name="floor">
+                                                <datalist id="floorList">
                                                     <option value="1">
                                                     <option value="2">
                                                     <option value="3">

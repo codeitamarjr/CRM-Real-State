@@ -23,7 +23,7 @@ function createSingleUnit($prs_code, $property_code, $unit_customCode, $descript
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
     $sql = "INSERT INTO unit (prs_code, property_code, unit_customCode, description, floor, unit_block, unit_number, postal_code, bedrooms, type, date_available ,status, carpark, rental_price)
     VALUES
-    (?, ?, ?, ?, ?, ?,?,?, ?, ?, ?, ?, ?)";
+    (?, ?, ?, ?, ?, ?,?,?, ?, ?, ?, ?,?, ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
