@@ -20,14 +20,28 @@ if ($_POST['save'] == 'start') {
         $profileID = getProfile('email', $_POST['email'], 'profileID');
     } else {
         //Create a new profile
-        insertProfile($propertyCode, 'M', $_POST['email']);
+        //insertProfile($propertyCode, 'M', $_POST['email']);
         //Set the profileID
-        $profileID = getProfile('email', $_POST['email'], 'profileID');
+        //$profileID = getProfile('email', $_POST['email'], 'profileID');
     };
+
+    // If the email is not in the database carry on
+    $email = $_POST['email'];
 };
 if ($_POST['save'] == 'reference') {
-    //Set profileID
-    $profileID = $_POST['profileID'];
+
+    // Email that came from the first page
+    $email = $_POST['email'];
+
+    if(getProfile('email', $email, 'email') != null){
+        $profileID = getProfile('email', $email, 'profileID');
+    } else {
+        // Create a new profile
+        insertProfile($propertyCode, 'M', $email);
+        // Set the profileID
+        $profileID = getProfile('email', $email, 'profileID');
+    };
+    
     //Set values to the profile
     if ($_POST['firstName'] != null) setProfile($profileID, 'firstName', $_POST['firstName']);
     if ($_POST['lastName'] != null) setProfile($profileID, 'lastName', $_POST['lastName']);
@@ -46,6 +60,7 @@ if ($_POST['save'] == 'reference') {
     if ($_POST['notes'] != null) setProfile($profileID, 'notes', $_POST['notes']);
 };
 if ($_POST['save'] == 'documents' || $_POST['save'] == 'PAG1') {
+    $email = $_POST['email'];
     //Set profileID
     $profileID = $_POST['profileID'];
     //Set values to the profile
@@ -171,6 +186,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
 
                                     <form method="POST">
                                         <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                        <input type="hidden" name="email" value="<?php echo $email; ?>">
 
                                         <div class="container-fluid">
                                             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -222,7 +238,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 <div class="mb-3 col-md-3">
                                                                     <label class="form-label">Childrens</label>
                                                                     <input type="text" class="form-control" data-toggle="input-mask" maxlength="1" name="children" <?php if (getProfile('profileID', $profileID, 'children') != null) echo 'value="' . getProfile('profileID', $profileID, 'children') . '"';  ?>>
-                                                                    <span class="font-13 text-muted">Any occupant below 18 years old</span>
+                                                                    <span class="font-13 text-muted">Any occupant below 18 years old?</span>
                                                                 </div>
                                                             </div>
 
@@ -291,6 +307,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
 
                                     <form method="POST">
                                         <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                        <input type="hidden" name="email" value="<?php echo $email; ?>">
                                         <div class="container-fluid">
                                             <div class="row d-flex justify-content-center align-items-center h-100">
                                                 <div class="col">
