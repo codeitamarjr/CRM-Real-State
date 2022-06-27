@@ -38,7 +38,7 @@ $property_code = $_SESSION["property_code"];
                     $result = mysqli_query($link, $query);
                     while ($row = mysqli_fetch_array($result)) {
                         $tenantscod = $row['tenantscod'];
-                        echo "<tr class=\" ";
+                        echo "<tr class=\"showsRow ";
                         if ($row['status'] == "Approved") {
                             echo "table-success";
                         }

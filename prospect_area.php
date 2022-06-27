@@ -121,6 +121,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=093230e10e41709a7a3d6ba7f3b3b116">
     <link type="text/css" rel="stylesheet" href="https://cdn01.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?themeRevisionID=5eb3b4ae85bd2e1e2966db96" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="icon" type="image/x-icon" href="features/uploads/<?php echo getPropertyData($propertyCode, 'property_logo'); ?>">
 </head>
 
 <body class="bg-gradient-primary">
