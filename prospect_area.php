@@ -117,6 +117,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Real Enquiries - Tenants Data Registration Form</title>
     <meta content="Customer Relationship Management for Real State Agents - Privacy Policy">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=093230e10e41709a7a3d6ba7f3b3b116">
     <link type="text/css" rel="stylesheet" href="https://cdn01.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?themeRevisionID=5eb3b4ae85bd2e1e2966db96" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -214,7 +215,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">PPS Number</label>
-                                                                    <input type="number" class="form-control" data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
+                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="0000000-AA" maxlength="10" name="ppsNumber" <?php if (getProfile('profileID', $profileID, 'ppsNumber') != null) echo 'value="' . getProfile('profileID', $profileID, 'ppsNumber') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "xxxxxx-xx"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-3">
@@ -381,7 +382,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                         <input type="radio" name="HAP" id="adjustableHeight" value="HAP" <?php if (getProfile('profileID', $profileID, 'HAP') == "HAP") echo 'checked'; ?>>
                                                                     </label>
                                                                     <br>
-                                                                    <div id="<?php if (getProfile('profileID', $profileID, 'HAP') == "Market") echo 'max-height'; ?>">
+                                                                    <div id="<?php if (getProfile('profileID', $profileID, 'HAP') == "Market" || getProfile('profileID', $profileID, 'HAP') == null) echo 'max-height'; ?>">
                                                                         <label>
                                                                             <p>HAP Allowance<br>
                                                                                 <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>>
@@ -468,6 +469,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
                                                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                                                 <i class="fa fa-trash"></i>
                                                                                             </button>
@@ -510,6 +513,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
                                                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                                                 <i class="fa fa-trash"></i>
                                                                                             </button>
@@ -555,6 +560,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
                                                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                                                 <i class="fa fa-trash"></i>
                                                                                             </button>
@@ -600,6 +607,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
                                                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                                                 <i class="fa fa-trash"></i>
                                                                                             </button>
@@ -619,7 +628,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 <div class="mb-3 col-md">
                                                                     <label class="form-label">Bank Statement</label>
                                                                     <input class="form-control" type="file" id="formFileMultiple01" multiple="" name="bankStatements[]">
-                                                                    <span class="font-13 text-muted">The latest bank statement, showing the entire last month.</span>
+                                                                    <span class="font-13 text-muted">The latest bank statement, showing the entire last month.<br>
+                                                                This is a mandatory document to cross your income and  confirm the affordability.</span>
                                                                     <?php
 
                                                                     $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'bankStatements'";
@@ -645,6 +655,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
                                                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                                                 <i class="fa fa-trash"></i>
                                                                                             </button>

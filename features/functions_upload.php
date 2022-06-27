@@ -74,9 +74,10 @@ function uploadProfileAttachments($profileID,$description,$file, $fileType, $fil
     }
 }
 
-function getProfileAttachments($row,$conditional,$fileNumber,$category, $return){
+function getProfileAttachments($test,$idprofileAttachments,$fileNumber,$category, $return){
     require "config/config.php";
-    $query = "SELECT $return FROM profileAttachments WHERE ($row = '$conditional') AND (fileNumber = '$fileNumber') AND (category = '$category')";
+    //$query = "SELECT $return FROM profileAttachments WHERE ($test = '$conditional') AND (fileNumber = '$fileNumber') AND (category = '$category')";
+    $query = "SELECT $return FROM profileAttachments WHERE (idprofileAttachments = '$idprofileAttachments') AND (fileNumber = '$fileNumber') AND (category = '$category')";
     $result = mysqli_query($link, $query);
     if ($result) {
         while ($row = mysqli_fetch_array($result)) {
@@ -90,11 +91,12 @@ function getProfileAttachments($row,$conditional,$fileNumber,$category, $return)
 
 function removeProfileAttachments($profileID,$idprofileAttachments,$fileNumber,$category){
     require 'config/config.php';
+    
 
     //Get the name of the file and delete the real file
-    $fileName = getProfileAttachments('profileID', $profileID, $fileNumber,$category, 'fileName');
+    $fileName = getProfileAttachments('idprofileAttachmentss', $idprofileAttachments, $fileNumber,$category, 'fileName');
     unlink("features/uploads/profileAttachments/" . $fileName . "");
     //Delete the row from the database
-    $sql = "DELETE FROM profileAttachments WHERE profileID = '$profileID' AND idprofileAttachments = '$idprofileAttachments'";
+    $sql = "DELETE FROM profileAttachments WHERE idprofileAttachments = '$idprofileAttachments'";
     $link->query($sql);
 }

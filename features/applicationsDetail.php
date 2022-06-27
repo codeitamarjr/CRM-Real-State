@@ -41,14 +41,78 @@ if ($_POST['save'] == 'update') {
     if ($_POST['landlordPhone'] != null) setProfile($profileID, 'landlordPhone', $_POST['landlordPhone']);
     if ($_POST['expectedNotice'] != null) setProfile($profileID, 'expectedNotice', $_POST['expectedNotice']);
 };
+
+// Upload the documents
+if ($_POST['save'] == 'uploadAttachments') {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+    //If user select a file for ID
+    if ($_FILES['CRM']['name'] != null) {
+        require "features/functions_upload.php";
+        //Upload the file
+        if ($_FILES['CRM'] != null) uploadProfileAttachments($profileID, 'Upload from CRM', $_FILES['CRM'], 'CRM', 'manualUpload');
+    }
+};
+
+// Remove the documents
+if ($_POST['save'] == 'removeProfileAttachments') {
+    //Set profileID
+    $profileID = $_POST['profileID'];
+    require "features/functions_upload.php";
+    //Delete the file
+    $idprofileAttachments = $_POST['idprofileAttachments'];
+    $fileNumber = $_POST['fileNumber'];
+    $category = $_POST['category'];
+    removeProfileAttachments($profileID, $idprofileAttachments, $fileNumber, $category);
+};
+
+// Change applicant status
+if ($_POST['approve'] != null) modal(setProfile($_POST['approve'], 'status', 'Approved'));
+if ($_POST['deny'] != null) modal(setProfile($_POST['deny'], 'status', 'Denied'));
+
+function modal($messageModal)
+{
+    echo "<script>
+        $(document).ready(function(){
+            $(\"#alertModal\").modal('show');
+        });
+        </script>";
+    echo '<!-- Modal Alert -->
+        <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <center>
+                       ';
+    echo $messageModal;
+    echo '
+                    </center></div>
+                </div>
+            </div>
+        </div>';
+}
 ?>
 
 
 <div class="container-fluid">
     <div class="card shadow">
-        <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Application Details
-            </p>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>
+            <div class="dropdown no-arrow">
+                <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
+                    <i class="fas fa-ellipsis-v text-gray-400"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
+                    <h6 class="dropdown-header text-center">Change Status</h6>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
+                </div>
+            </div>
         </div><br>
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -70,18 +134,6 @@ if ($_POST['save'] == 'update') {
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Notes</a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">Outcome</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Separated link</a></li>
-                </ul>
-            </li>
         </ul>
         <div class="card-body">
             <div class="row">
@@ -94,10 +146,8 @@ if ($_POST['save'] == 'update') {
                                     <div class="mt-3">
                                         <h4><?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName'));
                                             ?></h4>
-                                        <p class="text-secondary mb-1"><?php echo htmlentities(getProfile('profileID', $profileID, 'jobTitle'));
-                                                                        ?></p>
-                                        <p class="text-muted font-size-sm"><?php echo htmlentities(getProfile('profileID', $profileID, 'employeer'));
-                                                                            ?></p>
+                                        <p class="text-secondary mb-1"><?php echo htmlentities(getProfile('profileID', $profileID, 'jobTitle'));?></p>
+                                        <p class="text-muted font-size-sm"><?php echo htmlentities(getProfile('profileID', $profileID, 'employeer'));?></p>
                                     </div>
                                 </div>
                                 <hr>
@@ -109,15 +159,20 @@ if ($_POST['save'] == 'update') {
                                     </div>
                                 </div>
                                 <hr>
-                                <ul class="list-group list-group-flush">
-                                    <div class="row g-2">
-                                        <div class="mb-3 col-md-9">
-                                            <input type="file" id="ID" class="form-control" name="ID[]">
+                                <ul class="list-group">
+                                <form method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+
+                                    <div class="row">
+                                    
+                                        <div class="mb-3 col-md-8">
+                                            <input type="file" id="CRM" class="form-control" name="CRM[]">
                                         </div>
-                                        <div class="mb-3 col-md">
-                                            <button type="submit" class="btn btn-primary float-end" name="save" value="upload">Upload</button>
+                                        <div class="mb-3 col-sm-1">
+                                            <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
                                         </div>
-                                    </div>
+                                    
+                                    </div></form>
 
                                     <?php
                                     require "config/config.php";
@@ -140,6 +195,10 @@ if ($_POST['save'] == 'update') {
                                                     <div class="col-auto">
                                                         <!-- Button -->
                                                         <form method="POST">
+                                                            <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
+                                                            <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
+                                                            <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
+                                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
                                                             <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
@@ -322,7 +381,7 @@ if ($_POST['save'] == 'update') {
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Employeer Phone Number</label>
-                                                <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
+                                                <input type="text" class="form-control"  data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
                                             </div>
 
                                         </div>
@@ -345,7 +404,7 @@ if ($_POST['save'] == 'update') {
                                                     <input type="radio" name="HAP" id="adjustableHeight" value="HAP" <?php if (getProfile('profileID', $profileID, 'HAP') == "HAP") echo 'checked'; ?>>
                                                 </label>
                                                 <br>
-                                                <div id="<?php if (getProfile('profileID', $profileID, 'HAP') == "Market") echo 'max-height'; ?>">
+                                                <div id="<?php if (getProfile('profileID', $profileID, 'HAP') == "Market" || getProfile('profileID', $profileID, 'HAP') == null) echo 'max-height'; ?>">
                                                     <label>
                                                         <p>HAP Allowance<br>
                                                             <input type="number" name="HAPAllowance" class="form-control" <?php if (getProfile('profileID', $profileID, 'HAPAllowance') != null) echo 'value="' . getProfile('profileID', $profileID, 'HAPAllowance') . '"';  ?>>
@@ -368,7 +427,7 @@ if ($_POST['save'] == 'update') {
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label for="inputState" class="form-label">Expected Notice</label>
-                                                <input type="date" class="form-control" required name="expectedNotice" <?php if (getProfile('profileID', $profileID, 'expectedNotice') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedNotice') . '"';  ?>>
+                                                <input type="date" class="form-control" name="expectedNotice" <?php if (getProfile('profileID', $profileID, 'expectedNotice') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedNotice') . '"';  ?>>
                                             </div>
                                         </div>
 
@@ -385,13 +444,55 @@ if ($_POST['save'] == 'update') {
         </div>
     </div>
 </div>
+
+<!-- Modal Approve -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Approve the application from <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <button type="submit" class="btn btn-primary" name="approve" value="<?php echo $profileID; ?>">Approve</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Deny -->
+<div class="modal fade" id="denyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Deny the application from <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <button type="submit" class="btn btn-primary" name="deny" value="<?php echo $profileID; ?>">Deny</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     /* Injected CSS Code for HAP form */
     #max-height {
         display: none;
     }
 </style>
-
 <script>
     // Select HAP form
     const fixHeight = document.querySelector('#fixHeight');
@@ -403,10 +504,8 @@ if ($_POST['save'] == 'update') {
     function adjustableHeightCheck() {
         if (document.getElementById("adjustableHeight").checked) {
             document.getElementById("max-height").style.display = "block";
-            document.getElementById("height").innerHTML = "Niedrigste Höhe in mm";
         } else {
             document.getElementById("max-height").style.display = "none";
-            document.getElementById("height").innerHTML = "Höhe";
         }
     }
 </script>

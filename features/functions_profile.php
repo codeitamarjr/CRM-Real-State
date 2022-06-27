@@ -28,7 +28,7 @@ function setProfile($profileID,$row,$data){
         mysqli_stmt_bind_param($stmt,'ss',$data,$profileID);
         //Run parametes inside DB
         mysqli_stmt_execute($stmt);
-        return '<center><div class="alert alert-success" role="alert">conditional updated with success!</div></center>';
+        return '<center><div class="alert alert-success" role="alert">Profile updated with success!</div></center>';
     }
     mysqli_stmt_close($stmt);
 }

@@ -25,7 +25,7 @@ $property_code = $_SESSION["property_code"];
                 <thead>
                     <tr>
                         <th>Property</th>
-                        <th>First Name</th>
+                        <th>Name</th>
                         <th>Sector</th>
                         <th>Position</th>
                         <th>Salary</th>
@@ -38,9 +38,16 @@ $property_code = $_SESSION["property_code"];
                     $result = mysqli_query($link, $query);
                     while ($row = mysqli_fetch_array($result)) {
                         $tenantscod = $row['tenantscod'];
-                        echo "<tr class=\"showsRow\" onclick=\"location.href='?access=applicationsDetail&profileID=". htmlspecialchars($row['profileID']) ."'\" >
+                        echo "<tr class=\" ";
+                        if ($row['status'] == "Approved") {
+                            echo "table-success";
+                        }
+                        if ($row['status'] == "Denied") {
+                            echo "table-danger";
+                        }
+                        echo " \" onclick=\"location.href='?access=applicationsDetail&profileID=". htmlspecialchars($row['profileID']) ."'\" >
     <td>" . htmlspecialchars(getPropertyData($row['propertyCode'],'property_name')) . "</td>
-    <td>" . htmlspecialchars($row['firstName']) . "</td>
+    <td>" . htmlspecialchars($row['firstName']) . ' ' .htmlspecialchars($row['lastName']) . "</td>
     <td>" . htmlspecialchars($row['employementSector']) . "</td>
     <td>" . htmlspecialchars($row['jobTitle']) . "</td>
     <td>" . htmlspecialchars($row['netIncome']+$row['extraIncome']) . "</td>
@@ -52,7 +59,7 @@ $property_code = $_SESSION["property_code"];
                 <tfoot>
                     <tr>
                         <th>Property</th>
-                        <th>First Name</th>
+                        <th>Name</th>
                         <th>Sector</th>
                         <th>Position</th>
                         <th>Salary</th>

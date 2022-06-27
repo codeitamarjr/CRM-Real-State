@@ -57,7 +57,13 @@ $inbox = imap_open($hostname, $IMAPUser, $IMAPPassword) or die('Cannot connect t
 //Get all the emails with the word "enquiry" in the subject
 $emails = imap_search($inbox, 'SUBJECT "Enquiry"');
 
+
+
+// Start blank array to store the emails
 $newEnquiries = (array) null;
+
+// Start blank variable to store the email option
+$automailNew = "";
 
 /* if emails are returned, cycle through each email... */
 if ($emails) {
@@ -70,7 +76,7 @@ if ($emails) {
         $message_raw = htmlspecialchars(imap_qprint(imap_fetchbody($inbox, $singleEmail, 1)));
 
         // Retrieve and collect just new=0 / read=1 emails
-        if (($overview[0]->seen) == 1) {
+        if (($overview[0]->seen) == 0) {
             //Prepare variables from the email to INSERT into the SQL TABLES
             $mail_from = $overview[0]->from;
             $mail_subject =  imap_utf8($overview[0]->subject);
@@ -120,6 +126,8 @@ if ($emails) {
             $property_address = trim(end(explode('|', $mail_subject)));
             //Get the property_code from the enquirie address title
             $property_code = getPropertyDataConditional('property_address', $property_address, 'property_code');
+            // Get the option to send or not the email to new enquiries
+            $automailNew = getPropertyData($property_code, 'automailNew');
             //Get the PRS code from property selected by session
             $messages_prs_code = getPropertyData($property_code, 'property_prs_code');
 
@@ -141,17 +149,20 @@ if ($emails) {
         }
     }
     // Saves a log for a success retrieving emails
-    logInsert($property_code, 1, 'gettingEmail', 'Getting Emails', 'Finished getting email from property code ' . $property_code . '.');
+    //logInsert($property_code, 1, 'gettingEmail', 'Getting Emails', 'Finished getting email from property code ' . $property_code . '.');
 }
 /* close the connection */
 imap_close($inbox);
 
 print_r($newEnquiries );
 
+if ($automailNew > 0) {
+    echo '<center><div class="alert alert-success" role="alert">Automail is enabled for this property.</div></center>';
+}
+if(false){
 foreach ($newEnquiries as $email) {
    
     //Send welcome email to the new enquiries
-
     //Load message template
     //select message from automail_id
     $query = "SELECT * FROM automail WHERE prs_code = '$property_code' AND automail_autosender = 'welcome'";
@@ -162,8 +173,6 @@ foreach ($newEnquiries as $email) {
         $subject = $row['automail_title'];
         $automail_id = $row['automail_id'];
     }
-   
-
     require_once __DIR__ . '/PHPMailer/src/Exception.php';
     require_once __DIR__ . '/PHPMailer/src/PHPMailer.php';
     require_once __DIR__ . '/PHPMailer/src/SMTP.php';
@@ -182,8 +191,6 @@ foreach ($newEnquiries as $email) {
         $passwordSmtp = $row['SMTPPassword'];
     }
     $bodyText =  "Email Test\r\nThis email was sent through the Amazon SES SMTP interface.";
-    
-    
     $message = str_replace('%propertyName%', getPropertyData($property_code,'property_name') , $message);
     $message = str_replace('%propertyOfficeName%', getPropertyData($property_code,'office_name') , $message);
     $message = str_replace('%propertyOfficePhone%', getPropertyData($property_code,'office_phone') , $message);
@@ -200,10 +207,7 @@ foreach ($newEnquiries as $email) {
     $message = str_replace('%prsLogo%', $base_mail . '/features/uploads/' . getPRSData(getPropertyData($property_code,'property_prs_code'),'prs_logo') , $message);
     $message = str_replace('%propertyLogo%', $base_mail . '/features/uploads/' . getPropertyData($property_code,'property_logo') , $message);
     echo $message;
-
     $bodyHtml = '' . $message . '';
-
-    
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -229,11 +233,10 @@ foreach ($newEnquiries as $email) {
     } catch (Exception $e) {
         echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
     }
-
     echo '<br>'.$countEmail;
-    
-
 }
+}
+
 if($countEmail > 0){
     // Saves a log for a success fetching emails
     logInsert('System', 1, 'gettingEmail', 'Getting Emails', 'Emails collected: ' . $countEmail);

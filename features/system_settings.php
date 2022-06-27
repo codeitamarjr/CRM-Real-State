@@ -5,13 +5,13 @@ require "features/functions_automail.php";
 $property_code = $_SESSION["property_code"];
 
 //Set the checked box from the DB
-if (getPropertyData($property_code, 'automail_new') == 1) {
+if (getPropertyData($property_code, 'automailNew') == 1) {
     $automailNew = 'checked=""';
 }
-if (getPropertyData($property_code, 'automail_approved') == 1) {
+if (getPropertyData($property_code, 'automailApproved') == 1) {
     $automailApproved = 'checked=""';
 }
-if (getPropertyData($property_code, 'automail_denied') == 1) {
+if (getPropertyData($property_code, 'automailDenied') == 1) {
     $automailDenied = 'checked=""';
 }
 //Loading time and calendly from the DB
@@ -22,28 +22,28 @@ $getting_calendly = getPropertyData($property_code, 'property_calendly');
 if (isset($_POST['save'])) {
     //If so check the status of each checkbox
     if (isset($_POST['automailNew'])) {
-        setPropertyData($property_code, 'automail_new', 1);
+        setPropertyData($property_code, 'automailNew', 1);
         $automailNew = 'checked=""';
     }
     if (!isset($_POST['automailNew'])) {
-        setPropertyData($property_code, 'automail_new', 0);
+        setPropertyData($property_code, 'automailNew', 0);
         $automailNew = '';
     }
     if ($_POST['automailApproved']) {
         $automailApproved = 'checked=""';
-        setPropertyData($property_code, 'automail_approved', 1);
+        setPropertyData($property_code, 'automailApproved', 1);
     }
     if (!isset($_POST['automailApproved'])) {
         $automailApproved = '';
-        setPropertyData($property_code, 'automail_approved', 0);
+        setPropertyData($property_code, 'automailApproved', 0);
     }
     if (isset($_POST['automailDenied'])) {
         $automailDenied = 'checked=""';
-        setPropertyData($property_code, 'automail_denied', 1);
+        setPropertyData($property_code, 'automailDenied', 1);
     }
     if (!isset($_POST['automailDenied'])) {
         $automailDenied = '';
-        setPropertyData($property_code, 'automail_denied', 0);
+        setPropertyData($property_code, 'automailDenied', 0);
     }
  
 
