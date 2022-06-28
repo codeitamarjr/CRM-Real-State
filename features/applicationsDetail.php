@@ -106,6 +106,9 @@ if ($_POST['changeApplicationID'] != null) {
     // Change the property of the applicant and shows in the modal
     changeProfileProperty($_POST['changeApplicationID'], $_POST['newPropertyCode']);
 }
+
+// Count occupants into each application
+$occupantsTotal = 0;
 ?>
 
 
@@ -122,11 +125,12 @@ if ($_POST['changeApplicationID'] != null) {
 
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
+                    <!-- Shows the modal to change property just for 'M'ainly applicants -->
+                    <?php if(getProfile('profileID', $profileID, 'type') == 'M') { ?>
                     <div class="dropdown-divider"></div>
                     <h6 class="dropdown-header text-center">Change Property</h6>
-
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
-
+                    <?php } ?>
                 </div>
             </div>
         </div><br>
@@ -137,9 +141,11 @@ if ($_POST['changeApplicationID'] != null) {
             <?php
             $mainProfileID = getProfile('profileID', $profileID, 'mainApplicantID');
             if ($mainProfileID == null) $mainProfileID = $profileID;
+            else $isOccupant = true;
             $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
             $result = mysqli_query($link, $query);
             while ($row = mysqli_fetch_array($result)) {
+                $occupantsTotal ++;
                 echo '<li class="nav-item">
                 <a class="nav-link ';
                 if (htmlspecialchars($row['profileID']) == $profileID) echo 'active';
@@ -470,7 +476,9 @@ if ($_POST['changeApplicationID'] != null) {
                                         </div>
 
                                         <ul class="list-inline wizard mb-0">
+                                            <?php if ($occupantsTotal == 0 || $isOccupant ) { ?>
                                             <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
+                                            <?php } ?>
                                             <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
                                         </ul>
                                     </div>
