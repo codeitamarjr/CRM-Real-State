@@ -1,13 +1,13 @@
 <?php
 /* Database credentials.*/
 include __DIR__ . "/settings.php";
-define('DB_SERVER', $HOST);
-define('DB_USERNAME', $USERNAME);
-define('DB_PASSWORD', $DBPASSWORD);
-define('DB_NAME', $DBNAME);
+// define('DB_SERVER', $HOST);
+// define('DB_USERNAME', $USERNAME);
+// define('DB_PASSWORD', $DBPASSWORD);
+// define('DB_NAME', $DBNAME);
 
 /* Attempt to connect to MySQL database */
-$link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$link = mysqli_connect($HOST, $USERNAME, $DBPASSWORD, $DBNAME);
 
 // Check connection
 if ($link === false) {

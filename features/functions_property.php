@@ -2,9 +2,9 @@
 
 function getPropertyData($property_code, $rowName)
 {
-    include "config/config.php";
-    include "../config/config.php";
-
+    //include "config/config.php";
+    //include "../config/config.php";
+    include "/var/www/html/crm/config/config.php";
     $query = "SELECT * FROM property WHERE (property_code = '$property_code')";
     $result = mysqli_query($link, $query);
     if ($result) {
@@ -19,8 +19,10 @@ function getPropertyData($property_code, $rowName)
 
 function getPropertyDataConditional($conditional, $test, $rowReturn)
 {
-    include "config/config.php";
-    include "../config/config.php";
+    //include "config/config.php";
+    //include "../config/config.php";
+    include "/var/www/html/crm/config/config.php";
+
 
     $query = "SELECT * FROM property WHERE $conditional = '$test'";
     $result = mysqli_query($link, $query);

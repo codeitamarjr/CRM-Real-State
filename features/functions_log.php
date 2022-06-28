@@ -2,7 +2,8 @@
 
 function logInsert($reference, $status, $source, $title, $content)
 {
-    require "../config/config.php";
+    //include "../config/config.php";
+    include "/var/www/html/crm/config/config.php";
     $query = "INSERT INTO log (reference, status, source, title,content) VALUES ('$reference', '$status', '$source', '$title', '$content')";
     if (mysqli_query($link, $query)) {
         echo '<center><div class="alert alert-success" role="alert">Log updated with success!</div></center>';

@@ -18,7 +18,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require "../config/config.php";
+//include $_SERVER['DOCUMENT_ROOT']."/config/config.php";
+require "/var/www/html/crm/config/config.php";
 require __DIR__ . "/functions_log.php";
 require __DIR__ . "/functions_property.php";
 require __DIR__ . "/functions_automail.php";
@@ -123,7 +124,8 @@ if ($emails) {
             $message_hash = hash('md5', $email_adress);
             
             //Get the address from the subject(Split by | and get the last part)
-            $property_address = trim(end(explode('|', $mail_subject)));
+            $property_address = explode("|", $mail_subject);
+            $property_address = trim(end($property_address));
             //Get the property_code from the enquirie address title
             $property_code = getPropertyDataConditional('property_address', $property_address, 'property_code');
             // Get the option to send or not the email to new enquiries
