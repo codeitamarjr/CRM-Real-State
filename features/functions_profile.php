@@ -99,3 +99,18 @@ function deleteProfile($profileID){
     }
     mysqli_stmt_close($stmt);
 }
+
+function changeProfileProperty($profileID, $propertyCode)
+{
+    require "config/config.php";
+    $mainProfileID = getProfile('profileID', $profileID, 'mainApplicantID');
+    if ($mainProfileID == null) $mainProfileID = $profileID;
+    $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
+    $result = mysqli_query($link, $query);
+    while ($row = mysqli_fetch_array($result)) {
+        // Update the profile with the new property code
+        echo setProfile($row['profileID'], 'propertyCode', $propertyCode);
+    }
+    // Update the main applicant with the new property code
+    echo setProfile($mainProfileID, 'propertyCode', $propertyCode);
+}

@@ -100,6 +100,12 @@ if ($_POST['delete'] != null) {
     //Delete the profile
     deleteProfile($_POST['delete']);
 }
+
+// Change Property of the applicant
+if ($_POST['changeApplicationID'] != null) {
+    // Change the property of the applicant and shows in the modal
+    changeProfileProperty($_POST['changeApplicationID'], $_POST['newPropertyCode']);
+}
 ?>
 
 
@@ -113,10 +119,14 @@ if ($_POST['delete'] != null) {
                 </button>
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center">Change Status</h6>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
-                    <div class="dropdown-divider"></div>
+
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header text-center">Change Property</h6>
+
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
+
                 </div>
             </div>
         </div><br>
@@ -453,9 +463,54 @@ if ($_POST['delete'] != null) {
     </div>
 </div>
 
+<!-- Modal Change Property -->
+<div class="modal fade" id="changeProperty" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Change the Property of an Application</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure do you want to change the property from <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?<br>
+                    This action cannot be undone.<br>
+                    Select a property to change to:<br>
+                    <select class="form-select" name="newPropertyCode">
+                        <optgroup>
+                            <option selected><?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?></option>
+                        </optgroup>
+                        <optgroup>
+                            <option disabled>Manage Another Property</option>
+
+                            <?php
+                            //List all the properties from an agent
+                            include 'config/config.php';
+                            $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                            $result = mysqli_query($link, $select);
+                            while ($row = mysqli_fetch_array($result)) {
+                                echo '<option value=' . $row['property_code'] . '>' . $row['property_name'] . '</option>';
+                            }
+                            mysqli_close($link);
+                            ?>
+                        </optgroup>
+                    </select>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary" name="changeApplicationID" value="<?php echo $profileID; ?>">Change</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Approve -->
 <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
@@ -476,7 +531,7 @@ if ($_POST['delete'] != null) {
 
 <!-- Modal Deny -->
 <div class="modal fade" id="denyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
@@ -497,7 +552,7 @@ if ($_POST['delete'] != null) {
 
 <!-- Modal Deletye -->
 <div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Delete</h5>
