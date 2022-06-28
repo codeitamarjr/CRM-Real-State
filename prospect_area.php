@@ -727,32 +727,33 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
 
                                                                         <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
 
-                                                                            <p>Before you finish your online application, are you applying to live with another occupant?<br>
-                                                                                We'll considerer the information of all applicants before the outcome.</p>
+                                                                            <p>Before you finish your online application, are you applying to live with another occupant above 18 years old?<br>
+                                                                                We'll considerer the information of all occupants before the outcome.</p>
                                                                             <p>
-                                                                                If so we will require that the second applicant also submit his data, to add another applicant click on the buttom bellow.<br>
+                                                                                We will require that the second applicant also submit his data, to add another applicant click on the buttom bellow(Each one will have to apply online).<br>
                                                                                 <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
                                                                                 <br>
                                                                             <div <?php if ($_POST['save'] != 'addApplicant') echo 'style="display:none;"'; ?>>
-                                                                                <div class="row g-2">
-                                                                                    <div class="mb-3 col-md-4">
+                                                                                <div class="row g-1">
+                                                                                    <div class="mb-3">
                                                                                         <label class="form-label">First Name</label>
                                                                                         <input type="text" name="occupantFirstName" class="form-control" placeholder="First Name" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
                                                                                     </div>
 
-                                                                                    <div class="mb-3 col-md-3">
+                                                                                    <div class="mb-3 col-md">
                                                                                         <label class="form-label">Phone</label>
                                                                                         <input type="text" name="occupantPhone" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                        <span class="font-13 text-muted">e.g "+353-xxx-xxxxxxx"</span>
+                                                                                        <span class="text-muted">e.g "+353-xxx-xxxxxxx"</span>
                                                                                     </div>
-                                                                                    <div class="mb-3 col-md-5">
+                                                                                    <div class="mb-3 col-md">
                                                                                         <label class="form-label">Email</label>
                                                                                         <input type="email" name="occupantEmail" class="form-control" placeholder="Email" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                        <span class="font-13 text-muted">Double check this email( This will be the login for your occupant add his data).</span>
+                                                                                        <span class="text-muted">Double check this email; This has to be unique from the occupant and not your email, also do not repeat this email.</span>
                                                                                     </div>
+                                                                                    
                                                                                 </div>
                                                                                 <button type="submit" class="btn btn-primary" name="save" value="includeOccupant">Save Occupant</button><br>
-                                                                                <span class="font-13 text-muted">Just click once, you'll not be able to delete an occupant.</span>
+                                                                                <span class="font-13 text-muted">Click once, you'll not be able to delete an occupant.</span>
                                                                             </div>
                                                                             </p>
                                                                             <p>
@@ -772,7 +773,6 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                         echo "<tr>
                                                                             <td>" . htmlspecialchars($row['firstName']) . "</td>
                                                                             <td>" . htmlspecialchars($row['mobilePhone']) . "</td>
-                                                                            <td>" . htmlspecialchars($row['email']) . "</td>
                                                                             <td>" . htmlspecialchars($row['email']) . "</td>
 
                                                                             </tr>";

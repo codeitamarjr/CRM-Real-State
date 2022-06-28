@@ -94,6 +94,12 @@ function modal($messageModal)
             </div>
         </div>';
 }
+
+// Delete the applicant
+if ($_POST['delete'] != null) {
+    //Delete the profile
+    deleteProfile($_POST['delete']);
+}
 ?>
 
 
@@ -146,8 +152,8 @@ function modal($messageModal)
                                     <div class="mt-3">
                                         <h4><?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName'));
                                             ?></h4>
-                                        <p class="text-secondary mb-1"><?php echo htmlentities(getProfile('profileID', $profileID, 'jobTitle'));?></p>
-                                        <p class="text-muted font-size-sm"><?php echo htmlentities(getProfile('profileID', $profileID, 'employeer'));?></p>
+                                        <p class="text-secondary mb-1"><?php echo htmlentities(getProfile('profileID', $profileID, 'jobTitle')); ?></p>
+                                        <p class="text-muted font-size-sm"><?php echo htmlentities(getProfile('profileID', $profileID, 'employeer')); ?></p>
                                     </div>
                                 </div>
                                 <hr>
@@ -160,19 +166,20 @@ function modal($messageModal)
                                 </div>
                                 <hr>
                                 <ul class="list-group">
-                                <form method="POST" enctype="multipart/form-data">
-                                <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                    <form method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
 
-                                    <div class="row">
-                                    
-                                        <div class="mb-3 col-md-8">
-                                            <input type="file" id="CRM" class="form-control" name="CRM[]">
+                                        <div class="row">
+
+                                            <div class="mb-3 col-md-8">
+                                                <input type="file" id="CRM" class="form-control" name="CRM[]">
+                                            </div>
+                                            <div class="mb-3 col-sm-1">
+                                                <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
+                                            </div>
+
                                         </div>
-                                        <div class="mb-3 col-sm-1">
-                                            <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
-                                        </div>
-                                    
-                                    </div></form>
+                                    </form>
 
                                     <?php
                                     require "config/config.php";
@@ -225,28 +232,28 @@ function modal($messageModal)
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">First Name</label>
-                                                <input type="text" class="form-control" required placeholder="First Name" name="firstName" <?php if (getProfile('profileID', $profileID, 'firstName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'firstName')) . '"';  ?>>
+                                                <input type="text" class="form-control" placeholder="First Name" name="firstName" <?php if (getProfile('profileID', $profileID, 'firstName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'firstName')) . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Last Name</label>
-                                                <input type="text" class="form-control" required placeholder="Surname" name="lastName" <?php if (getProfile('profileID', $profileID, 'lastName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'lastName')) . '"';  ?>>
+                                                <input type="text" class="form-control" placeholder="Surname" name="lastName" <?php if (getProfile('profileID', $profileID, 'lastName') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'lastName')) . '"';  ?>>
                                             </div>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Address</label>
-                                            <input type="text" class="form-control" required placeholder="1234 Main St" name="address" <?php if (getProfile('profileID', $profileID, 'address') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'address')) . '"';  ?>>
+                                            <input type="text" class="form-control" placeholder="1234 Main St" name="address" <?php if (getProfile('profileID', $profileID, 'address') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'address')) . '"';  ?>>
                                         </div>
 
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-5">
                                                 <label class="form-label">City</label>
-                                                <input type="text" class="form-control" required name="city" <?php if (getProfile('profileID', $profileID, 'city') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'city')) . '"';  ?>>
+                                                <input type="text" class="form-control" name="city" <?php if (getProfile('profileID', $profileID, 'city') != null) echo 'value="' . htmlspecialchars(getProfile('profileID', $profileID, 'city')) . '"';  ?>>
                                             </div>
 
                                             <div class="mb-3 col-md-3">
                                                 <label class="form-label">Postal Code</label>
-                                                <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="A00-AAAA" maxlength="7" name="postalCode" <?php if (getProfile('profileID', $profileID, 'postalCode') != null) echo 'value="' . getProfile('profileID', $profileID, 'postalCode') . '"';  ?>>
+                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="A00-AAAA" maxlength="7" name="postalCode" <?php if (getProfile('profileID', $profileID, 'postalCode') != null) echo 'value="' . getProfile('profileID', $profileID, 'postalCode') . '"';  ?>>
                                                 <span class="font-13 text-muted"><a href="https://finder.eircode.ie/" target="_blank">Find Eircode</a></span>
                                             </div>
                                         </div>
@@ -254,7 +261,7 @@ function modal($messageModal)
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Date of Birth</label>
-                                                <input type="date" class="form-control" required name="DOB" <?php if (getProfile('profileID', $profileID, 'DOB') != null) echo 'value="' . getProfile('profileID', $profileID, 'DOB') . '"';  ?>>
+                                                <input type="date" class="form-control" name="DOB" <?php if (getProfile('profileID', $profileID, 'DOB') != null) echo 'value="' . getProfile('profileID', $profileID, 'DOB') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">PPS Number</label>
@@ -271,11 +278,11 @@ function modal($messageModal)
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Expected Move-in Date</label>
-                                                <input type="date" class="form-control" required name="expectedMoveinDate" <?php if (getProfile('profileID', $profileID, 'expectedMoveinDate') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedMoveinDate') . '"';  ?>>
+                                                <input type="date" class="form-control" name="expectedMoveinDate" <?php if (getProfile('profileID', $profileID, 'expectedMoveinDate') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedMoveinDate') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Car Parking</label>
-                                                <select id="inputState" class="form-select" required name="carParking">
+                                                <select id="inputState" class="form-select" name="carParking">
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 Car Space</option>
@@ -284,7 +291,7 @@ function modal($messageModal)
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">pet</label>
-                                                <select id="inputState" class="form-select" required name="pet">
+                                                <select id="inputState" class="form-select" name="pet">
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 pet</option>
@@ -298,7 +305,7 @@ function modal($messageModal)
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Mobile Number</label>
-                                                <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="mobilePhone" <?php if (getProfile('profileID', $profileID, 'mobilePhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'mobilePhone') . '"';  ?>>
+                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="mobilePhone" <?php if (getProfile('profileID', $profileID, 'mobilePhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'mobilePhone') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Contact Number</label>
@@ -324,7 +331,7 @@ function modal($messageModal)
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Employement Sector</label>
-                                                <select id="inputState" class="form-select" name="employementSector" required>
+                                                <select id="inputState" class="form-select" name="employementSector">
                                                     <?php if (getProfile('profileID', $profileID, 'employementSector') != null) { ?>
                                                         <option value="<?php echo getProfile('profileID', $profileID, 'employementSector'); ?>"><?php echo getProfile('profileID', $profileID, 'employementSector'); ?></option>
                                                     <?php }; ?>
@@ -350,7 +357,7 @@ function modal($messageModal)
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Employement Status</label>
-                                                <select id="inputState" class="form-select" name="employementStatus" required>
+                                                <select id="inputState" class="form-select" name="employementStatus">
                                                     <?php if (getProfile('profileID', $profileID, 'employementStatus') != null) { ?>
                                                         <option value="<?php echo getProfile('profileID', $profileID, 'employementStatus'); ?>"><?php echo getProfile('profileID', $profileID, 'employementStatus'); ?></option>
                                                     <?php }; ?>
@@ -367,28 +374,28 @@ function modal($messageModal)
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Employed Since</label>
-                                                <input type="date" class="form-control" required name="employementSince" <?php if (getProfile('profileID', $profileID, 'employementSince') != null) echo 'value="' . getProfile('profileID', $profileID, 'employementSince') . '"';  ?>>
+                                                <input type="date" class="form-control" name="employementSince" <?php if (getProfile('profileID', $profileID, 'employementSince') != null) echo 'value="' . getProfile('profileID', $profileID, 'employementSince') . '"';  ?>>
                                             </div>
                                         </div>
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Name of Employeer</label>
-                                                <input type="text" class="form-control" required placeholder="Employer Name" name="employeer" <?php if (getProfile('profileID', $profileID, 'employeer') != null) echo 'value="' . getProfile('profileID', $profileID, 'employeer') . '"';  ?>>
+                                                <input type="text" class="form-control" placeholder="Employer Name" name="employeer" <?php if (getProfile('profileID', $profileID, 'employeer') != null) echo 'value="' . getProfile('profileID', $profileID, 'employeer') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Job Title</label>
-                                                <input type="text" class="form-control" required placeholder="Job Title" name="jobTitle" <?php if (getProfile('profileID', $profileID, 'jobTitle') != null) echo 'value="' . getProfile('profileID', $profileID, 'jobTitle') . '"';  ?>>
+                                                <input type="text" class="form-control" placeholder="Job Title" name="jobTitle" <?php if (getProfile('profileID', $profileID, 'jobTitle') != null) echo 'value="' . getProfile('profileID', $profileID, 'jobTitle') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Employeer Phone Number</label>
-                                                <input type="text" class="form-control"  data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
+                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" name="employerPhone" <?php if (getProfile('profileID', $profileID, 'employerPhone') != null) echo 'value="' . getProfile('profileID', $profileID, 'employerPhone') . '"';  ?>>
                                             </div>
 
                                         </div>
                                         <div class="row g-2">
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Net Income</label>
-                                                <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
+                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Extra Income</label>
@@ -432,6 +439,7 @@ function modal($messageModal)
                                         </div>
 
                                         <ul class="list-inline wizard mb-0">
+                                            <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
                                             <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
                                         </ul>
                                     </div>
@@ -479,7 +487,31 @@ function modal($messageModal)
             </div>
             <div class="modal-footer">
                 <form method="POST">
-                    <button type="submit" class="btn btn-primary" name="deny" value="<?php echo $profileID; ?>">Deny</button>
+                    <button type="submit" class="btn btn-danger" name="deny" value="<?php echo $profileID; ?>">Deny</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Deletye -->
+<div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the profile of <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?<br>
+                To delete the profile, you must first delete all of the documents associated with the profile.<br>
+                This action cannot be undone.<br>
+                <strong>This will delete all of the profile's data.</strong><br>
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <button type="submit" class="btn btn-danger" name="delete" value="<?php echo $profileID; ?>">Delete</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
                 </form>
             </div>

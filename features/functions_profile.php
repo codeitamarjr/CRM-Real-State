@@ -70,3 +70,32 @@ function insertProfileOccupant($propertyCode,$mainApplicantID,$type,$email,$firs
     }
     mysqli_stmt_close($stmt);
 }
+
+function deleteProfile($profileID){
+    require "config/config.php";
+
+    // Check if the profile has attachements
+    $query = "SELECT fileName FROM profileAttachments WHERE profileID = '$profileID'";
+    $result = mysqli_query($link, $query);
+    $numRows = mysqli_num_rows($result);
+    //echo $result;
+    if ($numRows > 0) {
+        echo '<center><div class="alert alert-danger" role="alert">This profile has documents uploaded on it!</div></center>';
+    } else {
+        //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real conditional
+        $sql = "DELETE FROM profile WHERE (profileID = ?)";
+        //Start the prepare statement into the DB
+        $stmt = mysqli_stmt_init($link);
+        //Check if the SQL execute ok from the prepare statement, if so execute it and bind the conditional
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
+        } else {
+            //Bind parameters to the placeholder with the right conditionaltype s=String i=integer b=Blob d=Double
+            mysqli_stmt_bind_param($stmt, 'i', $profileID);
+            //Run parametes inside DB
+            mysqli_stmt_execute($stmt);
+            echo '<center><div class="alert alert-success" role="alert">Profile deleted with success!</div></center>';
+        }
+    }
+    mysqli_stmt_close($stmt);
+}

@@ -66,7 +66,7 @@ function uploadProfileAttachments($profileID,$description,$file, $fileType, $fil
                     echo "Your file is too big";
                 }
             } else {
-                echo "There was an error uploading your file";
+                echo "There was an error uploading your file(You can try compress your file and upload it again: Tools such as smallpdf.com, pdfcompressor.com or compressjpeg.com can help you compress your file)";
             }
         } else {
             return "You cannot upload files of this type";
