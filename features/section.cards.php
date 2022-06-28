@@ -7,8 +7,28 @@ $property_codeNavSelector = $_SESSION["property_code"];
 <div class="container-fluid">
     <div class="d-sm-flex justify-content-between align-items-center mb-4">
         <h3 class="text-dark mb-0">Dashboard</h3>
-        <?php require "nav_bar_selector_property.php"; ?>
     </div>
+
+    <div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow border-start-info py-2">
+            <div class="card-body">
+                <div class="row align-items-center no-gutters">
+                    <div class="col me-2">
+                        <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Property Selector</span></div>
+                        <div class="col-auto">
+                            <div class="text-dark fw-bold text-xs mb-1"><span><?php require "nav_bar_selector_property.php"; ?></span></div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-building-o fa-4x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
     <div class="row">
         <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow border-start-primary py-2">
@@ -132,9 +152,9 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     while ($row = mysqli_fetch_array($result)) {
                         $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE property_code = " . $row['property_code'] . ""));
                     ?>
-                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo totalUnits($row['property_code'],'') ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo round($totalAvaiable / (totalUnits($row['property_code'],'')) * 100, 0) ?>%</span></h4>
+                        <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo totalUnits($row['property_code'], '') ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo round($totalAvaiable / (totalUnits($row['property_code'], '')) * 100, 0) ?>%</span></h4>
                         <div class="progress mb-4">
-                            <div class="progress-bar bg-primary" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $totalAvaiable / (totalUnits($row['property_code'],'')) * 100 ?>%;"></div>
+                            <div class="progress-bar bg-primary" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $totalAvaiable / (totalUnits($row['property_code'], '')) * 100 ?>%;"></div>
                         </div>
                     <?php
                     }
