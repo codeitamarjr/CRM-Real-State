@@ -216,9 +216,30 @@ if ($_POST['changeApplicationID'] != null) {
                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
                                                             <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
-                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
+                                                            <a class="btn btn-link btn-lg text-muted" data-bs-toggle="modal" data-bs-target="#deleteAttachment<?php echo htmlspecialchars($row['fileNumber']); ?>"><i class="fa fa-trash"></i></a>
+
+                                                            <!-- Modal Delete Document -->
+                                                            <div class="modal fade" id="deleteAttachment<?php echo htmlspecialchars($row['fileNumber']); ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Delet Document</h5>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            Are you sure you want to delete this document?<br>
+                                                                            This action cannot be undone!<br>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" class="btn btn-link btn-lg text-muted" name="save" value="removeProfileAttachments">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                         </form>
                                                     </div>
                                                 </div>
@@ -550,12 +571,12 @@ if ($_POST['changeApplicationID'] != null) {
     </div>
 </div>
 
-<!-- Modal Deletye -->
+<!-- Modal Delete -->
 <div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Delete</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Delete Attachment</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -573,6 +594,8 @@ if ($_POST['changeApplicationID'] != null) {
         </div>
     </div>
 </div>
+
+
 
 <style>
     /* Injected CSS Code for HAP form */

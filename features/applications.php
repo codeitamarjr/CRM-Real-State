@@ -5,16 +5,17 @@ require "config/config.php";
 //Get property code definied at the start of the login SESSION
 $property_code = $_SESSION["property_code"];
 
-function getAllIncomes($profileID){
-     $totalIncome = '0';
-     require "config/config.php";
+function getAllIncomes($profileID)
+{
+    $totalIncome = '0';
+    require "config/config.php";
     if ($mainProfileID == null) $mainProfileID = $profileID;
     $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
     $result = mysqli_query($link, $query);
     while ($row = mysqli_fetch_array($result)) {
-        $totalIncome += $row['netIncome']+$row['extraIncome'];
+        $totalIncome += $row['netIncome'] + $row['extraIncome'];
     }
-     return $totalIncome;
+    return $totalIncome;
 }
 
 ?>
@@ -47,7 +48,7 @@ function getAllIncomes($profileID){
                 <tbody>
                     <?php
 
-                    
+
 
                     $query = "SELECT * FROM profile WHERE type = 'M' AND propertyCode = $property_code ORDER BY date DESC";
                     $result = mysqli_query($link, $query);
@@ -60,9 +61,9 @@ function getAllIncomes($profileID){
                         if ($row['status'] == "Denied") {
                             echo "table-danger";
                         }
-                        echo " \" onclick=\"location.href='?access=applicationsDetail&profileID=". htmlspecialchars($row['profileID']) ."'\" >
-    <td>" . htmlspecialchars(getPropertyData($row['propertyCode'],'property_name')) . "</td>
-    <td>" . htmlspecialchars($row['firstName']) . ' ' .htmlspecialchars($row['lastName']) . "</td>
+                        echo " \" onclick=\"location.href='?access=applicationsDetail&profileID=" . htmlspecialchars($row['profileID']) . "'\" >
+    <td>" . htmlspecialchars(getPropertyData($row['propertyCode'], 'property_name')) . "</td>
+    <td>" . htmlspecialchars($row['firstName']) . ' ' . htmlspecialchars($row['lastName']) . "</td>
     <td>" . htmlspecialchars($row['employementSector']) . "</td>
     <td>" . htmlspecialchars($row['jobTitle']) . "</td>
     <td>" . htmlspecialchars($row['netIncome'] + $row['extraIncome'] + getAllIncomes($row['profileID'])) . "</td>
