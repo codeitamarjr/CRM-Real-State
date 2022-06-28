@@ -5,6 +5,18 @@ require "config/config.php";
 //Get property code definied at the start of the login SESSION
 $property_code = $_SESSION["property_code"];
 
+function getAllIncomes($profileID){
+     $totalIncome = '0';
+     require "config/config.php";
+    if ($mainProfileID == null) $mainProfileID = $profileID;
+    $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
+    $result = mysqli_query($link, $query);
+    while ($row = mysqli_fetch_array($result)) {
+        $totalIncome += $row['netIncome']+$row['extraIncome'];
+    }
+     return $totalIncome;
+}
+
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -28,12 +40,15 @@ $property_code = $_SESSION["property_code"];
                         <th>Name</th>
                         <th>Sector</th>
                         <th>Position</th>
-                        <th>Salary</th>
+                        <th>HHI</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+
+                    
+
                     $query = "SELECT * FROM profile WHERE type = 'M' AND propertyCode = $property_code ORDER BY date DESC";
                     $result = mysqli_query($link, $query);
                     while ($row = mysqli_fetch_array($result)) {
@@ -50,7 +65,7 @@ $property_code = $_SESSION["property_code"];
     <td>" . htmlspecialchars($row['firstName']) . ' ' .htmlspecialchars($row['lastName']) . "</td>
     <td>" . htmlspecialchars($row['employementSector']) . "</td>
     <td>" . htmlspecialchars($row['jobTitle']) . "</td>
-    <td>" . htmlspecialchars($row['netIncome']+$row['extraIncome']) . "</td>
+    <td>" . htmlspecialchars($row['netIncome'] + $row['extraIncome'] + getAllIncomes($row['profileID'])) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
 
     </tr>";
@@ -62,7 +77,7 @@ $property_code = $_SESSION["property_code"];
                         <th>Name</th>
                         <th>Sector</th>
                         <th>Position</th>
-                        <th>Salary</th>
+                        <th>HHI</th>
                         <th>Status</th>
                     </tr>
                 </tfoot>
