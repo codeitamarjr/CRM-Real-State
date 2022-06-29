@@ -18,13 +18,7 @@ if ($_POST['save'] == 'start') {
             Your application has been restored!</div></center>';
         // Set profileID
         $profileID = getProfile('email', $_POST['email'], 'profileID');
-    } else {
-        //Create a new profile
-        //insertProfile($propertyCode, 'M', $_POST['email']);
-        //Set the profileID
-        //$profileID = getProfile('email', $_POST['email'], 'profileID');
-    };
-
+    } 
     // If the email is not in the database carry on
     $email = $_POST['email'];
 };
@@ -33,7 +27,7 @@ if ($_POST['save'] == 'reference') {
     // Email that came from the first page
     $email = $_POST['email'];
 
-    if(getProfile('email', $email, 'email') != null){
+    if (getProfile('email', $email, 'email') != null) {
         $profileID = getProfile('email', $email, 'profileID');
     } else {
         // Create a new profile
@@ -41,7 +35,7 @@ if ($_POST['save'] == 'reference') {
         // Set the profileID
         $profileID = getProfile('email', $email, 'profileID');
     };
-    
+
     //Set values to the profile
     if ($_POST['firstName'] != null) setProfile($profileID, 'firstName', $_POST['firstName']);
     if ($_POST['lastName'] != null) setProfile($profileID, 'lastName', $_POST['lastName']);
@@ -136,6 +130,8 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=093230e10e41709a7a3d6ba7f3b3b116">
     <link type="text/css" rel="stylesheet" href="https://cdn01.jotfor.ms/themes/CSS/5e6b428acc8c4e222d1beb91.css?themeRevisionID=5eb3b4ae85bd2e1e2966db96" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="icon" type="image/x-icon" href="features/uploads/<?php echo getPropertyData($propertyCode, 'property_logo'); ?>">
 </head>
 
@@ -647,7 +643,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <label class="form-label">Bank Statement</label>
                                                                     <input class="form-control" type="file" id="formFileMultiple01" multiple="" name="bankStatements[]">
                                                                     <span class="font-13 text-muted">The latest bank statement, showing the entire last month.<br>
-                                                                This is a mandatory document to cross your income and  confirm the affordability.</span>
+                                                                        This is a mandatory document to cross your income and confirm the affordability.</span>
                                                                     <?php
 
                                                                     $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'bankStatements'";
@@ -727,12 +723,12 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
 
                                                                         <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
 
-                                                                            <p>Before you finish your online application, are you applying to live with another occupant above 18 years old?<br>
-                                                                                We'll considerer the information of all occupants before the outcome.</p>
+                                                                            <p>Before you finish your online application, are you applying to live with another occupant above 18 years old?<br></p>
                                                                             <p>
-                                                                                We will require that the second applicant also submit his data, to add another applicant click on the buttom bellow(Each one will have to apply online).<br>
-                                                                                <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
-                                                                                <br>
+                                                                                Each occupant over 18 years old should be added into your application.<br></p>
+                                                                            <button type="submit" class="btn btn-primary" name="save" value="addApplicant">Add Occupant</button>
+                                                                            <br>
+
                                                                             <div <?php if ($_POST['save'] != 'addApplicant') echo 'style="display:none;"'; ?>>
                                                                                 <div class="row g-1">
                                                                                     <div class="mb-3">
@@ -745,15 +741,16 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                                         <input type="text" name="occupantPhone" class="form-control" data-toggle="input-mask" data-mask-format="+000-00-00000000" maxlength="17" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
                                                                                         <span class="text-muted">e.g "+353-xxx-xxxxxxx"</span>
                                                                                     </div>
+                                                                                    <div class="alert alert-warning" role="alert">
+                                                                                        In the email address below please add the e-mail address of the other occupant. Don't use your email address!
+                                                                                    </div>
                                                                                     <div class="mb-3 col-md">
                                                                                         <label class="form-label">Email</label>
                                                                                         <input type="email" name="occupantEmail" class="form-control" placeholder="Email" <?php if ($_POST['save'] == 'addApplicant') echo 'required'; ?>>
-                                                                                        <span class="text-muted">Double check this email; This has to be unique from the occupant and not your email, also do not repeat this email.</span>
                                                                                     </div>
-                                                                                    
+
                                                                                 </div>
                                                                                 <button type="submit" class="btn btn-primary" name="save" value="includeOccupant">Save Occupant</button><br>
-                                                                                <span class="font-13 text-muted">Click once, you'll not be able to delete an occupant.</span>
                                                                             </div>
                                                                             </p>
                                                                             <p>
@@ -822,9 +819,9 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <div class="alert alert-warning" role="alert">
                                                                         <p>In case of you'll live with another occupant, you can share the welcome email with him, so he can apply and submit his data( Both incomes will be added into the household income).</p>
                                                                         <a href="whatsapp://send?text=Hi, I'm inviting you to apply with me into the property <?php echo getPropertyData($propertyCode, 'property_name'); ?>, you can visit the website : https://www.realenquiries.com/prospect_area.php?propertyCode=<?php echo $propertyCode; ?>" data-action="share/whatsapp/share" target="_blank">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
-  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
-</svg>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+                                                                                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+                                                                            </svg>
                                                                         </a>
                                                                     </div>
                                                                     <p>Thank you for your interest in our property.</p>

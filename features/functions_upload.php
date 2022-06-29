@@ -47,7 +47,7 @@ function uploadProfileAttachments($profileID,$description,$file, $fileType, $fil
         $allowed = array('jpg', 'jpeg', 'png', 'pdf', 'webp', 'docx', 'doc', 'xlsx', 'xls');
         if (in_array($fileActualExt, $allowed)) {
             if ($fileError === 0) {
-                if ($fileSize < 1000000) {
+                if ($fileSize < 10000000) {
                     $fileNameNew = $profileID."_".$fileType."_".$fileCategory."_".uniqid('', true) ."." . $fileExt[1];
                     $fileDestination = 'features/uploads/profileAttachments/' . $fileNameNew;
                     move_uploaded_file($_FILES['file']['tmp_name'][$i], $fileDestination);
