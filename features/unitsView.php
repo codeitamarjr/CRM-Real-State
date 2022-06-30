@@ -3,6 +3,7 @@
 require "config/config.php";
 require "features/functions_prospect.php";
 require "features/functions_tenant.php";
+require "features/functions_profile.php";
 
 $prs_code = $_SESSION["agent_prs_code"];
 
@@ -74,7 +75,7 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
-    <td>" . htmlspecialchars(getTenantData($row['tenant_id'], 'tenantscod', 'prospect_id')) . "</td>
+    <td>" . htmlspecialchars(getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName')) . "</td>
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
     <td>" . htmlspecialchars($row['floor']) . "</td>

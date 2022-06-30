@@ -62,7 +62,7 @@ if (!isset($_GET['page'])) {
 //determine the sql LIMIT starting number for the results on the displaying page  
 $page_first_result = ($page - 1) * $results_per_page;
 
-$query = "SELECT * FROM messages WHERE property_code = $property_code ORDER BY message_date DESC LIMIT " . $page_first_result . ',' . $results_per_page;
+$query = "SELECT * FROM messages WHERE property_code = $property_code OR property_code is null ORDER BY message_date DESC LIMIT " . $page_first_result . ',' . $results_per_page;
 $result = mysqli_query($link, $query);
 ?>
 

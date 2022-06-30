@@ -18,6 +18,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
+//include $_SERVER['DOCUMENT_ROOT']."/config/config.php";
 require "/var/www/html/crm/config/config.php";
 require __DIR__ . "/functions_log.php";
 require __DIR__ . "/functions_property.php";
@@ -29,6 +30,12 @@ $property_code = 3;
 
 //Count the number of emails sent
 $countEmail = 0;
+
+//Check if the script is already running
+// if (logTimerToDie($property_code, 'gettingEmail', getPropertyData($property_code, 'getting_email_time'))) {
+//     echo 'Script is not running for this property code ' . $property_code . '.<br>';
+//     exit;
+// } else echo 'Script is running for this property code ' . $property_code . '. Please wait for the script to finish.<br>';
 
 //Saves a log of the script, it'll prevent the script from running again if it's already running
 logInsert('System', 0, 'gettingEmail', 'Getting Emails', 'Start getting email script.');
@@ -47,13 +54,17 @@ $hostname =  '{' . $IMAPHost . ':' . $IMAPPort . '/' . $IMAPProtocol . '/novalid
 $inbox = imap_open($hostname, $IMAPUser, $IMAPPassword) or die('Cannot connect to MAIL SERVER: ' . imap_last_error());
 
 /* Grab emails with subject Enquiry */
+//$emails = imap_search($inbox, 'ALL');
+//Get all the emails with the word "enquiry" in the subject
 $emails = imap_search($inbox, 'SUBJECT "Enquiry"');
 
+
+
 // Start blank array to store the emails
-$emailsArray = (array) null;
+$newEnquiries = (array) null;
 
 // Start blank variable to store the email option
-$arrayAutoEmail = "";
+$automailNew = "";
 
 /* if emails are returned, cycle through each email... */
 if ($emails) {
@@ -62,32 +73,27 @@ if ($emails) {
 
         /* get information specific to this email */
         $overview = imap_fetch_overview($inbox, $singleEmail, 0);
-        //$bodyHTML = $link->real_escape_string(imap_fetchbody($inbox, $singleEmail, 1));
-        $bodyHTML = imap_fetchbody($inbox, $singleEmail, 2);
-        $messageTEXT = htmlspecialchars(imap_qprint(imap_fetchbody($inbox, $singleEmail, 1)));
+        //$message_raw = $link->real_escape_string(imap_fetchbody($inbox, $singleEmail, 1));
+        $message_raw = htmlspecialchars(imap_qprint(imap_fetchbody($inbox, $singleEmail, 1)));
 
         // Retrieve and collect just new=0 / read=1 emails
         if (($overview[0]->seen) == 0) {
             //Prepare variables from the email to INSERT into the SQL TABLES
-            echo '<hr><div name="email"><p>'. imap_qprint($bodyHTML) . '</p></div><hr>';
-            $from = $overview[0]->from;
-            $subject = imap_utf8($overview[0]->subject);
+            $mail_from = $overview[0]->from;
+            $mail_subject =  imap_utf8($overview[0]->subject);
             $date = date_create($overview[0]->date);
             //Parse the date time into the SQL pattern before insert into the SQL
-            $date = date_format($date, "Y/m/d H:i:s");
+            $mail_date = date_format($date, "Y/m/d H:i:s");
 
             //Search matches using preg_match() to get the FULL NAME inside the message, if can't find it keep the name from the original mail message
-            preg_match("'Enquiry from(.*?)on Daft.ie'", $messageTEXT, $senderName);
-            if ($senderName) {
-                $senderName = $senderName[1];
+            preg_match("'Enquiry from(.*?)on Daft.ie'", $message_raw, $message_name);
+            if ($message_name) {
+                $message_sender_name = $message_name[1];
             } else
-                $senderName = $from;
-
-                imap_qprint($senderName);
-                echo $senderName;
+                $message_sender_name = $mail_from;
 
             //Decode message body from quoted printable
-            $mail_message = utf8_decode(imap_utf8($bodyHTML));
+            $mail_message = utf8_decode(imap_utf8($message_raw));
             $mail_message = trim(quoted_printable_decode($mail_message));
 
             //Get Email:Create a pattern to find an email address
@@ -95,7 +101,7 @@ if ($emails) {
             preg_match($pattern_mail, $mail_message, $matches);
             if ($matches) {
                 $email_adress = $matches[0];
-            } else $email_adress = $from;
+            } else $email_adress = $mail_from;
 
 
             //Phone Numbers: Looks for numbers with at least 7 numbers for Irish numbers
@@ -106,7 +112,7 @@ if ($emails) {
 
             //Daft message:
             //Get message inside DAFT.IE email: grab the text after 'Message:' inside the body
-            preg_match("'Message:(.*?)\(https://www.daft.ie'si", $bodyHTML, $message_daft_body_raw);
+            preg_match("'Message:(.*?)\(https://www.daft.ie'si", $message_raw, $message_daft_body_raw);
             //If it find the message inside email will replace the whole message for the small message
             if ($message_daft_body_raw) {
                 //Clean the result from TAGS HTMLS and special characters
@@ -118,45 +124,45 @@ if ($emails) {
             $message_hash = hash('md5', $email_adress);
             
             //Get the address from the subject(Split by | and get the last part)
-            $property_address = explode("|", $subject);
+            $property_address = explode("|", $mail_subject);
             $property_address = trim(end($property_address));
             //Get the property_code from the enquirie address title
             $property_code = getPropertyDataConditional('property_address', $property_address, 'property_code');
             // Get the option to send or not the email to new enquiries
-            $arrayAutoEmail = getPropertyData($property_code, 'automailNew');
+            $automailNew = getPropertyData($property_code, 'automailNew');
             //Get the PRS code from property selected by session
             $messages_prs_code = getPropertyData($property_code, 'property_prs_code');
 
             //Prepared SQL and insert into the SQL
             $sql = "INSERT INTO messages (messages_prs_code, messages_email, message_date, property_address, message_title, message_body, message_from, message_phone_number, message_sender_name, message_hash, property_code)
                 VALUES
-                (?,?,?,?,?,?,?,?,?,?,?);";
+                (?,?,?,?,?,'$mail_message_sql',?,?,?,?,?);";
             $stmt = mysqli_stmt_init($link);
             if (!mysqli_stmt_prepare($stmt, $sql)) {
                 echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
             } else {
-                mysqli_stmt_bind_param($stmt, "sssssssssss", $messages_prs_code, $email_adress, $date, $property_address, $subject, $mail_message_sql,$from, $message_phone_number, $senderName, $message_hash, $property_code);
+                mysqli_stmt_bind_param($stmt, "ssssssssss", $messages_prs_code, $email_adress, $mail_date, $property_address, $mail_subject, $mail_from, $message_phone_number, $message_sender_name, $message_hash, $property_code);
                 mysqli_stmt_execute($stmt);
                 echo "New enquiry created successfully for $email_adress <br>";
             }
             mysqli_stmt_close($stmt);
 
-            array_push($emailsArray, $email_adress);
+            array_push($newEnquiries, $email_adress);
         }
     }
     // Saves a log for a success retrieving emails
-    logInsert($property_code, 1, 'gettingEmail', 'Getting Emails', 'Finished getting email from property code ' . $property_code . '.');
+    //logInsert($property_code, 1, 'gettingEmail', 'Getting Emails', 'Finished getting email from property code ' . $property_code . '.');
 }
 /* close the connection */
 imap_close($inbox);
 
-print_r($emailsArray );
+print_r($newEnquiries );
 
-if ($arrayAutoEmail > 0) {
+if ($automailNew > 0) {
     echo '<center><div class="alert alert-success" role="alert">Automail is enabled for this property.</div></center>';
 }
 if(false){
-foreach ($emailsArray as $email) {
+foreach ($newEnquiries as $email) {
    
     //Send welcome email to the new enquiries
     //Load message template
@@ -192,7 +198,7 @@ foreach ($emailsArray as $email) {
     $message = str_replace('%propertyOfficePhone%', getPropertyData($property_code,'office_phone') , $message);
     $message = str_replace('%PropertyOfficeEmail%', getPropertyData($property_code,'office_email') , $message);
     $message = str_replace('%PropertyOfficeAddress%', getPropertyData($property_code,'office_address') , $message);
-    $message = str_replace('%prospectName%', $senderName , $message);
+    $message = str_replace('%prospectName%', $message_sender_name , $message);
     $message = str_replace('%prospectEmail%', $email, $message); 
     $base_mail = getAutomail($automail_id,'automail_website');
     $message = str_replace('%link%', ''.$base_mail.'/prospect_area.php?propertyCode='.$property_code.'', $message);
@@ -215,7 +221,7 @@ foreach ($emailsArray as $email) {
         $mail->SMTPAuth   = true;
         $mail->SMTPSecure = 'tls';
         $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
-        $mail->addAddress($email_adress, $senderName);
+        $mail->addAddress($email_adress, $message_sender_name);
         $mail->isHTML(true);
         $mail->Subject    = $subject;
         $mail->Body       = $bodyHtml;
@@ -235,6 +241,6 @@ foreach ($emailsArray as $email) {
 
 if($countEmail > 0){
     // Saves a log for a success fetching emails
-    //logInsert('System', 1, 'gettingEmail', 'Getting Emails', 'Emails collected: ' . $countEmail);
+    logInsert('System', 1, 'gettingEmail', 'Getting Emails', 'Emails collected: ' . $countEmail);
 }
 

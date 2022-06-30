@@ -45,9 +45,7 @@ if (!isset($_GET['outcome'])) {
             </div>
         </div>
     </div>';
-}
-
-else if ($_GET['outcome'] == 'Approved') {
+} else if ($_GET['outcome'] == 'Approved') {
     // if the outcome has a variable Approved will update the status to Approved
     $outcome = $_GET['outcome'];
     echo "<script>
@@ -231,7 +229,7 @@ if ($_POST['outcome'] == 'newTenant') {
     </div>';
 }
 ?>
-
+<script src="https://cdn.tiny.cloud/1/wqh1zddiefonsyraeh8x3jwdkrswjtgv49fuarkvu1ggr9ad/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 <div class="container-fluid">
     <div class="card shadow mb-4">
@@ -310,8 +308,13 @@ if ($_POST['outcome'] == 'newTenant') {
                         <div class="col-sm-3">
                             <h6 class="mb-0">Message</h6>
                         </div>
-                        <div class="col-sm-9 text-secondary">
-                            <?php echo $message; ?>
+                   
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="email-content">
+                                <textarea id="tinyTextArea"><?php echo $message; ?></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -554,3 +557,14 @@ if ($_POST['outcome'] == 'newTenant') {
     //include "prospect_details.php";
     ?>
 </p>
+
+<script>
+    tinymce.init({
+        selector: '#tinyTextArea',
+        toolbar_location: 'bottom',
+        visual: false,
+        menubar: false,
+        statusbar: false,
+        height: 600,
+    });
+</script>

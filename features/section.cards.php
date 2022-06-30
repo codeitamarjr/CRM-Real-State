@@ -150,7 +150,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
                     $result = mysqli_query($link, $select);
                     while ($row = mysqli_fetch_array($result)) {
-                        $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE property_code = " . $row['property_code'] . ""));
+                        $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE propertyCode = " . $row['property_code'] . ""));
                     ?>
                         <h4 class="small fw-bold"><?php echo $row['property_name']; ?><span class="float-end">Unit(s):<?php echo totalUnits($row['property_code'], '') ?> | Rented <?php echo $totalAvaiable ?> | Occupancy <?php echo round($totalAvaiable / (totalUnits($row['property_code'], '')) * 100, 0) ?>%</span></h4>
                         <div class="progress mb-4">

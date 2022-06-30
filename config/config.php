@@ -1,10 +1,6 @@
 <?php
 /* Database credentials.*/
 include __DIR__ . "/settings.php";
-// define('DB_SERVER', $HOST);
-// define('DB_USERNAME', $USERNAME);
-// define('DB_PASSWORD', $DBPASSWORD);
-// define('DB_NAME', $DBNAME);
 
 /* Attempt to connect to MySQL database */
 $link = mysqli_connect($HOST, $USERNAME, $DBPASSWORD, $DBNAME);
