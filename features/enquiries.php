@@ -109,7 +109,8 @@ $result = mysqli_query($link, $query);
                             <th>Property</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>App</th>
+                            <th></th>
+                            <td></td>
                             <th>Date Received</th>
                             <th>Status</th>
                         </tr>
@@ -131,11 +132,23 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
     <td>";  if(getProfile('email',$row['messages_email'],'propertyCode') == $_SESSION["property_code"])echo '<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="This prospect already submitted his application, click to view.">
-    <a href="?access=applicationsDetail&profileID='.getProfile('email',$row['messages_email'],'profileID').'" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-file-earmark-text" viewBox="0 0 16 16">
-        <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
-        <path d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
-      </svg></a></span>';
+    <a href="?access=applicationsDetail&profileID='.getProfile('email',$row['messages_email'],'profileID').'" target="_blank">
+    <button type="button" class="btn btn-secondary" control-id="ControlID-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-person" viewBox="0 0 16 16">
+  <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+  <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2v9.255S12 12 8 12s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h5.5v2z"></path>
+</svg>
+              </button></a></span>';
                             echo "</td>
+    <td>";
+    if(($row['emailWelcome']) != null ) echo '<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="This prospect already received a welcome email, click to view.">
+    <button type="button" class="btn btn-secondary" control-id="ControlID-4">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-check" viewBox="0 0 16 16">
+<path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"></path>
+<path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"></path>
+</svg>
+  </button></span>';
+    echo "</td>
     <td>" . htmlspecialchars($row['message_date']) . "</td>
     <td>" . htmlspecialchars($row['status']) . "</td>
     </tr>";  //$row['index'] the index here is a field name
@@ -148,7 +161,8 @@ $result = mysqli_query($link, $query);
                             <td><strong>Property</strong></td>
                             <td><strong>Name</strong></td>
                             <td><strong>E-mail</strong></td>
-                            <td><strong>App</strong></td>
+                            <td><strong></strong></td>
+                            <td><strong></strong></td>
                             <td><strong>Date Received</strong></td>
                             <td><strong>Status</strong></td>
                         </tr>
