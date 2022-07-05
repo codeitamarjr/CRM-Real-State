@@ -1,10 +1,16 @@
 <?php
-// Define tenantID
-$tenantsCod = $_GET['tenantsCod'];
-
 // Load functions
 require_once "features/functions_tenant.php";
 require_once "features/functions_profile.php";
+require_once "features/functions_unit.php";
+require_once "features/functions_property.php";
+
+// Define tenantID
+$tenantsCod = $_GET['tenantsCod'];
+$tenantsDetails = true;
+$profileID = getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'profileID');
+
+
 ?>
 <div class="container-fluid">
     <div class="profile-header">
@@ -17,11 +23,11 @@ require_once "features/functions_profile.php";
             <div class="profile-header-info">
                 <h4 class="m-t-sm"><?php echo getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'firstName').' '
                 .getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'lastName') ;?></h4>
-                <p class="m-b-sm">hgfhgf
+                <p class="m-b-sm"><?php echo getTenantData($tenantsCod,'tenantscod','status'); ?>
                 <br>
-                hgfhgh
+                <?php echo getPropertyData(getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','property_code'),'property_name'). " | " . getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','unit_number'); ?>
                     <br>
-                    CRM#: vgggfh | Code:
+                    CRM#: <?php echo getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','idunit'); ?> | Custom Code: <?php echo getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','unit_customCode'); ?>
                     <br>
                     
                 </p>
@@ -29,7 +35,7 @@ require_once "features/functions_profile.php";
         </div>
 
         <ul class="profile-header-tab nav nav-tabs">
-            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'prospect_details') echo 'active'; ?>" data-toggle="tab">Profile</a></li>
+            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == null) echo 'active'; ?>" data-toggle="tab">Profile</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
@@ -37,16 +43,11 @@ require_once "features/functions_profile.php";
 
         </ul>
     </div>
-    <div class="content">
-        
-    <?php
-    include_once "features/applicationsDetail.php";
-    ?>
-
-
-    </div>
 </div>
 
+<?php
+    include_once "features/applicationsDetail.php";
+    ?>
 <style>
     .profile-header {
         position: relative;

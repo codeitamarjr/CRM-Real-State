@@ -1,14 +1,16 @@
 <?php
 //Functions profile
 // test if the page is required inside tenantsDetail.php
-if(!isset($tenantsCod)){
+if(!$tenantsDetails){
 require "features/functions_profile.php";
 require "features/functions_tenant.php";
-};
-require "config/config.php";
 
 //Define profile ID
 $profileID = $_GET['profileID'];
+};
+require "config/config.php";
+
+
 
 
 //Get property code definied at the start of the login SESSION
@@ -127,6 +129,7 @@ if ($_POST['setTenant'] != null) {
 
 <div class="container-fluid">
     <div class="card shadow">
+        <?php if(!$tenantsDetails){ ?>
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>
             <div class="dropdown no-arrow">
@@ -154,6 +157,7 @@ if ($_POST['setTenant'] != null) {
                 </div>
             </div>
         </div><br>
+        <?php } ?>
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link <?php if (getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if (getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID=' . getProfile('profileID', $profileID, 'mainApplicantID') . '"'; ?>>Primary Applicant</a>

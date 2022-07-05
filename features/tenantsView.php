@@ -37,7 +37,8 @@ $result = mysqli_query($link, $query);
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_array($result)) {
-                        echo "<tr class=\"showsRow\" \">
+                        $tenantsCod = $row['tenantscod'];
+                        echo "<tr class=\"showsRow\" onclick=\"location.href='?access=tenantsDetails&tenantsCod=$tenantsCod'\" \">
     <td>" . htmlspecialchars(getPropertyData($row['propertyCode'], 'property_name')) . " </td>
     <td>" . htmlspecialchars(getUnit($row['idunit'],'idUnit','unit_number')) . " </td>
     <td>" . htmlspecialchars(getProfile('profileID',$row['profileID'],'firstName')) . ' ' . htmlspecialchars(getProfile('profileID',$row['profileID'],'lastName')) . "</td>
