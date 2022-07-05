@@ -3,9 +3,8 @@
 $tenantsCod = $_GET['tenantsCod'];
 
 // Load functions
-require_once('features/functions_tenants.php');
-echo $tenantsCod;
-
+require_once "features/functions_tenant.php";
+require_once "features/functions_profile.php";
 ?>
 <div class="container-fluid">
     <div class="profile-header">
@@ -16,7 +15,8 @@ echo $tenantsCod;
             </div>
 
             <div class="profile-header-info">
-                <h4 class="m-t-sm">hfghgf</h4>
+                <h4 class="m-t-sm"><?php echo getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'firstName').' '
+                .getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'lastName') ;?></h4>
                 <p class="m-b-sm">hgfhgf
                 <br>
                 hgfhgh
@@ -39,6 +39,9 @@ echo $tenantsCod;
     </div>
     <div class="content">
         
+    <?php
+    include_once "features/applicationsDetail.php";
+    ?>
 
 
     </div>

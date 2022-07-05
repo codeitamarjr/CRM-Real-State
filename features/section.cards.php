@@ -35,7 +35,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                 <div class="card-body">
                     <div class="row align-items-center no-gutters">
                         <div class="col me-2">
-                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total
+                            <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total 
                                     Enquiries</span></div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
                                     <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND property_code = $property_codeNavSelector"); ?>

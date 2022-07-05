@@ -12,6 +12,7 @@ $from = getMessage('message_id', $message_id, 'messages_email');
 $phone = getMessage('message_id', $message_id, 'message_phone_number');
 $date = getMessage('message_id', $message_id, 'message_date');
 $status = getMessage('message_id', $message_id, 'status');
+$welcomeEmail = getMessage('message_id', $message_id, 'emailWelcome');
 $message = getMessage('message_id', $message_id, 'message_body');
 $hash = getMessage('message_id', $message_id, 'message_hash');
 $name = getMessage('message_id', $message_id, 'message_sender_name');
@@ -155,79 +156,80 @@ if (!isset($_GET['outcome'])) {
                    ';
     $from = getMessage('message_id', $message_id, 'messages_email');
     sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'welcome');
+    setMessage($message_id, 'emailWelcome', date('Y-m-d H:i:s'));
     echo '
                 </center></div>
             </div>
         </div>
     </div>';
 }
-if ($_POST['outcome'] == 'newTenant') {
-    require "features/functions_tenant.php";
+// if ($_POST['outcome'] == 'newTenant') {
+//     require "features/functions_tenant.php";
 
-    echo "<script>
-    $(document).ready(function(){
-        $(\"#alertModal\").modal('show');
-    });
-    </script>";
-    echo
-    '<!-- Modal Alert -->
-    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <center>
-                   ';
+//     echo "<script>
+//     $(document).ready(function(){
+//         $(\"#alertModal\").modal('show');
+//     });
+//     </script>";
+//     echo
+//     '<!-- Modal Alert -->
+//     <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+//         <div class="modal-dialog modal-dialog-centered">
+//             <div class="modal-content">
+//                 <div class="modal-header">
+//                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+//                 </div>
+//                 <div class="modal-body">
+//                 <center>
+//                    ';
 
-    if (
-        getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'prospect_id') != 0
-    ) {
-        echo "<div class='alert alert-danger' role='alert'>This prospect is already a tenant!</div>";
-    } else {
-        echo newTenantDataSafe($_POST['tenant-property'], getProspectData($hash, 'prospect_id'));
-        $tenantscod = getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'tenantscod');
-        setTenantDataSafe($tenantscod, 'idunit', $_POST['idunit']);
-        setTenantDataSafe($tenantscod, 'bedrooms', $_POST['bedrooms']);
-        setTenantDataSafe($tenantscod, 'move_in', $_POST['move-in']);
-        setTenantDataSafe($tenantscod, 'lease_starts', $_POST['lease-starts']);
-        setTenantDataSafe($tenantscod, 'lease_term', $_POST['lease-term']);
-        setTenantDataSafe($tenantscod, 'lease_expires', date('Y-m-d', (strtotime($_POST['lease-starts'] . ' + ' . $_POST['lease-term'] . ' month'))));
-        setTenantDataSafe($tenantscod, 'rent', $_POST['rent']);
-        setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
-        setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
-        require "features/functions_billings.php";
-        //Create the bills for the tenant
-        //Create bills for the next months based on the lease term
-        $next_month =  date('Y-m-d', strtotime($_POST['lease-starts'] . ' + 1 months'));
-        //Get the first day of the month
-        $next_month = date('Y-m-01', strtotime($next_month));
-        //Recurring rent
-        $recurring = 1;
-        do {
-            createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
-            $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
-            $recurring++;
-        } while ($recurring <= $_POST['lease-term']);
-        //Deposit and First Rent or Remaining Rent
-        createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], $_POST['lease-starts']);
-        createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], $_POST['lease-starts']);
-        //Update the tenant with the unit
-        require "features/functions_unit.php";
-        setUnit($_POST['idunit'], 'tenant_id', $tenantscod);
-        setUnit($_POST['idunit'], 'status', 'Rented');
-    }
+//     if (
+//         getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'prospect_id') != 0
+//     ) {
+//         echo "<div class='alert alert-danger' role='alert'>This prospect is already a tenant!</div>";
+//     } else {
+//         echo newTenantDataSafe($_POST['tenant-property'], getProspectData($hash, 'prospect_id'));
+//         $tenantscod = getTenantData(getProspectData($hash, 'prospect_id'), 'prospect_id', 'tenantscod');
+//         setTenantDataSafe($tenantscod, 'idunit', $_POST['idunit']);
+//         setTenantDataSafe($tenantscod, 'bedrooms', $_POST['bedrooms']);
+//         setTenantDataSafe($tenantscod, 'move_in', $_POST['move-in']);
+//         setTenantDataSafe($tenantscod, 'lease_starts', $_POST['lease-starts']);
+//         setTenantDataSafe($tenantscod, 'lease_term', $_POST['lease-term']);
+//         setTenantDataSafe($tenantscod, 'lease_expires', date('Y-m-d', (strtotime($_POST['lease-starts'] . ' + ' . $_POST['lease-term'] . ' month'))));
+//         setTenantDataSafe($tenantscod, 'rent', $_POST['rent']);
+//         setTenantDataSafe($tenantscod, 'deposit', $_POST['deposit']);
+//         setTenantDataSafe($tenantscod, 'first_rent', $_POST['first-rent']);
+//         require "features/functions_billings.php";
+//         //Create the bills for the tenant
+//         //Create bills for the next months based on the lease term
+//         $next_month =  date('Y-m-d', strtotime($_POST['lease-starts'] . ' + 1 months'));
+//         //Get the first day of the month
+//         $next_month = date('Y-m-01', strtotime($next_month));
+//         //Recurring rent
+//         $recurring = 1;
+//         do {
+//             createBill($tenantscod, $_POST['tenant-property'], 'Rent', $_POST['rent'], $next_month);
+//             $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
+//             $recurring++;
+//         } while ($recurring <= $_POST['lease-term']);
+//         //Deposit and First Rent or Remaining Rent
+//         createBill($tenantscod, $_POST['tenant-property'], 'First Rent', $_POST['first-rent'], $_POST['lease-starts']);
+//         createBill($tenantscod, $_POST['tenant-property'], 'Deposit', $_POST['deposit'], $_POST['lease-starts']);
+//         //Update the tenant with the unit
+//         require "features/functions_unit.php";
+//         setUnit($_POST['idunit'], 'tenant_id', $tenantscod);
+//         setUnit($_POST['idunit'], 'status', 'Rented');
+//     }
 
-    //$from = getMessage('message_id', $message_id, 'messages_email');
-    //sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
-    echo '
-                <meta http-equiv="refresh" content="2;?access=tenantView&content=prospect_details&tenantscod=' . $tenantscod . '&hash=' . $hash . '" />
-                </center></div>
-            </div>
-        </div>
-    </div>';
-}
+//     //$from = getMessage('message_id', $message_id, 'messages_email');
+//     //sendAutomail($name, $hash, $property_name, $from, $from, '', 'newtenant');
+//     echo '
+//                 <meta http-equiv="refresh" content="2;?access=tenantView&content=prospect_details&tenantscod=' . $tenantscod . '&hash=' . $hash . '" />
+//                 </center></div>
+//             </div>
+//         </div>
+//     </div>';
+// }
 ?>
 <script src="https://cdn.tiny.cloud/1/wqh1zddiefonsyraeh8x3jwdkrswjtgv49fuarkvu1ggr9ad/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
@@ -298,6 +300,15 @@ if ($_POST['outcome'] == 'newTenant') {
                         </div>
                         <div class="col-sm-9 text-secondary">
                             <?php echo $status; ?>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Welcome E-mail Sent on</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <?php echo $welcomeEmail; ?>
                         </div>
                     </div>
                     <hr>

@@ -1,7 +1,10 @@
 <?php
 //Functions profile
+// test if the page is required inside tenantsDetail.php
+if(!isset($tenantsCod)){
 require "features/functions_profile.php";
 require "features/functions_tenant.php";
+};
 require "config/config.php";
 
 //Define profile ID
@@ -591,20 +594,21 @@ if ($_POST['setTenant'] != null) {
     </div>
 </div>
 
-<!-- Modal Approve -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteProfile" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Delete Profile</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Approve the application from <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?
+                Delete the application of <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?<br>
+                This action cannot be undone.
             </div>
             <div class="modal-footer">
                 <form method="POST">
-                    <button type="submit" class="btn btn-primary" name="approve" value="<?php echo $profileID; ?>">Approve</button>
+                    <button type="submit" class="btn btn-danger" name="delete" value="<?php echo $profileID; ?>">Confirm</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
                 </form>
             </div>
