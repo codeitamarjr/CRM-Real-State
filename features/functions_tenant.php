@@ -1,11 +1,11 @@
 <?php
-function newTenantDataSafe($property_code, $prospect_id)
+function newTenant($propertyCode, $idunit, $profileID)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
-    $sql = "INSERT INTO tenant (property_code, prospect_id)
+    $sql = "INSERT INTO tenant (propertyCode, idunit, profileID)
      VALUES 
-    (?, ?)";
+    (?, ?, ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
@@ -13,7 +13,7 @@ function newTenantDataSafe($property_code, $prospect_id)
         return '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
     } else {
         //Bind parameters to the placeholder with the right datatype s=String i=integer b=Blob d=Double
-        mysqli_stmt_bind_param($stmt, "ss", $property_code, $prospect_id);
+        mysqli_stmt_bind_param($stmt, "iii", $propertyCode, $idunit, $profileID);
         //Run parametes inside DB
         mysqli_stmt_execute($stmt);
         return '<center><div class="alert alert-success" role="alert">Tenant added with success!</div></center>';

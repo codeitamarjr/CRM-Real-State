@@ -86,11 +86,16 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
     <td>" . htmlspecialchars($row['rental_price']) . "</td>
     <td class=\"";
-                        if ($row['status'] == 'Available') {
+                        if (getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName') == null) {
                             echo "text-success";
                         }
-                        echo "\">" . htmlspecialchars($row['status']) . "</td>
-    </tr>";
+                        echo "\">" ;
+                        if (getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName') == null) {
+                            echo "Available";
+                        } else {
+                            echo getTenantData($row['idunit'], 'idunit', 'status');
+                        }
+                        echo "</td></tr>";
                     } ?>
                 </tbody>
                 <tfoot>
@@ -262,8 +267,9 @@ $result = mysqli_query($link, $query);
             stateSave: true,
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+                'copy', 'excel', 'pdf', 'print'
             ]
+            
 
         });
     });

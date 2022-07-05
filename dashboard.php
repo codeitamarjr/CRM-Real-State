@@ -76,7 +76,7 @@ if(!$_GET['message_id']){
                     <li class="nav-item"><a class="nav-link <?php if ($content == null) { echo 'active';}?>" href="dashboard.php"><i class="fas fa-tachometer-alt" style="font-size: 20px;"></i><span>Dashboard</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') { echo 'active';}?>" href="dashboard.php?access=enquiries"><i class="fa fa-list" style="font-size: 20px;"></i><span>Enquiries</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'applications') { echo 'active';}?>" href="dashboard.php?access=applications"><i class="fa fa-address-card" style="font-size: 20px;"></i><span>Applications</span></a></li>
-                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenants') { echo 'active';}?>" href="dashboard.php?access=tenants"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'tenantsView') { echo 'active';}?>" href="dashboard.php?access=tenantsView"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'unitsView') { echo 'active';}?>" href="dashboard.php?access=unitsView"><i class="fa fa-building-o" style="font-size: 20px;"></i><span>Units</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'report') { echo 'active';}?>" href="dashboard.php?access=report"><i class="fa fa-file-excel-o" style="font-size: 20px;"></i><span>Reports</span></a></li>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') { echo 'active';}?>" href="dashboard.php?access=automail"><i class="icon ion-email" style="font-size: 20px;"></i><span>Templates</span></a></li>
@@ -112,10 +112,6 @@ if(!$_GET['message_id']){
             <div class="text-center my-auto copyright"><span>Copyright © Real Enquiries 2022 | Designed by <a href="https://www.itjunior.dev/" target="_blank">Itamar Junior</a></span></div>
         </div>
     </footer>
-    <!-- New emails feature starts -->
-    <!-- <object type="text/html" data="features/getting_email.php" width="1px" height="1px"></object> -->
-    <!-- New emails feature end -->
-
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 <?php
 //Functions profile
 require "features/functions_profile.php";
+require "features/functions_tenant.php";
 require "config/config.php";
 
 //Define profile ID
@@ -109,6 +110,15 @@ if ($_POST['changeApplicationID'] != null) {
 
 // Count occupants into each application
 $occupantsTotal = 0;
+
+// Set the applicant as a tenant if approved
+if ($_POST['setTenant'] != null) {
+    modal(newTenant($property_code,$_POST["unitCodeTenant"],$_POST['setTenant']));
+    echo $_POST['setTenant'];
+    echo $property_code;
+    echo $_POST["unitCodeTenant"];
+}
+
 ?>
 
 
@@ -126,11 +136,18 @@ $occupantsTotal = 0;
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
                     <!-- Shows the modal to change property just for 'M'ainly applicants -->
-                    <?php if(getProfile('profileID', $profileID, 'type') == 'M') { ?>
-                    <div class="dropdown-divider"></div>
-                    <h6 class="dropdown-header text-center">Change Property</h6>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
-                    <?php } ?>
+                    <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
+                        <div class="dropdown-divider"></div>
+                        <h6 class="dropdown-header text-center">Change Property</h6>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
+
+                        <!-- If is the main tenant profile and if it's approved show the modal to set as tenant -->
+                        <?php if (getProfile('profileID', $profileID, 'status') == 'Approved') { ?>
+                            <div class="dropdown-divider"></div>
+                            <h6 class="dropdown-header text-center">Set as Tenant</h6>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#setTenant">&nbsp;Set as Tenant</a>
+                    <?php }
+                    } ?>
                 </div>
             </div>
         </div><br>
@@ -145,7 +162,7 @@ $occupantsTotal = 0;
             $query = "SELECT * FROM profile WHERE mainApplicantID = '$mainProfileID'";
             $result = mysqli_query($link, $query);
             while ($row = mysqli_fetch_array($result)) {
-                $occupantsTotal ++;
+                $occupantsTotal++;
                 echo '<li class="nav-item">
                 <a class="nav-link ';
                 if (htmlspecialchars($row['profileID']) == $profileID) echo 'active';
@@ -225,7 +242,7 @@ $occupantsTotal = 0;
                                                             <a class="btn btn-link btn-lg text-muted" data-bs-toggle="modal" data-bs-target="#deleteAttachment<?php echo htmlspecialchars($row['fileNumber']); ?>"><i class="fa fa-trash"></i></a>
 
                                                             <!-- Modal Delete Document -->
-                                                            <div class="modal fade" id="deleteAttachment<?php echo htmlspecialchars($row['fileNumber']); ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal fade" id="deleteAttachment<?php echo htmlspecialchars($row['fileNumber']); ?>" tabindex="-1" aria-hidden="true">
                                                                 <div class="modal-dialog modal-dialog-centered">
                                                                     <div class="modal-content">
                                                                         <div class="modal-header">
@@ -476,8 +493,8 @@ $occupantsTotal = 0;
                                         </div>
 
                                         <ul class="list-inline wizard mb-0">
-                                            <?php if ($occupantsTotal == 0 || $isOccupant ) { ?>
-                                            <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
+                                            <?php if ($occupantsTotal == 0 || $isOccupant) { ?>
+                                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
                                             <?php } ?>
                                             <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
                                         </ul>
@@ -493,7 +510,7 @@ $occupantsTotal = 0;
 </div>
 
 <!-- Modal Change Property -->
-<div class="modal fade" id="changeProperty" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="changeProperty" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form method="POST">
@@ -511,7 +528,6 @@ $occupantsTotal = 0;
                         </optgroup>
                         <optgroup>
                             <option disabled>Manage Another Property</option>
-
                             <?php
                             //List all the properties from an agent
                             include 'config/config.php';
@@ -520,17 +536,13 @@ $occupantsTotal = 0;
                             while ($row = mysqli_fetch_array($result)) {
                                 echo '<option value=' . $row['property_code'] . '>' . $row['property_name'] . '</option>';
                             }
-                            mysqli_close($link);
                             ?>
                         </optgroup>
                     </select>
-
                 </div>
                 <div class="modal-footer">
-
                     <button type="submit" class="btn btn-primary" name="changeApplicationID" value="<?php echo $profileID; ?>">Change</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
-
                 </div>
             </form>
         </div>
@@ -538,7 +550,7 @@ $occupantsTotal = 0;
 </div>
 
 <!-- Modal Approve -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -559,7 +571,7 @@ $occupantsTotal = 0;
 </div>
 
 <!-- Modal Deny -->
-<div class="modal fade" id="denyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="denyModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -579,26 +591,61 @@ $occupantsTotal = 0;
     </div>
 </div>
 
-<!-- Modal Delete -->
-<div class="modal fade" id="deleteProfile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Approve -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm to Delete Attachment</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete the profile of <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?<br>
-                To delete the profile, you must first delete all of the documents associated with the profile.<br>
-                This action cannot be undone.<br>
-                <strong>This will delete all of the profile's data.</strong><br>
+                Approve the application from <?php echo htmlspecialchars(getProfile('profileID', $profileID, 'firstName')); ?>?
             </div>
             <div class="modal-footer">
                 <form method="POST">
-                    <button type="submit" class="btn btn-danger" name="delete" value="<?php echo $profileID; ?>">Delete</button>
+                    <button type="submit" class="btn btn-primary" name="approve" value="<?php echo $profileID; ?>">Approve</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Set as Tenant -->
+<div class="modal fade" id="setTenant" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Tenant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    For which unit this tenant will move in?<br>
+                    <select class="form-select" name="unitCodeTenant">
+                        <optgroup>
+                            <?php
+                            //List all the units that is available for the tenant
+                            include 'config/config.php';
+                            $select = "SELECT * FROM unit WHERE property_code = '$property_code'";
+                            $result = mysqli_query($link, $select);
+                            while ($row = mysqli_fetch_array($result)) {
+                                if (getTenantData($row['idunit'], 'idunit','status') != null) {
+                                    echo '<option disabled>' . $row['unit_number'] . '</option>';
+                                } else {
+                                    echo '<option value=' . $row['idunit'] . '>' . $row['unit_number'] . ' | ' . $row['unit_customCode'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" name="setTenant" value="<?php echo $profileID; ?>">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

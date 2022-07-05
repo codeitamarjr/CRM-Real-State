@@ -241,9 +241,6 @@ if ($_POST['outcome'] == 'newTenant') {
                 </button>
                 <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
                     <h6 class="dropdown-header text-center">Change Status</h6>
-                    <?php if ($status == 'Approved') { ?>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newTenant">&nbsp;Set as Tenant</a>
-                    <?php }; ?>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
@@ -449,107 +446,6 @@ if ($_POST['outcome'] == 'newTenant') {
     </div>
 </div>
 
-<!-- New Tenant Modal -->
-<div class="modal fade" id="newTenant" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form method="POST" action="?access=enquiryDetails&message_id=<?php echo $message_id ?>">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Future Tenant</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-4 col-form-label" for="property_selector">Select a Property</label>
-                        <div class="col-8">
-                            <select id="property_selector" name="tenant-property" class="form-control" required="required">
-                                <?php
-                                //List all the properties from an agent
-                                require 'config/config.php';
-                                $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
-                                $result = mysqli_query($link, $select);
-                                while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option value=' . $row['property_code'] . '>' . $row['property_name'] . '</option>';
-                                };
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="code_unit" class="col-4 col-form-label">#CRM of the Unit</label>
-                        <div class="col-8">
-                            <input id="code_unit" name="idunit" type="text" class="form-control" required="required">
-                            <span id="move-inHelpBlock" class="form-text text-muted">Custom code of the unit.</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-4 col-form-label" for="bedrooms">Bedrooms</label>
-                        <div class="col-8">
-                            <select id="bedrooms" name="bedrooms" class="form-control" required="required">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="move-in" class="col-4 col-form-label">Move-in Date</label>
-                        <div class="col-8">
-                            <div class="input-group">
-                                <input id="move-in" name="move-in" type="date" aria-describedby="move-inHelpBlock" required="required" class="form-control">
-                            </div>
-                            <span id="move-inHelpBlock" class="form-text text-muted">Select the move-in date</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="lease_starts" class="col-4 col-form-label">Lease Starts</label>
-                        <div class="col-8">
-                            <div class="input-group">
-                                <input id="lease_starts" name="lease-starts" type="date" aria-describedby="lease_startsHelpBlock" required="required" class="form-control">
-                            </div>
-                            <span id="lease_startsHelpBlock" class="form-text text-muted">Select the date the lease starts.</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="lease_term" class="col-4 col-form-label">Lease Term</label>
-                        <div class="col-8">
-                            <input id="lease_term" name="lease-term" type="number" aria-describedby="lease_termHelpBlock" required="required" class="form-control">
-                            <span id="lease_termHelpBlock" class="form-text text-muted">The time of the lease in months</span>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group row">
-                        <label for="rent" class="col-4 col-form-label">Rent</label>
-                        <div class="col-8">
-                            <input id="rent" name="rent" type="text" class="form-control" required="required" aria-describedby="rentHelpBlock" data-type="currency" placeholder="€0.000,00">
-                            <span id="rentHelpBlock" class="form-text text-muted">Value of the rent per month.</span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="deposit" class="col-4 col-form-label">Deposit</label>
-                        <div class="col-8">
-                            <input id="deposit" name="deposit" type="text" class="form-control" required="required" data-type="currency" placeholder="€0.000,00">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="first_rent" class="col-4 col-form-label">First Rent</label>
-                        <div class="col-8">
-                            <input id="first_rent" name="first-rent" type="text" class="form-control" required="required" aria-describedby="first_rentHelpBlock" data-type="currency" placeholder="€0.000,00">
-                            <span id="first_rentHelpBlock" class="form-text text-muted">First rent or remaining rent, in case of the tenant move-in in the middle of the month.</span>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="outcome" value="newTenant">
-                    <button type="submit" class="btn btn-primary" name="outcome" value="newTenant">&nbsp;Save New Tenant</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
-                </div>
-        </form>
-    </div>
-</div>
 </div>
 <p>
 
