@@ -247,6 +247,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Car Parking</label>
                                                                     <select id="inputState" class="form-select" required name="carParking">
+                                                                    <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="'.getProfile('profileID', $profileID, 'carParking').'" selected>'.getProfile('profileID', $profileID, 'carParking').'</option>';  ?>
                                                                         <option disabled>Choose</option>
                                                                         <option value="0">No</option>
                                                                         <option value="1">Yes 1 Car Space</option>
@@ -256,6 +257,7 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">pet</label>
                                                                     <select id="inputState" class="form-select" required name="pet">
+                                                                    <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="'.getProfile('profileID', $profileID, 'pet').'" selected>'.getProfile('profileID', $profileID, 'pet').'</option>';  ?>
                                                                         <option disabled>Choose</option>
                                                                         <option value="0">No</option>
                                                                         <option value="1">Yes 1 pet</option>

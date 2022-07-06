@@ -28,7 +28,7 @@ if ($_POST['save'] == 'update') {
     if ($_POST['children'] != null) setProfile($profileID, 'children', $_POST['children']);
     if ($_POST['expectedMoveinDate'] != null) setProfile($profileID, 'expectedMoveinDate', $_POST['expectedMoveinDate']);
     if ($_POST['carParking'] != null) setProfile($profileID, 'carParking', $_POST['carParking']);
-    if ($_POST['pet'] != null) setProfile($profileID, 'pet', $_POST['pet']);
+    if ($_POST['pet'] != null) echo setProfile($profileID, 'pet', $_POST['pet']);
     if ($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
     if ($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
     if ($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
@@ -344,6 +344,7 @@ if ($_POST['setTenant'] != null) {
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Car Parking</label>
                                                 <select id="inputState" class="form-select" name="carParking">
+                                                <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="'.getProfile('profileID', $profileID, 'carParking').'" selected>'.getProfile('profileID', $profileID, 'carParking').'</option>';  ?>
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 Car Space</option>
@@ -353,6 +354,7 @@ if ($_POST['setTenant'] != null) {
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">pet</label>
                                                 <select id="inputState" class="form-select" name="pet">
+                                                    <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="'.getProfile('profileID', $profileID, 'pet').'" selected>'.getProfile('profileID', $profileID, 'pet').'</option>';  ?>
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 pet</option>
