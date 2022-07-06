@@ -13,77 +13,54 @@ $phone = getMessage('message_id', $message_id, 'message_phone_number');
 $date = getMessage('message_id', $message_id, 'message_date');
 $status = getMessage('message_id', $message_id, 'status');
 $welcomeEmail = getMessage('message_id', $message_id, 'emailWelcome');
+$viewingEmail = getMessage('message_id', $message_id, 'emailViewing');
 $message = getMessage('message_id', $message_id, 'message_body');
 $hash = getMessage('message_id', $message_id, 'message_hash');
 $name = getMessage('message_id', $message_id, 'message_sender_name');
 $property = getMessage('message_id', $message_id, 'property_code');
 
+// Modal box functions
+function modalBox($message){
+    echo "<script>
+    $(document).ready(function(){
+        $(\"#alertModal\").modal('show');
+    });
+    </script>";
+    echo '<!-- Modal Alert -->
+    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <center>
+                   ';
+                     echo $message;
+                     echo '
+                </center>
+                </div>
+             </div>
+        </div>
+    </div>';
+}
+
 
 //Check if there's a status to change on this message
-if (!isset($_GET['outcome'])) {
+if (!isset($_POST['outcome'])) {
     // nothing happens 
-} else if ($_GET['outcome'] == 'changeProperty') {
-    echo "<script>
-    $(document).ready(function(){
-        $(\"#alertModal\").modal('show');
-    });
-    </script>";
-    echo '<!-- Modal Alert -->
-    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <center>
-                   ';
-
-    echo setMessage($message_id, 'property_code', $_GET['change_property']);
-
-    echo '
-                </center></div>
-            </div>
-        </div>
-    </div>';
-} else if ($_GET['outcome'] == 'Approved') {
-    // if the outcome has a variable Approved will update the status to Approved
-    $outcome = $_GET['outcome'];
-    echo "<script>
-    $(document).ready(function(){
-        $(\"#alertModal\").modal('show');
-    });
-    </script>";
-    echo '<!-- Modal Alert -->
-    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                <center>
-                   ';
-    echo setMessage($message_id, 'status', $outcome);
+} else if ($_POST['outcome'] == 'changeProperty') {
+    modalBox(setMessage($message_id, 'property_code', $_POST['change_property']));
+} else if ($_POST['outcome'] == 'sendViewing') {
+    // if the outcome has a variable sendViewing will update the status to Invited
+    $outcome = $_POST['outcome'];
     $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'viewing');
-    echo '
-
-    <p> Redirect in <span id="countdowntimer">3 </span> seconds</p>
-    <meta http-equiv="refresh" content="3;?access=enquiries" />
-    <script type="text/javascript">
-    var timeleft = 5;
-    var downloadTimer = setInterval(function(){
-    timeleft--;
-    document.getElementById("countdowntimer").textContent = timeleft;
-    if(timeleft <= 0)
-        clearInterval(downloadTimer);
-    },1000);
-    </script>
-                </center></div>
-            </div>
-        </div>
-    </div>';
-} else if ($_GET['outcome'] == 'Denied') {
+    modalBox('<center>Viewing invitation sent!<br>'.setMessage($message_id, 'status', 'Invited').'<br>'.
+    sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'viewing') .'</center>');
+    setMessage($message_id, 'emailViewing', date('Y-m-d H:i:s'));
+} else if ($_POST['outcome'] == 'Denied') {
     // if the outcome has a variable will update the status 
-    $outcome = $_GET['outcome'];
+    $outcome = $_POST['outcome'];
     echo "<script>
     $(document).ready(function(){
         $(\"#alertModal\").modal('show');
@@ -100,68 +77,27 @@ if (!isset($_GET['outcome'])) {
                 <center>
                    ';
     echo setMessage($message_id, 'status', $outcome);
-    $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, '', $from, $from, $_SESSION["property_code"], 'denied');
+    //$from = getMessage('message_id', $message_id, 'messages_email');
+    //sendAutomail($name, $hash, '', $from, $from, $_SESSION["property_code"], 'denied');
     echo '
                 </center></div>
             </div>
         </div>
     </div>';
-} else if ($_GET['outcome'] == 'Delete') {
+} else if ($_POST['outcome'] == 'Delete') {
     // if the outcome has a variable will update the status 
-    $outcome = $_GET['outcome'];
-    echo "<script>
-    $(document).ready(function(){
-        $(\"#alertModal\").modal('show');
-    });
-    </script>";
-    echo '<!-- Modal Alert -->
-    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <center>
-                   ';
+    $outcome = $_POST['outcome'];
     $query = "DELETE FROM messages WHERE (message_id = '$message_id')";
     if ($link->query($query) === TRUE) {
-        echo '<div class="alert alert-danger" role="alert">This enquirie has been deleted with succes!</div>';
+        modalBox('<div class="alert alert-danger" role="alert">This enquirie has been deleted with succes!</div>');
     } else {
         echo "Error: " . $sql . "<br>" . $link->error;
     }
-    echo '
-                <meta http-equiv="refresh" content="2;?access=enquiries" />
-                </center></div>
-            </div>
-        </div>
-    </div>';
-} else if ($_GET['outcome'] == 'SendEmail') {
-    $outcome = $_GET['outcome'];
-    echo "<script>
-    $(document).ready(function(){
-        $(\"#alertModal\").modal('show');
-    });
-    </script>";
-    echo '<!-- Modal Alert -->
-    <div class="modal" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <center>
-                   ';
+} else if ($_POST['outcome'] == 'SendEmail') {
+    $outcome = $_POST['outcome'];
     $from = getMessage('message_id', $message_id, 'messages_email');
-    sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'welcome');
+    modalBox('<center>Welcome email sent!<br>'.sendAutomail($name, $hash, $property_name, $from, $from, $_SESSION["property_code"], 'welcome').'<br>');
     setMessage($message_id, 'emailWelcome', date('Y-m-d H:i:s'));
-    echo '
-                </center></div>
-            </div>
-        </div>
-    </div>';
 }
 // if ($_POST['outcome'] == 'newTenant') {
 //     require "features/functions_tenant.php";
@@ -245,11 +181,10 @@ if (!isset($_GET['outcome'])) {
                     <h6 class="dropdown-header text-center">Change Status</h6>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteModal">&nbsp;Delete</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#sendModal">&nbsp;Send Welcome E-mail</a>
+                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#sendViewing">&nbsp;Send Viewing E-mail</a>
                 </div>
             </div>
         </div>
@@ -314,6 +249,15 @@ if (!isset($_GET['outcome'])) {
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
+                            <h6 class="mb-0">Viewing E-mail Sent on</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <?php echo $viewingEmail; ?>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
                             <h6 class="mb-0">Message</h6>
                         </div>
                    
@@ -341,7 +285,7 @@ if (!isset($_GET['outcome'])) {
                 <h5 class="modal-title" id="exampleModalLabel">Change the enquirie to another property</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
+            <form method="POST">
                 <div class="modal-body">
                     <p>Do you want to change the enquiry to another property?<br>
                         Select a new property:</p>
@@ -376,48 +320,10 @@ if (!isset($_GET['outcome'])) {
     </div>
 </div>
 
-<!-- Modal Approve -->
-<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Approve</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Approve the enquirie from <?php echo $from; ?>?
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Approved">&nbsp;Approve</a>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Deny -->
-<div class="modal fade" id="denyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Status to Deny</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Deny the enquirie from <?php echo $from; ?>? <br>
-                If the settings are set to auto send an email, this will be sent to this applicant.
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Denied">&nbsp;Deny</a>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal Delete -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+    <form method="POST">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirm to Delete this Enquirie</h5>
@@ -427,10 +333,11 @@ if (!isset($_GET['outcome'])) {
                 Delete the enquirie from <?php echo $from; ?>? <br>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary" href="dashboard.php?access=enquiryDetails&message_id=<?php echo $message_id ?>&outcome=Delete">&nbsp;Delete</a>
+                <button type="submit" class="btn btn-danger" name="outcome" value="Delete">&nbsp;Delete</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
             </div>
         </div>
+    </form>
     </div>
 </div>
 
@@ -446,7 +353,7 @@ if (!isset($_GET['outcome'])) {
                 Do you want to send the welcome e-mail based on the Automail template for <?php echo $from; ?>? <br>
             </div>
             <div class="modal-footer">
-                <form method="GET" action="<?= $_SERVER['PHP_SELF']; ?>">
+                <form method="POST">
                     <input type="hidden" name="access" value="enquiryDetails">
                     <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
                     <button type="submit" class="btn btn-primary" name="outcome" value="SendEmail">&nbsp;Send</button>
@@ -457,13 +364,31 @@ if (!isset($_GET['outcome'])) {
     </div>
 </div>
 
+<!-- Send Viewing E-mail Modal -->
+<div class="modal fade" id="sendViewing" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm to Send the Welcome E-mail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want to send the viewing e-mail based on the Automail template for <?php echo $from; ?>? <br>
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <input type="hidden" name="access" value="enquiryDetails">
+                    <input type="hidden" name="message_id" value="<?php echo $message_id ?>">
+                    <button type="submit" class="btn btn-primary" name="outcome" value="sendViewing">&nbsp;Send</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel and Close</button>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
 
-    <?php
-    //include "prospect_details.php";
-    ?>
-</p>
+</div>
+
 
 <script>
     tinymce.init({
