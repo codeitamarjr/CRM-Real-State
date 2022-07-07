@@ -64,7 +64,7 @@ $result = mysqli_query($link, $query);
     //Format Tables
     $(document).ready(function() {
         $('#dataTable').DataTable({
-            stateSave: true,
+            pageLength: 15,
             dom: 'Bfrtip',
             buttons: [
                 'copy', 'excel', 'pdf', 'print'

@@ -86,7 +86,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                                 <span>Approved</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND status = 'Approved' AND property_code = $property_codeNavSelector"); ?>
+                                    <?php echo totalApplications($_SESSION["property_code"], "AND status = 'Approved'"); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
@@ -104,36 +104,13 @@ $property_codeNavSelector = $_SESSION["property_code"];
                                 <span>Denied</span>
                             </div>
                             <div class="text-dark fw-bold h5 mb-0"><span>
-                                    <?php echo totalMesssages($_SESSION["agent_prs_code"], "AND status = 'Denied' AND property_code = $property_codeNavSelector"); ?>
+                                    <?php echo totalApplications($_SESSION["property_code"], "AND status = 'Denied'"); ?>
                                 </span></div>
                         </div>
                         <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md">
-            <div class="card shadow border-start-primary py-2">
-                <div class="card-body">
-                    <div class="row align-items-center no-gutters">
-                        <div class="col me-2">
-                            <div class="col">
-                                <canvas id="enquiriesChart" width="450" height="60">
-
-                                </canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-6 mb-4">
         </div>
     </div>
 
@@ -164,67 +141,4 @@ $property_codeNavSelector = $_SESSION["property_code"];
             </div>
         </div>
     </div>
-
 </div>
-<script>
-    new Chart(document.getElementById("enquiriesChart"), {
-        type: 'bar',
-        data: {
-
-            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            datasets: [{
-                    label: "New Enquiries",
-                    backgroundColor: "rgb(78, 115, 223)",
-                    data: [
-                        <?php
-                        for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND property_code = ' . $property_codeNavSelector) . ',';
-                            echo ',';
-                        }
-                        ?>
-                    ]
-                },
-                {
-                    label: "Queue",
-                    backgroundColor: "rgb(54, 185, 204)",
-                    data: [
-                        <?php
-                        for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Queue\' AND property_code = ' . $property_codeNavSelector) . ',';
-                            echo ',';
-                        }
-                        ?>
-                    ]
-                }, {
-                    label: "Approved",
-                    backgroundColor: "rgb(28, 200, 138)",
-                    data: [
-                        <?php
-                        for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Approved\' AND property_code = ' . $property_codeNavSelector) . ',';
-                            echo ',';
-                        }
-                        ?>
-                    ]
-                }, {
-                    label: "Denied",
-                    backgroundColor: "#FF0000",
-                    data: [
-                        <?php
-                        for ($month = 1; $month <= 12; $month++) {
-                            echo totalMesssages($_SESSION["agent_prs_code"], 'AND message_date LIKE \'%2022-0' . $month . '%\' AND status = \'Denied\' AND property_code = ' . $property_codeNavSelector) . ',';
-                            echo ',';
-                        }
-                        ?>
-                    ]
-                }
-            ]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Enquiry by unit and month'
-            }
-        }
-    });
-</script>

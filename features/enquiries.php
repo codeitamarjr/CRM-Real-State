@@ -6,13 +6,6 @@ require "features/functions_profile.php";
 $property_code = $_SESSION["property_code"];
 $prs_code_enquiry = $_SESSION["agent_prs_code"];
 
-//Define max of results per page 
-if (!isset($_GET['show'])) {
-    $results_per_page = 30;
-} else {
-    $results_per_page = $_GET['show'];
-}
-
 //Insert new enquiry
 if ($_POST['insert'] == true) {
 
@@ -42,33 +35,20 @@ if ($_POST['insert'] == true) {
 };
 
 
-//select all data from the mail_income sql
-$query = "SELECT * FROM messages WHERE property_code = $property_code ";
-$result = mysqli_query($link, $query);
-
-//find the total number of results
-$number_of_result = mysqli_num_rows($result);
-
-//total number of pages in total
-$number_of_page = ceil($number_of_result / $results_per_page);
-
-//which page number visitor is currently on  
-if (!isset($_GET['page'])) {
-    $page = 1;
-} else {
-    $page = $_GET['page'];
-}
-
-//determine the sql LIMIT starting number for the results on the displaying page  
-$page_first_result = ($page - 1) * $results_per_page;
-
-$query = "SELECT * FROM messages WHERE property_code = $property_code OR property_code is null ORDER BY message_date DESC LIMIT " . $page_first_result . ',' . $results_per_page;
+$query = "SELECT * FROM messages WHERE property_code = $property_code OR property_code is null ORDER BY message_date DESC ";
 $result = mysqli_query($link, $query);
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/r-2.3.0/sb-1.3.4/sr-1.1.1/datatables.min.css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/jszip-2.5.0/dt-1.12.1/b-2.2.3/b-html5-2.2.3/b-print-2.2.3/cr-1.5.6/r-2.3.0/sb-1.3.4/sr-1.1.1/datatables.min.js"></script>
+
+
 
 <div class="container-fluid">
-    <h3 class="text-dark mb-4">Enquiries</h3>
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Inbox of Enquiries
@@ -76,47 +56,18 @@ $result = mysqli_query($link, $query);
             </p>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 text-nowrap">
-                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;
-                            <select class="d-inline-block form-select form-select-sm" onchange="javascript:handleSelect(this)">
-                                <option value="&show=10" selected=""><?php echo $results_per_page; ?> </option>
-                                <option value="&show=25">30</option>
-                                <option value="&show=50">50</option>
-                                <option value="&show=100">100</option>
-                            </select>&nbsp;</label></div>
-                </div>
-                <div class="col-md">
-                </div>
-                <div class="col-md">
-                    <div id="dataTable_filter" class="text-md-end dataTables_filter">
-                        <label class="form-label">
-                            <form method="GET" class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" id="search_form">
-                                <input type="hidden" name="access" value="search">
-                                <div class="input-group">
-                                    <input class="form-control form-control-sm" type="search" name="search" aria-controls="dataTable" placeholder="Search" />
-                                    <button class="btn btn-primary py-0" type="submit" form="search_form" value="Submit" name="submit-search"><i class="fas fa-search"></i></button>
-                                </div>
-                            </form>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table my-0" id="dataTable">
+                <table id="dataTable" class="table table-striped dt-responsive nowrap w-100" style="width:100%">
                     <thead>
                         <tr>
                             <th>Property</th>
                             <th>Name</th>
-                            <th>Email</th>
-                            <th></th>
-                            <td></td>
+                            <th>E-mail</th>
+                            <th>App</th>
+                            <th>E-mail</th>
                             <th>Date Received</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-
                         <?php while ($row = mysqli_fetch_array($result)) {
                             $message_id = htmlspecialchars($row['message_id']);
 
@@ -161,43 +112,18 @@ $result = mysqli_query($link, $query);
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td><strong>Property</strong></td>
-                            <td><strong>Name</strong></td>
-                            <td><strong>E-mail</strong></td>
-                            <td><strong></strong></td>
-                            <td><strong></strong></td>
-                            <td><strong>Date Received</strong></td>
-                            <td><strong>Status</strong></td>
+                            <th>Property</th>
+                            <th>Name</th>
+                            <th>E-mail</th>
+                            <th></th>
+                            <th></th>
+                            <th>Date Received</th>
+                            <th>Status</th>
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-
-
-
 
             <div class="row">
-
-                <div class="col-md-6 align-self-center">
-                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing <?php echo $page_first_result + 1; ?> to <?php echo ($page_first_result + $results_per_page); ?> of <?php echo totalMesssages($_SESSION["property_code"], ''); ?></p>
-                </div>
-
-                <div class="col-md-6">
-                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                        <ul class="pagination">
-                            <?php
-                            //display the link of the pages in URL  
-                            for ($page = 1; $page <= $number_of_page;) {
-                                echo '<li class="page-item"><a class="page-link" href="dashboard.php?access=enquiries&show=' . $results_per_page . '&page=' . $page . '">' . $page . ' </a></li>';
-                                $page++;
-                            }
-                            //Close SQL connection
-                            mysqli_close($link);
-                            ?>
-                        </ul>
-                    </nav>
-                </div>
-
             </div>
         </div>
     </div>
@@ -304,18 +230,21 @@ $result = mysqli_query($link, $query);
     })
 </script>
 
-
-
-<script type="text/javascript">
-    function handleSelect(elm) {
-        window.location = "dashboard.php?access=enquiries&" + elm.value;
-    }
-</script>
-
 <style>
     tr:hover {
-        background-color: #4e73df;
-        color: white;
         cursor: pointer;
     }
 </style>
+
+<script>
+    //Format Tables
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            pageLength: 15,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>

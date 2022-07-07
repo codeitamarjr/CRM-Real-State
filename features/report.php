@@ -88,7 +88,6 @@ if ($_POST['report'] == 'messages' || $_POST['report'] == 'demographic') {
 
 
 <div class="container-fluid">
-    <h3 class="text-dark mb-1">Report</h3>
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h6 class="text-primary fw-bold m-0">Report Sample</h6>
