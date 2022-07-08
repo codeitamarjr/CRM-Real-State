@@ -18,7 +18,7 @@ if ($_POST['save'] == 'start') {
             Your application has been restored!</div></center>';
         // Set profileID
         $profileID = getProfile('email', $_POST['email'], 'profileID');
-    } 
+    }
     // If the email is not in the database carry on
     $email = $_POST['email'];
 };
@@ -48,6 +48,7 @@ if ($_POST['save'] == 'reference') {
     if ($_POST['expectedMoveinDate'] != null) setProfile($profileID, 'expectedMoveinDate', $_POST['expectedMoveinDate']);
     if ($_POST['carParking'] != null) setProfile($profileID, 'carParking', $_POST['carParking']);
     if ($_POST['pet'] != null) setProfile($profileID, 'pet', $_POST['pet']);
+    if ($_POST['petBreed'] != null) echo setProfile($profileID, 'petBreed', $_POST['petBreed']);
     if ($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
     if ($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
     if ($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
@@ -244,25 +245,29 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                     <label class="form-label">Expected Move-in Date</label>
                                                                     <input type="date" class="form-control" required name="expectedMoveinDate" <?php if (getProfile('profileID', $profileID, 'expectedMoveinDate') != null) echo 'value="' . getProfile('profileID', $profileID, 'expectedMoveinDate') . '"';  ?>>
                                                                 </div>
-                                                                <div class="mb-3 col-md-4">
+                                                                <div class="mb-3 col-md-2">
                                                                     <label class="form-label">Car Parking</label>
                                                                     <select id="inputState" class="form-select" required name="carParking">
-                                                                    <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="'.getProfile('profileID', $profileID, 'carParking').'" selected>'.getProfile('profileID', $profileID, 'carParking').'</option>';  ?>
+                                                                        <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="' . getProfile('profileID', $profileID, 'carParking') . '" selected>' . getProfile('profileID', $profileID, 'carParking') . '</option>';  ?>
                                                                         <option disabled>Choose</option>
                                                                         <option value="0">No</option>
                                                                         <option value="1">Yes 1 Car Space</option>
                                                                         <option value="2">Yes 2 Car Space</option>
                                                                     </select>
                                                                 </div>
-                                                                <div class="mb-3 col-md-4">
-                                                                    <label class="form-label">pet</label>
+                                                                <div class="mb-3 col-md-2">
+                                                                    <label class="form-label">Pet</label>
                                                                     <select id="inputState" class="form-select" required name="pet">
-                                                                    <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="'.getProfile('profileID', $profileID, 'pet').'" selected>'.getProfile('profileID', $profileID, 'pet').'</option>';  ?>
+                                                                        <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="' . getProfile('profileID', $profileID, 'pet') . '" selected>' . getProfile('profileID', $profileID, 'pet') . '</option>';  ?>
                                                                         <option disabled>Choose</option>
                                                                         <option value="0">No</option>
                                                                         <option value="1">Yes 1 pet</option>
                                                                         <option value="2">Yes 2 pets</option>
                                                                     </select>
+                                                                </div>
+                                                                <div class="mb-3 col-md-4">
+                                                                    <label class="form-label">Pet Breed</label>
+                                                                    <input type="text" class="form-control" name="petBreed" <?php if (getProfile('profileID', $profileID, 'petBreed') != null) echo 'value="' . getProfile('profileID', $profileID, 'petBreed') . '"';  ?>>
                                                                 </div>
                                                             </div>
 
