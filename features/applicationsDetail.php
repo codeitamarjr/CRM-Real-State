@@ -1,17 +1,17 @@
 <?php
 //Functions profile
 // test if the page is required inside tenantsDetail.php
-if(!$tenantsDetails){
-require "features/functions_profile.php";
-require "features/functions_tenant.php";
+if (!$tenantsDetails) {
+    require "features/functions_profile.php";
+    require "features/functions_tenant.php";
 
-//Define profile ID
-$profileID = $_GET['profileID'];
+    //Define profile ID
+    $profileID = $_GET['profileID'];
 };
 require "config/config.php";
 
 // Edit option
-if(isset($_POST['edit'])){
+if (isset($_POST['edit'])) {
     $edit = '';
 } else {
     $edit = '-plaintext';
@@ -39,6 +39,7 @@ if ($_POST['save'] == 'update') {
     if ($_POST['petBreed'] != null) echo setProfile($profileID, 'petBreed', $_POST['petBreed']);
     if ($_POST['mobilePhone'] != null) setProfile($profileID, 'mobilePhone', $_POST['mobilePhone']);
     if ($_POST['contactNumber'] != null) setProfile($profileID, 'contactNumber', $_POST['contactNumber']);
+    if ($_POST['email'] != null) setProfile($profileID, 'email', $_POST['email']);
     if ($_POST['alternativeEmail'] != null) setProfile($profileID, 'alternativeEmail', $_POST['alternativeEmail']);
     if ($_POST['notes'] != null) setProfile($profileID, 'notes', $_POST['notes']);
     if ($_POST['employementSector'] != null) setProfile($profileID, 'employementSector', $_POST['employementSector']);
@@ -126,10 +127,7 @@ $occupantsTotal = 0;
 
 // Set the applicant as a tenant if approved
 if ($_POST['setTenant'] != null) {
-    modal(newTenant($property_code,$_POST["unitCodeTenant"],$_POST['setTenant']));
-    echo $_POST['setTenant'];
-    echo $property_code;
-    echo $_POST["unitCodeTenant"];
+    modal(newTenant($property_code, $_POST["unitCodeTenant"], $_POST['setTenant'], $_POST['leaseStarts'], $_POST['moveInDate']));
 }
 
 ?>
@@ -137,34 +135,34 @@ if ($_POST['setTenant'] != null) {
 
 <div class="container-fluid">
     <div class="card shadow">
-        <?php if(!$tenantsDetails){ ?>
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>
-            <div class="dropdown no-arrow">
-                <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                    <i class="fas fa-ellipsis-v text-gray-400"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
-                    <h6 class="dropdown-header text-center">Change Status</h6>
+        <?php if (!$tenantsDetails) { ?>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="text-primary fw-bold m-0">Enquirie Details</h6>
+                <div class="dropdown no-arrow">
+                    <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
+                        <i class="fas fa-ellipsis-v text-gray-400"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end shadow animated--fade-in">
+                        <h6 class="dropdown-header text-center">Change Status</h6>
 
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
-                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
-                    <!-- Shows the modal to change property just for 'M'ainly applicants -->
-                    <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="dropdown-header text-center">Change Property</h6>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
-
-                        <!-- If is the main tenant profile and if it's approved show the modal to set as tenant -->
-                        <?php if (getProfile('profileID', $profileID, 'status') == 'Approved') { ?>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveModal">&nbsp;Approve</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#denyModal">&nbsp;Deny</a>
+                        <!-- Shows the modal to change property just for 'M'ainly applicants -->
+                        <?php if (getProfile('profileID', $profileID, 'type') == 'M') { ?>
                             <div class="dropdown-divider"></div>
-                            <h6 class="dropdown-header text-center">Set as Tenant</h6>
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#setTenant">&nbsp;Set as Tenant</a>
-                    <?php }
-                    } ?>
+                            <h6 class="dropdown-header text-center">Change Property</h6>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changeProperty">&nbsp;Change Property</a>
+
+                            <!-- If is the main tenant profile and if it's approved show the modal to set as tenant -->
+                            <?php if (getProfile('profileID', $profileID, 'status') == 'Approved') { ?>
+                                <div class="dropdown-divider"></div>
+                                <h6 class="dropdown-header text-center">Set as Tenant</h6>
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#setTenant">&nbsp;Set as Tenant</a>
+                        <?php }
+                        } ?>
+                    </div>
                 </div>
-            </div>
-        </div><br>
+            </div><br>
         <?php } ?>
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -214,21 +212,21 @@ if ($_POST['setTenant'] != null) {
                                 </div>
                                 <hr>
                                 <ul class="list-group">
-                                    <?php if ($edit == null ) { ?>
-                                    <form method="POST" enctype="multipart/form-data">
-                                        <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
+                                    <?php if ($edit == null) { ?>
+                                        <form method="POST" enctype="multipart/form-data">
+                                            <input type="hidden" name="profileID" value="<?php echo $profileID; ?>">
 
-                                        <div class="row">
+                                            <div class="row">
 
-                                            <div class="mb-3 col-md-8">
-                                                <input type="file" id="CRM" class="form-control" name="CRM[]">
+                                                <div class="mb-3 col-md-8">
+                                                    <input type="file" id="CRM" class="form-control" name="CRM[]">
+                                                </div>
+                                                <div class="mb-3 col-sm-1">
+                                                    <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
+                                                </div>
+
                                             </div>
-                                            <div class="mb-3 col-sm-1">
-                                                <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
-                                            </div>
-
-                                        </div>
-                                    </form>
+                                        </form>
                                     <?php } ?>
 
                                     <?php
@@ -352,7 +350,7 @@ if ($_POST['setTenant'] != null) {
                                             <div class="mb-3 col-md-2">
                                                 <label class="form-label">Car Parking</label>
                                                 <select id="inputState" class="form-control<?php echo $edit; ?>" name="carParking">
-                                                <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="'.getProfile('profileID', $profileID, 'carParking').'" selected>'.getProfile('profileID', $profileID, 'carParking').'</option>';  ?>
+                                                    <?php if (getProfile('profileID', $profileID, 'carParking') != null) echo '<option value="' . getProfile('profileID', $profileID, 'carParking') . '" selected>' . getProfile('profileID', $profileID, 'carParking') . '</option>';  ?>
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 Car Space</option>
@@ -362,7 +360,7 @@ if ($_POST['setTenant'] != null) {
                                             <div class="mb-3 col-md-2">
                                                 <label class="form-label">Pet</label>
                                                 <select id="inputState" class="form-control<?php echo $edit; ?>" name="pet">
-                                                    <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="'.getProfile('profileID', $profileID, 'pet').'" selected>'.getProfile('profileID', $profileID, 'pet').'</option>';  ?>
+                                                    <?php if (getProfile('profileID', $profileID, 'pet') != null) echo '<option value="' . getProfile('profileID', $profileID, 'pet') . '" selected>' . getProfile('profileID', $profileID, 'pet') . '</option>';  ?>
                                                     <option disabled>Choose</option>
                                                     <option value="0">No</option>
                                                     <option value="1">Yes 1 pet</option>
@@ -514,12 +512,15 @@ if ($_POST['setTenant'] != null) {
                                         </div>
 
                                         <ul class="list-inline wizard mb-0">
-                                            <?php if ($edit == null ){ if ($occupantsTotal == 0 || $isOccupant) { ?>
-                                                <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
-                                            <?php }} if ($edit == null ) { ?>
-                                            <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
+                                            <?php if ($edit == null) {
+                                                if ($occupantsTotal == 0 || $isOccupant) { ?>
+                                                    <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfile">&nbsp;Delete</a>
+                                                <?php }
+                                            }
+                                            if ($edit == null) { ?>
+                                                <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
                                             <?php } else { ?>
-                                            <button type="submit" class="btn btn-primary float-end" name="edit" value="edit">edit</button>
+                                                <button type="submit" class="btn btn-primary float-end" name="edit" value="edit">edit</button>
                                             <?php } ?>
                                         </ul>
                                     </div>
@@ -656,7 +657,7 @@ if ($_POST['setTenant'] != null) {
                             $select = "SELECT * FROM unit WHERE property_code = '$property_code'";
                             $result = mysqli_query($link, $select);
                             while ($row = mysqli_fetch_array($result)) {
-                                if (getTenantData($row['idunit'], 'idunit','status') != null) {
+                                if (getTenantData($row['idunit'], 'idunit', 'status') != null) {
                                     echo '<option disabled>' . $row['unit_number'] . '</option>';
                                 } else {
                                     echo '<option value=' . $row['idunit'] . '>' . $row['unit_number'] . ' | ' . $row['unit_customCode'] . '</option>';
@@ -665,6 +666,17 @@ if ($_POST['setTenant'] != null) {
                             ?>
                         </optgroup>
                     </select>
+                    <hr>
+                    <div class="row">
+                        <div class="mb-3 col-md-5">
+                            <label class="form-label">Lease/Contract Starts</label>
+                            <input type="date" class="form-control" name="leaseStarts">
+                        </div>
+                        <div class="mb-3 col-md-5">
+                            <label class="form-label">Move-in Date</label>
+                            <input type="date" class="form-control" name="moveInDate">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" name="setTenant" value="<?php echo $profileID; ?>">Confirm</button>
@@ -682,9 +694,8 @@ if ($_POST['setTenant'] != null) {
     #max-height {
         display: none;
     }
+
     /* Hide form corner fields */
-
-
 </style>
 <script>
     // Select HAP form

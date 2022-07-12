@@ -1,9 +1,9 @@
 <?php
 
-function createBill($billings_tenantscod,$billings_property_code,$billings_description,$billings_amount,$billings_invoice_date){
+function createBill($tenantscod,$idunit,$billings_description,$billings_amount,$billings_invoice_date){
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
-    $sql = "INSERT INTO billings (billings_tenantscod, billings_property_code, billings_description, billings_amount , billings_invoice_date) VALUES (?, ?, ?, ? , ?)";
+    $sql = "INSERT INTO billings (tenantscod, idunit, billings_description, billings_amount , billings_invoice_date) VALUES (?, ?, ?, ? , ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
@@ -11,7 +11,7 @@ function createBill($billings_tenantscod,$billings_property_code,$billings_descr
         echo '<center><div class="alert alert-danger" role="alert">Error SQL Statement Failed: ' . mysqli_stmt_error($stmt) . '</div></center>';
     } else {
         //Bind parameters to the placeholder with the right datatype s=String i=integer b=Blob d=Double
-        mysqli_stmt_bind_param($stmt,"iisds",$billings_tenantscod,$billings_property_code,$billings_description,$billings_amount, $billings_invoice_date);
+        mysqli_stmt_bind_param($stmt,"iisds",$tenantscod,$idunit,$billings_description,$billings_amount, $billings_invoice_date);
         //Run parametes inside DB
         mysqli_stmt_execute($stmt);
         return '<center><div class="alert alert-success" role="alert">Data updated with success!</div></center>';

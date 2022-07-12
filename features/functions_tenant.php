@@ -1,5 +1,5 @@
 <?php
-function newTenant($propertyCode, $idunit, $profileID)
+function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
@@ -16,7 +16,20 @@ function newTenant($propertyCode, $idunit, $profileID)
         mysqli_stmt_bind_param($stmt, "iii", $propertyCode, $idunit, $profileID);
         //Run parametes inside DB
         mysqli_stmt_execute($stmt);
-        return '<center><div class="alert alert-success" role="alert">Tenant added with success!</div></center>';
+        //Create billings for the tenant( Deposit and first rent )
+        require_once "features/functions_billings.php";
+        require_once "features/functions_tenant.php";
+        require_once "features/functions_unit.php";
+        $tenantscod = getTenantData($profileID, 'profileID', 'tenantscod');
+        $deposit = getUnit($idunit,'idunit','rental_price');
+        $rentPerDay = ($deposit*12)/365;
+        $lastDayOfTheMonth = date("Y-m-t", strtotime($leaseStarts));
+        $remainingDays = floor((strtotime($lastDayOfTheMonth) - strtotime($leaseStarts))/(60*60*24));
+        $firstRent = $rentPerDay * $remainingDays;
+        createBill($tenantscod, $idunit, 'Deposit', $deposit, $leaseStarts);
+        createBill($tenantscod, $idunit, 'First Rent', $firstRent, $leaseStarts);
+
+        return '<center><div class="alert alert-success" role="alert">Tenant, Deposit and First Rent Created!</div></center>';
     }
     mysqli_stmt_close($stmt);
 }
@@ -75,4 +88,16 @@ function deleteTenant($tenantscod)
         return '<center><div class="alert alert-success" role="alert">Tenant deleted with success!</div></center>';
     }
     mysqli_stmt_close($stmt);
+}
+
+function totalTenants($property_code,$aditionalQuery){
+    require "config/config.php";
+    $result = mysqli_query($link, "SELECT * FROM tenant WHERE propertyCode = '$property_code' $aditionalQuery");
+    $total = mysqli_num_rows($result);
+    if ($total == 0) {
+        return 0;
+    } else {
+        return $total;
+    }
+    mysqli_close($link);
 }

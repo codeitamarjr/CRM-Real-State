@@ -39,6 +39,7 @@ function getAllIncomes($profileID)
                     <tr>
                         <th>Property</th>
                         <th>Name</th>
+                        <th>E-mail</th>
                         <th>Sector</th>
                         <th>Position</th>
                         <th>HHI</th>
@@ -64,6 +65,7 @@ function getAllIncomes($profileID)
                         echo " \" onclick=\"location.href='?access=applicationsDetail&profileID=" . htmlspecialchars($row['profileID']) . "'\" >
     <td>" . htmlspecialchars(getPropertyData($row['propertyCode'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['firstName']) . ' ' . htmlspecialchars($row['lastName']) . "</td>
+    <td>" . htmlspecialchars($row['email']) . "</td>
     <td>" . htmlspecialchars($row['employementSector']) . "</td>
     <td>" . htmlspecialchars($row['jobTitle']) . "</td>
     <td>" . htmlspecialchars($row['netIncome'] + $row['extraIncome'] + getAllIncomes($row['profileID'])) . "</td>
@@ -76,6 +78,7 @@ function getAllIncomes($profileID)
                     <tr>
                         <th>Property</th>
                         <th>Name</th>
+                        <th>E-mail</th>
                         <th>Sector</th>
                         <th>Position</th>
                         <th>HHI</th>
