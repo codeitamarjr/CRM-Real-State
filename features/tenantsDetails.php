@@ -10,6 +10,10 @@ $tenantsCod = $_GET['tenantsCod'];
 $tenantsDetails = true;
 $profileID = getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'profileID');
 
+if ($_POST['cancelMovein'] != null){
+    deleteTenant($_POST['cancelMovein']);
+}
+
 
 ?>
 <div class="container-fluid">
@@ -39,7 +43,7 @@ $profileID = getProfile('profileID',getTenantData($tenantsCod,'tenantscod','prof
             <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
             <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#tenantAction">Cancel Move-in</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#cancelMovein">Cancel Move-in</a></li>
 
         </ul>
     </div>
@@ -48,6 +52,31 @@ $profileID = getProfile('profileID',getTenantData($tenantsCod,'tenantscod','prof
 <?php
     include_once "features/applicationsDetail.php";
     ?>
+
+
+<!-- Modal Cancel Movein -->
+<div class="modal fade" id="cancelMovein" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Cancel Movein</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel the move-in for this applicant?
+                <br>
+                This will cancel the movein date and this action cannot be undone.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form method="POST">
+                    <button type="submit" class="btn btn-primary" name="cancelMovein" value="<?php echo $tenantsCod; ?>">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     .profile-header {
         position: relative;
