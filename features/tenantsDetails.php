@@ -7,6 +7,13 @@ require_once "features/functions_property.php";
 
 // Define tenantID
 $tenantsCod = $_GET['tenantsCod'];
+
+// Define page content
+if (isset($_GET['pageContent'])) {
+    $pageContent = $_GET['pageContent'];
+} else {
+    $pageContent = 'applicationsDetail';
+}
 $tenantsDetails = true;
 $profileID = getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'profileID');
 
@@ -23,7 +30,6 @@ if ($_POST['cancelMovein'] != null) {
             <div class="profile-header-img mb-4">
                 <img src="assets/img/avatars/user_blank.png" class="mb-4" alt="Tenant img" width="100%" />
             </div>
-
             <div class="profile-header-info">
                 <h4 class="m-t-sm"><?php echo getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'firstName') . ' '
                                         . getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'lastName'); ?></h4>
@@ -33,24 +39,22 @@ if ($_POST['cancelMovein'] != null) {
                     <br>
                     CRM#: <?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'idunit'); ?> | Custom Code: <?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'unit_customCode'); ?>
                     <br>
-
                 </p>
             </div>
         </div>
 
         <ul class="profile-header-tab nav nav-tabs">
-            <li class="nav-item"><a href="?access=tenantView&content=prospect_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == null) echo 'active'; ?>" data-toggle="tab">Profile</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=rent_details&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rent_details') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=rtb_detail&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
-            <li class="nav-item"><a href="?access=tenantView&content=billings&tenantscod=" class="nav-link <?php if ($_GET['content'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
+            <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>" class="nav-link <?php if ($_GET['pageContent'] == null) echo 'active'; ?>" data-toggle="tab">Profile</a></li>
+            <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>&pageContent=tenantsRentDetails" class="nav-link <?php if ($_GET['pageContent'] == 'tenantsRentDetails') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
+            <li class="nav-item"><a href="?access=tenantView&pageContent=rtb_detail&tenantscod=" class="nav-link <?php if ($_GET['pageContent'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
+            <li class="nav-item"><a href="?access=tenantView&pageContent=billings&tenantscod=" class="nav-link <?php if ($_GET['pageContent'] == 'billings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#cancelMovein">Cancel Move-in</a></li>
-
         </ul>
     </div>
 </div>
 
 <?php
-include_once "features/applicationsDetail.php";
+include_once "features/" . $pageContent . ".php";
 ?>
 
 

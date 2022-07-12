@@ -4,7 +4,6 @@
 if (!$tenantsDetails) {
     require "features/functions_profile.php";
     require "features/functions_tenant.php";
-
     //Define profile ID
     $profileID = $_GET['profileID'];
 };
@@ -16,9 +15,6 @@ if (isset($_POST['edit'])) {
 } else {
     $edit = '-plaintext';
 }
-
-
-
 
 //Get property code definied at the start of the login SESSION
 $property_code = $_SESSION["property_code"];
@@ -128,6 +124,12 @@ $occupantsTotal = 0;
 // Set the applicant as a tenant if approved
 if ($_POST['setTenant'] != null) {
     modal(newTenant($property_code, $_POST["unitCodeTenant"], $_POST['setTenant'], $_POST['leaseStarts'], $_POST['moveInDate']));
+    setTenantDataSafe('profileID',$profileID,'movein',$_POST['moveInDate']);
+    setTenantDataSafe('profileID',$profileID,'leaseStart',$_POST['leaseStarts']);
+    setTenantDataSafe('profileID',$profileID,'leaseTerm',$_POST['leaseTerm']);
+    $leaseExpire = date('Y-m-d', strtotime($_POST['leaseStarts'] . ' + ' . $_POST['leaseTerm'] . ' months'));
+    setTenantDataSafe('profileID',$profileID,'leaseExpire',$leaseExpire);
+
 }
 
 ?>
@@ -520,7 +522,7 @@ if ($_POST['setTenant'] != null) {
                                             if ($edit == null) { ?>
                                                 <button type="submit" class="btn btn-primary float-end" name="save" value="update">Update</button>
                                             <?php } else { ?>
-                                                <button type="submit" class="btn btn-primary float-end" name="edit" value="edit">edit</button>
+                                                <button type="submit" class="btn btn-primary float-end" name="edit" value="edit">Edit</button>
                                             <?php } ?>
                                         </ul>
                                     </div>
@@ -668,13 +670,17 @@ if ($_POST['setTenant'] != null) {
                     </select>
                     <hr>
                     <div class="row">
-                        <div class="mb-3 col-md-5">
-                            <label class="form-label">Lease/Contract Starts</label>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label">Lease Starts</label>
                             <input type="date" class="form-control" name="leaseStarts">
                         </div>
-                        <div class="mb-3 col-md-5">
+                        <div class="mb-3 col-md-4">
                             <label class="form-label">Move-in Date</label>
                             <input type="date" class="form-control" name="moveInDate">
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="form-label">Lease Term</label>
+                            <input type="number" class="form-control" name="leaseTerm">
                         </div>
                     </div>
                 </div>
