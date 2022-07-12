@@ -1,6 +1,4 @@
         <?php
-        require "features/functions_billings.php";
-
         if ($_POST['actionButtonUpdateBill'] == 'actionUpdateBill') {
         ?>
             <script>
@@ -13,16 +11,17 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
-                                <?php
-                                 echo setBill($_POST['transactionID'],'billings_amount',$_POST['billings_amount']);
-                                 setBill($_POST['transactionID'],'billings_charge_date',$_POST['billings_charge_date']);
-                                 setBill($_POST['transactionID'],'billings_status',$_POST['billings_status']);
-                                 setBill($_POST['transactionID'],'billings_note',$_POST['billings_note']);
-                                 setBill($_POST['transactionID'],'billings_user',$_SESSION["agent_id"]);
-                                 setBill($_POST['transactionID'],'billings_user_date',date("Y-m-d H:i:s"));
-                                ?>
-                                <p> Redirect in <span id="countdowntimer">3 </span> seconds</p>
-                                <meta http-equiv="refresh" content="3;#" />
+                            <?php
+                            setBill($_POST['transactionID'], 'billings_amount', $_POST['billings_amount']);
+                            setBill($_POST['transactionID'], 'billings_charge_date', $_POST['billings_charge_date']);
+                            setBill($_POST['transactionID'], 'billings_status', $_POST['billings_status']);
+                            setBill($_POST['transactionID'], 'billings_note', $_POST['billings_note']);
+                            setBill($_POST['transactionID'], 'billings_user', $_SESSION["agent_id"]);
+                            setBill($_POST['transactionID'], 'billings_user_date', date("Y-m-d H:i:s"));
+                            ?>
+                            <div class="alert alert-primary">
+                                <p> This page will refresh in <span id="countdowntimer">3 </span> seconds</p>
+                                <meta http-equiv="refresh" content="3;" />
                                 <script type="text/javascript">
                                     var timeleft = 5;
                                     var downloadTimer = setInterval(function() {
@@ -32,6 +31,7 @@
                                             clearInterval(downloadTimer);
                                     }, 1000);
                                 </script>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,14 +40,14 @@
         <?php
         }
         ?>
-        <div class="container-xl px-4 mt-4">
+        <div class="container-fluid px-4 mt-4">
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <!-- Billing card 1-->
                     <div class="card h-100 border-start-lg border-start-primary">
                         <div class="card-body">
                             <div class="small text-muted">Balance</div>
-                            <div class="h3">€<?php echo getBallanceBill($tenantscod, ' AND billings_invoice_date <= NOW() AND billings_status != "Paid"'); ?></div>
+                            <div class="h3">€<?php echo getBallanceBill($tenantsCod, ' AND billings_invoice_date <= NOW() AND billings_status != "Paid"'); ?></div>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <div class="card h-100 border-start-lg border-start-secondary">
                         <div class="card-body">
                             <div class="small text-muted">Next rent due</div>
-                            <div class="h3"><?php echo date('d M', strtotime(htmlspecialchars( geNextBill($tenantscod, 'billings_invoice_date' ,' AND billings_status != "Paid" ORDER BY billings_invoice_date ASC LIMIT 1') )));?></div>
+                            <div class="h3"><?php echo date('d M', strtotime(htmlspecialchars(geNextBill($tenantsCod, 'billings_invoice_date', ' AND billings_status != "Paid" ORDER BY billings_invoice_date ASC LIMIT 1')))); ?></div>
                         </div>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             <tbody>
                                 <?php
                                 require "config/config.php";
-                                $query = "SELECT * FROM billings WHERE billings_tenantscod = $tenantscod ORDER BY billings_invoice_date DESC";
+                                $query = "SELECT * FROM billings WHERE tenantsCod = $tenantsCod ORDER BY billings_invoice_date DESC";
                                 $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result)) {
                                     $mysqDateTime = htmlspecialchars($row['billings_invoice_date']);
@@ -117,7 +117,7 @@
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <!-- Form START -->
-                                                <form action="?access=tenantView&content=billings&tenantscod=<?php echo $tenantscod; ?>&hash=<?php echo $hash; ?>" method="POST">
+                                                <form method="POST">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="ModalLabel">Billing Detail</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -144,7 +144,9 @@
                                                                     <hr>
                                                                     <div class="col-md-6">
                                                                         <label for="inputEmail4" class="form-label">Charge Date *</label>
-                                                                        <input type="date" class="form-control" name="billings_charge_date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars($row['billings_charge_date']))); ?>" required>
+                                                                        <input type="date" class="form-control" name="billings_charge_date" value="<?php if (isset($row['billings_charge_date'])) {
+                                                                                                                                                        echo date('Y-m-d', strtotime(htmlspecialchars($row['billings_charge_date'])));
+                                                                                                                                                    } ?>" required>
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label class="form-label">Status *</label>
@@ -160,7 +162,7 @@
                                                                         <label>Notes</label>
                                                                         <textarea class="form-control" name="billings_note" rows="3"><?php echo htmlspecialchars($row['billings_note']); ?></textarea>
                                                                     </div>
-                                                                    <label class="small mb-1">Edited by <?php echo userGetData2('agent_id',($row['billings_user']),'agent_name'); ?> on <?php echo htmlspecialchars($row['billings_user_date']); ?> </label>
+                                                                    <label class="small mb-1">Edited by <?php echo userGetData2('agent_id', ($row['billings_user']), 'agent_name'); ?> on <?php echo htmlspecialchars($row['billings_user_date']); ?> </label>
                                                                 </div> <!-- Row END -->
                                                             </div>
                                                         </div>

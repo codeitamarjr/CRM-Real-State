@@ -54,15 +54,19 @@ function getBill($idbillings,$rowName){
 
 function getBallanceBill($billings_tenantscod,$aditionalQuery){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT SUM(billings_amount) AS balance from billings WHERE billings_tenantscod = $billings_tenantscod $aditionalQuery");
+    $result = mysqli_query($link, "SELECT SUM(billings_amount) AS balance from billings WHERE tenantscod = $billings_tenantscod $aditionalQuery");
     $row = mysqli_fetch_assoc($result); 
-    return $row['balance'];
+    if($row['balance'] != NULL){
+        return $row['balance'];
+    } else {
+        return 0;
+    }
     mysqli_close($link);
 }
 
 function geNextBill($billings_tenantscod,$rowReturn,$aditionalQuery){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT * from billings WHERE billings_tenantscod = $billings_tenantscod $aditionalQuery");
+    $result = mysqli_query($link, "SELECT * from billings WHERE tenantscod = $billings_tenantscod $aditionalQuery");
     $row = mysqli_fetch_assoc($result); 
     return $row[$rowReturn];
     mysqli_close($link);
