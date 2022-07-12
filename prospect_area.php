@@ -65,8 +65,9 @@ if ($_POST['save'] == 'documents' || $_POST['save'] == 'PAG1') {
     if ($_POST['employeer'] != null) setProfile($profileID, 'employeer', $_POST['employeer']);
     if ($_POST['jobTitle'] != null) setProfile($profileID, 'jobTitle', $_POST['jobTitle']);
     if ($_POST['employerPhone'] != null) setProfile($profileID, 'employerPhone', $_POST['employerPhone']);
-    if ($_POST['netIncome'] != null) setProfile($profileID, 'netIncome', $_POST['netIncome']);
-    if ($_POST['extraIncome'] != null) setProfile($profileID, 'extraIncome', $_POST['extraIncome']);
+    //Remove comma from the salary
+    if ($_POST['netIncome'] != null) setProfile($profileID, 'netIncome', str_replace(',', '', $_POST['netIncome']));
+    if ($_POST['extraIncome'] != null) setProfile($profileID, 'extraIncome', str_replace(',', '', $_POST['extraIncome']));
     if ($_POST['HAP'] != null) setProfile($profileID, 'HAP', $_POST['HAP']);
     if ($_POST['HAPAllowance'] != null) setProfile($profileID, 'HAPAllowance', $_POST['HAPAllowance']);
     if ($_POST['landlordName'] != null) setProfile($profileID, 'landlordName', $_POST['landlordName']);
@@ -386,12 +387,12 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                             <div class="row g-2">
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Net Income Monthly</label>
-                                                                    <input type="text" class="form-control" required data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
+                                                                    <input type="number" class="form-control" required data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="netIncome" <?php if (getProfile('profileID', $profileID, 'netIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'netIncome') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "Your net income after tax(The salary paid into your bank account monthly)"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
                                                                     <label class="form-label">Extra Income</label>
-                                                                    <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
+                                                                    <input type="number" class="form-control" data-toggle="input-mask" data-mask-format="000.000.000.000.000,00" data-reverse="true" maxlength="22" name="extraIncome" <?php if (getProfile('profileID', $profileID, 'extraIncome') != null) echo 'value="' . getProfile('profileID', $profileID, 'extraIncome') . '"';  ?>>
                                                                     <span class="font-13 text-muted">e.g "Extra income that came into your bank statement"</span>
                                                                 </div>
                                                                 <div class="mb-3 col-md-4">
