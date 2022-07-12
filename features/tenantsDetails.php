@@ -8,9 +8,9 @@ require_once "features/functions_property.php";
 // Define tenantID
 $tenantsCod = $_GET['tenantsCod'];
 $tenantsDetails = true;
-$profileID = getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'profileID');
+$profileID = getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'profileID');
 
-if ($_POST['cancelMovein'] != null){
+if ($_POST['cancelMovein'] != null) {
     deleteTenant($_POST['cancelMovein']);
 }
 
@@ -25,15 +25,15 @@ if ($_POST['cancelMovein'] != null){
             </div>
 
             <div class="profile-header-info">
-                <h4 class="m-t-sm"><?php echo getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'firstName').' '
-                .getProfile('profileID',getTenantData($tenantsCod,'tenantscod','profileID'),'lastName') ;?></h4>
-                <p class="m-b-sm"><?php echo getTenantData($tenantsCod,'tenantscod','status'); ?>
-                <br>
-                <?php echo getPropertyData(getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','property_code'),'property_name'). " | " . getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','unit_number'); ?>
+                <h4 class="m-t-sm"><?php echo getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'firstName') . ' '
+                                        . getProfile('profileID', getTenantData($tenantsCod, 'tenantscod', 'profileID'), 'lastName'); ?></h4>
+                <p class="m-b-sm"><?php echo getTenantData($tenantsCod, 'tenantscod', 'status'); ?>
                     <br>
-                    CRM#: <?php echo getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','idunit'); ?> | Custom Code: <?php echo getUnit(getTenantData($tenantsCod,'tenantscod','idunit'),'idunit','unit_customCode'); ?>
+                    <?php echo getPropertyData(getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'property_code'), 'property_name') . " | " . getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'unit_number'); ?>
                     <br>
-                    
+                    CRM#: <?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'idunit'); ?> | Custom Code: <?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'unit_customCode'); ?>
+                    <br>
+
                 </p>
             </div>
         </div>
@@ -50,8 +50,8 @@ if ($_POST['cancelMovein'] != null){
 </div>
 
 <?php
-    include_once "features/applicationsDetail.php";
-    ?>
+include_once "features/applicationsDetail.php";
+?>
 
 
 <!-- Modal Cancel Movein -->
@@ -63,10 +63,12 @@ if ($_POST['cancelMovein'] != null){
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to cancel the move-in for this applicant?
-                <br>
-                This will cancel the movein date and this action cannot be undone.
+                <p>Are you sure do you want to cancel the move-in for this applicant?
                 </p>
+                <div class="alert alert-warning" role="alert">
+                    This will cancel the movein date and this action cannot be undone!<br>
+                    The first rent and deposit will be excluded from this tenant.
+                </div>
             </div>
             <div class="modal-footer">
                 <form method="POST">

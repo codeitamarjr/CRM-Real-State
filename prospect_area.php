@@ -650,8 +650,13 @@ if ($_POST['save'] == 'includeOccupant' || $_POST['save'] == 'PAG3') {
                                                                 <div class="mb-3 col-md">
                                                                     <label class="form-label">Bank Statement</label>
                                                                     <input class="form-control" type="file" id="formFileMultiple01" multiple="" name="bankStatements[]">
-                                                                    <span class="font-13 text-muted">The latest bank statement, showing the entire last month.<br>
-                                                                        This is a mandatory document to cross your income and confirm the affordability.</span>
+                                                                    <span class="font-13 text-muted">
+                                                                        <div class="alert alert-danger" role="alert">
+                                                                            The latest bank statement, showing the entire last month.<br>
+                                                                            This is a mandatory document to cross your income and confirm the affordability.<br>
+                                                                            Your application will not be approved unless you upload this document.
+                                                                        </div>
+                                                                    </span>
                                                                     <?php
 
                                                                     $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID' AND category = 'bankStatements'";
