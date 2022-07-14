@@ -98,6 +98,9 @@ if (!$_GET['message_id']) {
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') {
                                                                 echo 'active';
                                                             } ?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar" style="font-size: 20px;"></i><span>Calendly</span></a></li>
+                    <li class="nav-item"><a class="nav-link <?php if ($content == 'RTB') {
+                                                                echo 'active';
+                                                            } ?>" href="dashboard.php?access=RTB"><img src="/assets/img/RTB-Logo.png" class="img-fluid img-thumbnail" alt="RTB" width="22px"><span> RTB</span></a></li>
                 </ul>
             </div>
         </nav>
@@ -145,7 +148,8 @@ if (!$_GET['message_id']) {
             color: #000;
             background-color: #fff;
         }
-        .sidebar-dark{
+
+        .sidebar-dark {
             display: none;
         }
     }
