@@ -82,14 +82,14 @@ $data = json_decode($data, true);
                                     <input type="text" class="form-control" name="eircode">
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <!-- <div class="row mb-3">
                                 <div class="col-sm-4">
                                     <h6 class="mb-0">Full Address</h6>
                                 </div>
                                 <div class="col-sm-8 text-secondary">
                                     <input type="text" class="form-control" name="addressLine1">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-sm-4"></div>
                                 <div class="col-sm-8 text-secondary">
@@ -103,6 +103,8 @@ $data = json_decode($data, true);
         </div>
     </div>
 </div>
+
+<?php if(isset($data['Eircode'])) { ?>
 
 <div class="container">
     <div class="row">
@@ -191,3 +193,5 @@ $data = json_decode($data, true);
         </div>
     </div>
 </div>
+
+<?php } ?>
