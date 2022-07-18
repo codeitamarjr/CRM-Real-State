@@ -48,7 +48,7 @@ if ($_POST['cancelMovein'] != null) {
             <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>" class="nav-link <?php if ($_GET['pageContent'] == null) echo 'active'; ?>" data-toggle="tab">Profile</a></li>
             <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>&pageContent=tenantsRentDetails" class="nav-link <?php if ($_GET['pageContent'] == 'tenantsRentDetails') echo 'active'; ?>" data-toggle="tab">Rent Details</a></li>
             <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>&pageContent=tenantsBillings" class="nav-link <?php if ($_GET['pageContent'] == 'tenantsBillings') echo 'active'; ?>" data-toggle="tab">Billings</a></li>
-            <li class="nav-item"><a href="?access=tenantView&pageContent=rtb_detail&tenantscod=" class="nav-link <?php if ($_GET['pageContent'] == 'rtb_detail') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
+            <li class="nav-item"><a href="?access=tenantsDetails&tenantsCod=<?php echo $tenantsCod; ?>&pageContent=tenantsRTB" class="nav-link <?php if ($_GET['pageContent'] == 'tenantsRTB') echo 'active'; ?>" data-toggle="tab">RTB</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bs-toggle="modal" data-bs-target="#cancelMovein">Cancel Move-in</a></li>
         </ul>
     </div>

@@ -37,11 +37,8 @@ if ($_POST['save'] == true){
     if ($_POST['RTBDateIssued'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'RTBDateIssued',$_POST['RTBDateIssued']));
     if ($_POST['RTBNumber'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'RTBNumber',$_POST['RTBNumber']));
 }
-
-
-
-
 ?>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -52,6 +49,10 @@ if ($_POST['save'] == true){
                     <form method="POST">
                         <div class="card-header">RTB Info</div>
                         <div class="row">
+                        <div class="col">
+                                <label class="small mb-1">Eir Code</label>
+                                <input class="form-control-plaintext" type="text" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?> " >
+                            </div>
                             <div class="col">
                             <label class="small mb-1">Status</label>
                                 <select class="form-control<?php echo $edit; ?>" name="RTBStatus" >
@@ -64,11 +65,11 @@ if ($_POST['save'] == true){
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Date Registered</label>
-                                <input class="form-control<?php echo $edit; ?>" name="RTBDateRegistered" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered')))); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="RTBDateRegistered" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered'))?date('d-m-y',strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered')))):'';?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Date RTB Issued</label>
-                                <input class="form-control<?php echo $edit; ?>" name="RTBDateIssued" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued')))); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="RTBDateIssued" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued'))?date('d-m-y',strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued')))):'';?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">RTB Number</label>
@@ -79,6 +80,7 @@ if ($_POST['save'] == true){
                         <br>
                         <br>
                         <?php if(!$_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="edit" value="edit">Edit</button>'; ?>
+                        <button class="btn btn-primary" type="submit" name="eircode" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?>">Check RTB</button>
                         <?php if($_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="save" value="true">Save</button>'; ?>
                     </form>
                 </div>
@@ -86,3 +88,5 @@ if ($_POST['save'] == true){
         </div>
     </div>
 </div>
+
+<?php if(isset($_POST['eircode'])) {include 'features/RTB.php';} ?>

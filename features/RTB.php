@@ -104,81 +104,81 @@ $data = json_decode($data, true);
     </div>
 </div>
 
-<?php if(isset($data['Eircode'])) { ?>
+<?php if (isset($data['Eircode'])) { ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row mb-3">
+    <div class="p-4 container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
 
+                            <div class="container">
+                                <div class="main-body">
 
-                        <div class="container">
-                            <div class="main-body">
-
-                                <div class="row gutters-sm">
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="d-flex flex-column align-items-center text-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
-                                                        <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
-                                                    </svg>
-                                                    <div class="mt-3">
-                                                        <h4>RTB Result</h4>
-                                                        <p class="text-secondary mb-1">This Eircode/Address<br>is registered on RTB</p>
+                                    <div class="row gutters-sm">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-flex flex-column align-items-center text-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                                                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+                                                        </svg>
+                                                        <div class="mt-3">
+                                                            <h4>RTB Result</h4>
+                                                            <p class="text-secondary mb-1">This Eircode/Address<br>is registered on RTB</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Address/Apartment</h6>
+                                        <div class="col-md-8">
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <h6 class="mb-0">Address/Apartment</h6>
+                                                        </div>
+                                                        <div class="col-sm-8 text-secondary">
+                                                            <?php echo $data['AddressLine1'] . ', ' . $data['AddressLine2'] . ', ' . $data['AddressLine3'] . ', ' . $data['AddressLine4']; ?>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <?php echo $data['AddressLine1'] . ', ' . $data['AddressLine2'] . ', ' . $data['AddressLine3'] . ', ' . $data['AddressLine4']; ?>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <h6 class="mb-0">Dublin</h6>
+                                                        </div>
+                                                        <div class="col-sm-8 text-secondary">
+                                                            <?php echo $data['AddressLine5']; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Dublin</h6>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <h6 class="mb-0">Eircode</h6>
+                                                        </div>
+                                                        <div class="col-sm-8 text-secondary">
+                                                            <?php echo $data['Eircode']; ?>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <?php echo $data['AddressLine5']; ?>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <h6 class="mb-0">County</h6>
+                                                        </div>
+                                                        <div class="col-sm-8 text-secondary">
+                                                            <?php echo $data['County']; ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Eircode</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <?php echo $data['Eircode']; ?>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">County</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <?php echo $data['County']; ?>
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-0">Number of Bedrooms Registered</h6>
-                                                    </div>
-                                                    <div class="col-sm-8 text-secondary">
-                                                        <?php echo $data['NoOfBedrooms']; ?>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <h6 class="mb-0">Number of Bedrooms Registered</h6>
+                                                        </div>
+                                                        <div class="col-sm-8 text-secondary">
+                                                            <?php echo $data['NoOfBedrooms']; ?>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,6 +192,5 @@ $data = json_decode($data, true);
             </div>
         </div>
     </div>
-</div>
 
 <?php } ?>
