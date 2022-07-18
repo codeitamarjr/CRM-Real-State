@@ -80,7 +80,7 @@ if ($_POST['save'] == true){
                         <br>
                         <br>
                         <?php if(!$_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="edit" value="edit">Edit</button>'; ?>
-                        <button class="btn btn-primary" type="submit" name="eircode" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?>">Check RTB</button>
+                        <button class="btn btn-success" type="submit" name="eircode" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?>">Check RTB</button>
                         <?php if($_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="save" value="true">Save</button>'; ?>
                     </form>
                 </div>
