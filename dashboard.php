@@ -47,7 +47,7 @@ if (!$_GET['message_id']) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?php if (isset($_GET['access'])) echo (ucfirst($_GET['access']));
+    <title><?php if (isset($_GET['access'])) echo $_GET['title'].' '.ucfirst($_GET['access']);
             else echo 'Dashboard'; ?> | <?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?> - Real Enquiries</title>
     <meta name="description" content="Customer Relationship Management for Real State Agents">
     <link rel="icon" type="image/x-icon" href="assets/img/fav_logo_size_invert.jpg">

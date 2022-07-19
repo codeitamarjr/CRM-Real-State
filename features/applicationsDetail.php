@@ -168,7 +168,7 @@ if ($_POST['setTenant'] != null) {
         <?php } ?>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link <?php if (getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if (getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID=' . getProfile('profileID', $profileID, 'mainApplicantID') . '"'; ?>>Primary Applicant</a>
+                <a class="nav-link <?php if (getProfile('profileID', $profileID, 'mainApplicantID') == null) echo 'active'; ?>" aria-current="page" <?php if (getProfile('profileID', $profileID, 'mainApplicantID') != null) echo 'href="?access=applicationsDetail&profileID=' . getProfile('profileID', $profileID, 'mainApplicantID') . '&title=' . htmlspecialchars(getProfile('profileID', getProfile('profileID', $profileID, 'mainApplicantID'), 'firstName')) . '"'; ?>>Primary Applicant</a>
             </li>
             <?php
             $mainProfileID = getProfile('profileID', $profileID, 'mainApplicantID');
@@ -181,7 +181,7 @@ if ($_POST['setTenant'] != null) {
                 echo '<li class="nav-item">
                 <a class="nav-link ';
                 if (htmlspecialchars($row['profileID']) == $profileID) echo 'active';
-                echo '" href="?access=applicationsDetail&profileID=' . htmlspecialchars($row['profileID']) . '" tabindex="-1">Occupant[' . htmlspecialchars($row['firstName']) . ']</a>
+                echo '" href="?access=applicationsDetail&profileID=' . htmlspecialchars($row['profileID']) . '&title=' . htmlspecialchars($row['firstName']) . '" tabindex="-1">Occupant[' . htmlspecialchars($row['firstName']) . ']</a>
             </li>';
             }
             ?>
