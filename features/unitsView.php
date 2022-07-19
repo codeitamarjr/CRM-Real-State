@@ -71,7 +71,7 @@ $result = mysqli_query($link, $query);
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_array($result)) {
-                        echo "<tr class=\"showsRow\" \">
+                        echo "<tr \" onclick=\"window.open('?access=unitsViewDetails&idunit=". htmlspecialchars($row['idunit']) ."','_blank')\" class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
     <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
