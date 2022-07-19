@@ -30,10 +30,13 @@ if ($_POST['save'] == 'reference') {
     if (getProfile('email', $email, 'email') != null) {
         $profileID = getProfile('email', $email, 'profileID');
     } else {
+        //Check if the variable email is not empty
+        if($_POST['email'] != '') {
         // Create a new profile
         insertProfile($propertyCode, 'M', $email);
         // Set the profileID
         $profileID = getProfile('email', $email, 'profileID');
+        }
     };
 
     //Set values to the profile
