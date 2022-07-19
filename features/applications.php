@@ -62,7 +62,7 @@ function getAllIncomes($profileID)
                         if ($row['status'] == "Denied") {
                             echo "table-danger";
                         }
-                        echo " \" onclick=\"location.href='?access=applicationsDetail&profileID=" . htmlspecialchars($row['profileID']) . "'\" >
+                        echo " \" onclick=\"window.open('?access=applicationsDetail&profileID=" . htmlspecialchars($row['profileID']) . "','_blank')\" >
     <td>" . htmlspecialchars(getPropertyData($row['propertyCode'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['firstName']) . ' ' . htmlspecialchars($row['lastName']) . "</td>
     <td>" . htmlspecialchars($row['email']) . "</td>

@@ -81,7 +81,7 @@ $result = mysqli_query($link, $query);
                             if ($row['status'] == "Invited") {
                                 echo "class='table-warning'";
                             }
-                            echo " onclick=\"location.href='?access=enquiryDetails&message_id=$message_id'\" >
+                            echo " onclick=\"window.open('?access=enquiryDetails&message_id=$message_id','_blank')\" >
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name'))  . "</td>
     <td>" . htmlspecialchars($row['message_sender_name']) . "</td>
     <td>" . htmlspecialchars($row['messages_email']) . "</td>
