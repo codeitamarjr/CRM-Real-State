@@ -131,7 +131,7 @@ $result = mysqli_query($link, $query);
         </div>
     </div>
 </div>
-</div>
+
 
 <!-- New Unit Modal -->
 <div class="modal fade" id="newUnit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
