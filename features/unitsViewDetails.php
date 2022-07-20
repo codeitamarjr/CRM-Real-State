@@ -49,7 +49,7 @@ if (isset($_POST['save'])) {
     if ($_POST['floor'] != null) echo modal(setUnit($idunit, 'floor', $_POST['floor']));
     if ($_POST['unit_block'] != null) echo modal(setUnit($idunit, 'unit_block', $_POST['unit_block']));
     if ($_POST['unit_number'] != null) echo modal(setUnit($idunit, 'unit_number', $_POST['unit_number']));
-    if ($_POST['unit_type'] != null) echo modal(setUnit($idunit, 'unit_type', $_POST['unit_type']));
+    if ($_POST['type'] != null) echo modal(setUnit($idunit, 'type', $_POST['type']));
 
     if ($_POST['postal_code'] != null) echo modal(setUnit($idunit, 'postal_code', $_POST['postal_code']));
     if ($_POST['bedrooms'] != null) echo modal(setUnit($idunit, 'bedrooms', $_POST['bedrooms']));

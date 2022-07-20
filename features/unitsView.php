@@ -62,7 +62,6 @@ $result = mysqli_query($link, $query);
                         <th>Floor</th>
                         <th>Bed</th>
                         <th>Type</th>
-                        <th>Eircode</th>
                         <th>Address</th>
                         <th>Availability</th>
                         <th>Rent</th>
@@ -81,7 +80,6 @@ $result = mysqli_query($link, $query);
     <td>" . htmlspecialchars($row['floor']) . "</td>
     <td>" . htmlspecialchars($row['bedrooms']) . "</td>
     <td>" . htmlspecialchars($row['type']) . "</td>
-    <td>" . htmlspecialchars($row['postal_code']) . "</td>
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_address')) . "</td>
     <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
     <td>" . htmlspecialchars($row['rental_price']) . "</td>
@@ -109,7 +107,6 @@ $result = mysqli_query($link, $query);
                         <th>Floor</th>
                         <th>Bed</th>
                         <th>Type</th>
-                        <th>Eircode</th>
                         <th>Address</th>
                         <th>Availability</th>
                         <th>Rent</th>
