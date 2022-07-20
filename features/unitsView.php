@@ -26,8 +26,9 @@ if (isset($_POST['addUnit'])) {
         $_POST['carParking'],
         $_POST['rent']
     );
-    
 };
+
+$deltaMKTAverage = array();
 
 $property_codeUnitView = $_SESSION["property_code"];
 
@@ -55,7 +56,7 @@ $result = mysqli_query($link, $query);
                     <tr>
                         <th>Property</th>
                         <th>CRM#</th>
-                        <th>Code</th>
+                        <th>&Delta; MKT</th>
                         <th>Resident</th>
                         <th>Block</th>
                         <th>Unit</th>
@@ -63,32 +64,40 @@ $result = mysqli_query($link, $query);
                         <th>Bed</th>
                         <th>Type</th>
                         <th>Address</th>
-                        <th>Availability</th>
                         <th>Rent</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = mysqli_fetch_array($result)) {
-                        echo "<tr \" onclick=\"window.open('?access=unitsViewDetails&idunit=". htmlspecialchars($row['idunit']) ."','_blank')\" class=\"showsRow\" \">
+                        echo "<tr \" onclick=\"window.open('?access=unitsViewDetails&idunit=" . htmlspecialchars($row['idunit']) . "','_blank')\" class=\"showsRow\" \">
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_name')) . "</td>
     <td>" . htmlspecialchars($row['idunit']) . " </td>
-    <td>" . htmlspecialchars($row['unit_customCode']) . " </td>
-    <td>" . htmlspecialchars(getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName')) . "</td>
+    <td>";
+                        // delta in the mkt
+                        $unitAvailableDate = date('Y-m-d', strtotime($row['date_available']));
+                        $leaseStart = getTenantData($row['idunit'], 'idunit', 'leaseStart') ? date('d-m-y', strtotime(getTenantData($row['idunit'], 'idunit', 'leaseStart'))) : null;
+                        // Count the number of days between the two dates and show the delta in the mkt if the unit is rented or reserved
+                        if ($leaseStart != null) {
+                            echo $deltaMKT = date_diff(date_create($unitAvailableDate), date_create(date('Y-m-d', strtotime(getTenantData($row['idunit'], 'idunit', 'leaseStart')))))->format("%a");
+                            // Add this delta to the array
+                            array_push($deltaMKTAverage, $deltaMKT);
+                        }
+                        echo "</td>
+    <td>" . htmlspecialchars(getProfile('profileID', getTenantData($row['idunit'], 'idunit', 'profileID'), 'firstName')) . "</td>
     <td>" . htmlspecialchars($row['unit_block']) . "</td>
     <td>" . htmlspecialchars($row['unit_number']) . "</td>
     <td>" . htmlspecialchars($row['floor']) . "</td>
     <td>" . htmlspecialchars($row['bedrooms']) . "</td>
     <td>" . htmlspecialchars($row['type']) . "</td>
     <td>" . htmlspecialchars(getPropertyData($row['property_code'], 'property_address')) . "</td>
-    <td>" . htmlspecialchars(date('Y-m-d', strtotime($row['date_available']))) . "</td>
     <td>" . htmlspecialchars($row['rental_price']) . "</td>
     <td class=\"";
-                        if (getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName') == null) {
+                        if (getProfile('profileID', getTenantData($row['idunit'], 'idunit', 'profileID'), 'firstName') == null) {
                             echo "text-success";
                         }
-                        echo "\">" ;
-                        if (getProfile('profileID',getTenantData($row['idunit'], 'idunit', 'profileID'),'firstName') == null) {
+                        echo "\">";
+                        if (getProfile('profileID', getTenantData($row['idunit'], 'idunit', 'profileID'), 'firstName') == null) {
                             echo "Available";
                         } else {
                             echo getTenantData($row['idunit'], 'idunit', 'status');
@@ -100,7 +109,13 @@ $result = mysqli_query($link, $query);
                     <tr>
                         <th>Property</th>
                         <th>CRM#</th>
-                        <th>Code</th>
+                        <th>&Delta;
+                            <?php
+                            // Calculate the average delta in the mkt
+                            $averageDeltaMKT = array_sum($deltaMKTAverage) / count($deltaMKTAverage);
+                            echo round($averageDeltaMKT, 0);
+                            ?>
+                        </th>
                         <th>Resident</th>
                         <th>Block</th>
                         <th>Unit</th>
@@ -108,7 +123,6 @@ $result = mysqli_query($link, $query);
                         <th>Bed</th>
                         <th>Type</th>
                         <th>Address</th>
-                        <th>Availability</th>
                         <th>Rent</th>
                         <th>Status</th>
                     </tr>
@@ -266,7 +280,7 @@ $result = mysqli_query($link, $query);
             buttons: [
                 'copy', 'excel', 'pdf', 'print'
             ]
-            
+
 
         });
     });
