@@ -127,6 +127,7 @@ if ($_POST['setTenant'] != null) {
     setTenantDataSafe('profileID',$profileID,'movein',$_POST['moveInDate']);
     setTenantDataSafe('profileID',$profileID,'leaseStart',$_POST['leaseStarts']);
     setTenantDataSafe('profileID',$profileID,'leaseTerm',$_POST['leaseTerm']);
+    // Set the leaseExpires date to the moveInDate + leaseTerm in months
     $leaseExpire = date('Y-m-d', strtotime($_POST['leaseStarts'] . ' + ' . $_POST['leaseTerm'] . ' months'));
     setTenantDataSafe('profileID',$profileID,'leaseExpire',$leaseExpire);
 

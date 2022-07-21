@@ -21,11 +21,15 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
         require_once "features/functions_tenant.php";
         require_once "features/functions_unit.php";
         $tenantscod = getTenantData($profileID, 'profileID', 'tenantscod');
+        // Get deposit from the rent of the unit
         $deposit = getUnit($idunit,'idunit','rental_price');
+        // Get the rent per day from the unit rent
         $rentPerDay = ($deposit*12)/365;
         $lastDayOfTheMonth = date("Y-m-t", strtotime($leaseStarts));
+        // Diference in days of the move in date and the last day of the month
         $remainingDays = floor((strtotime($lastDayOfTheMonth) - strtotime($leaseStarts))/(60*60*24));
-        $firstRent = $rentPerDay * $remainingDays;
+        // Multiplies the rent per day by the remaining days of the month
+        $firstRent = $rentPerDay * ($remainingDays+1);
         createBill($tenantscod, $idunit, 'Deposit', $deposit, $leaseStarts);
         createBill($tenantscod, $idunit, 'First Rent', $firstRent, $leaseStarts);
 
