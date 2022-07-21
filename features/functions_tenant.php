@@ -1,5 +1,5 @@
 <?php
-function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate)
+function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate, $leaseTerm)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
@@ -22,16 +22,36 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
         require_once "features/functions_unit.php";
         $tenantscod = getTenantData($profileID, 'profileID', 'tenantscod');
         // Get deposit from the rent of the unit
-        $deposit = getUnit($idunit,'idunit','rental_price');
-        // Get the rent per day from the unit rent
-        $rentPerDay = ($deposit*12)/365;
-        $lastDayOfTheMonth = date("Y-m-t", strtotime($leaseStarts));
-        // Diference in days of the move in date and the last day of the month
-        $remainingDays = floor((strtotime($lastDayOfTheMonth) - strtotime($leaseStarts))/(60*60*24));
-        // Multiplies the rent per day by the remaining days of the month
-        $firstRent = $rentPerDay * ($remainingDays+1);
-        createBill($tenantscod, $idunit, 'Deposit', $deposit, $leaseStarts);
+        $rent = getUnit($idunit, 'idunit', 'rental_price');
+        // Check if the move-in is the first day of the month, if so repeat the deposit for the next month as rent
+        if (date('j', strtotime($leaseStarts)) != 1) {
+            // Calculate the first rent based on the remaininig days of the month
+            // Get the rent per day from the unit rent
+            $rentPerDay = ($rent * 12) / 365;
+            // Get the last day of the month
+            $lastDayOfTheMonth = date("Y-m-t", strtotime($leaseStarts));
+            // Diference in days of the move in date and the last day of the month
+            $remainingDays = floor((strtotime($lastDayOfTheMonth) - strtotime($leaseStarts)) / (60 * 60 * 24));
+            // Multiplies the rent per day by the remaining days of the month
+            $firstRent = $rentPerDay * ($remainingDays + 1);
+        } else {
+            $firstRent = $rent;
+        }
+        // Convert into time stamp
+        strtotime($leaseStarts);
+
+        createBill($tenantscod, $idunit, 'Deposit', $rent, $leaseStarts);
         createBill($tenantscod, $idunit, 'First Rent', $firstRent, $leaseStarts);
+
+        // Create a new bill for each month of the lease term until it ends
+        // First get the next month
+        $next_month =  date('Y-m-d', strtotime($leaseStarts . ' + 1 months'));
+        $recurring = 1;
+        do {
+            createBill($tenantscod, $idunit, 'Rent #'.($recurring+1), $rent, $next_month);
+            $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
+            $recurring++;
+        } while ($recurring <= $leaseTerm);
 
         return '<center><div class="alert alert-success" role="alert">Tenant, Deposit and First Rent Created!</div></center>';
     }
@@ -54,7 +74,7 @@ function getTenantData($data, $rowName, $rowReturn)
 }
 
 
-function setTenantDataSafe($conditional,$test, $rowName, $newData)
+function setTenantDataSafe($conditional, $test, $rowName, $newData)
 {
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
@@ -94,7 +114,8 @@ function deleteTenant($tenantscod)
     mysqli_stmt_close($stmt);
 }
 
-function totalTenants($property_code,$aditionalQuery){
+function totalTenants($property_code, $aditionalQuery)
+{
     require "config/config.php";
     $result = mysqli_query($link, "SELECT * FROM tenant WHERE propertyCode = '$property_code' $aditionalQuery");
     $total = mysqli_num_rows($result);

@@ -123,7 +123,7 @@ $occupantsTotal = 0;
 
 // Set the applicant as a tenant if approved
 if ($_POST['setTenant'] != null) {
-    modal(newTenant($property_code, $_POST["unitCodeTenant"], $_POST['setTenant'], $_POST['leaseStarts'], $_POST['moveInDate']));
+    modal(newTenant($property_code, $_POST["unitCodeTenant"], $_POST['setTenant'], $_POST['leaseStarts'], $_POST['moveInDate'], $_POST['leaseTerm']));
     setTenantDataSafe('profileID',$profileID,'movein',$_POST['moveInDate']);
     setTenantDataSafe('profileID',$profileID,'leaseStart',$_POST['leaseStarts']);
     setTenantDataSafe('profileID',$profileID,'leaseTerm',$_POST['leaseTerm']);
@@ -652,7 +652,7 @@ if ($_POST['setTenant'] != null) {
                 </div>
                 <div class="modal-body">
                     For which unit this tenant will move in?<br>
-                    <select class="form-select" name="unitCodeTenant">
+                    <select class="form-select" name="unitCodeTenant" required>
                         <optgroup>
                             <?php
                             //List all the units that is available for the tenant
@@ -673,15 +673,15 @@ if ($_POST['setTenant'] != null) {
                     <div class="row">
                         <div class="mb-3 col-md-4">
                             <label class="form-label">Lease Starts</label>
-                            <input type="date" class="form-control" name="leaseStarts">
+                            <input type="date" class="form-control" name="leaseStarts" required>
                         </div>
                         <div class="mb-3 col-md-4">
                             <label class="form-label">Move-in Date</label>
-                            <input type="date" class="form-control" name="moveInDate">
+                            <input type="date" class="form-control" name="moveInDate" required>
                         </div>
                         <div class="mb-3 col-md-3">
                             <label class="form-label">Lease Term</label>
-                            <input type="number" class="form-control" name="leaseTerm">
+                            <input type="number" class="form-control" name="leaseTerm" required>
                         </div>
                     </div>
                 </div>
