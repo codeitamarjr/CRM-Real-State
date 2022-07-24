@@ -47,12 +47,20 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
         // Create a new bill for each month of the lease term until it ends
         // First get the next month
         $next_month =  date('Y-m-d', strtotime($leaseStarts . ' + 1 months'));
-        $recurring = 1;
+        $recurring = 2;
         do {
-            createBill($tenantscod, $idunit, 'Rent '.date('F',strtotime($next_month)), $rent, $next_month);
-            $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
+            if ($recurring == $leaseTerm) {
+                // If the lease term is the last month, create a bill for the last month based on the remaining days of the month
+                $fisrtDayOfTheLastRent = date('Y-m-01', strtotime($next_month));
+                $remainingDays = floor((strtotime($next_month) - strtotime($fisrtDayOfTheLastRent)) / (60 * 60 * 24));
+                $lastRent = $rentPerDay * ($remainingDays+1);
+                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)), $lastRent, $next_month);
+            } else {
+                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)), $rent, $next_month);
+                $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
+            }
             $recurring++;
-        } while ($recurring < $leaseTerm);
+        } while ($recurring <= $leaseTerm);
 
         return '<center><div class="alert alert-success" role="alert">Tenant, Deposit and First Rent Created!</div></center>';
     }
