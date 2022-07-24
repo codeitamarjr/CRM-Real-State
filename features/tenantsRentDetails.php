@@ -56,7 +56,7 @@ if (isset($_POST['save'])) {
                         <div class="card-header">Property Details</div>
                         <div class="mb-3">
                             <label class="small mb-1">Full Addres of the Property</label>
-                            <input class="form-control<?php echo $edit; ?>" type="text" placeholder="<?php echo getPropertyData(getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'property_code'), 'property_address');?>" disabled>
+                            <input class="form-control-plaintext" type="text" placeholder="<?php echo getPropertyData(getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'property_code'), 'property_address');?>">
                         </div>
                         <br>
                         <div class="card-header">Lease Info</div>
@@ -94,15 +94,15 @@ if (isset($_POST['save'])) {
                         <div class="row">
                             <div class="col">
                                 <label class="small mb-1">Deposit</label>
-                                <input class="form-control<?php echo $edit; ?>" name="deposit" type="text" value="<?php echo getTenantData($tenantsCod, 'tenantsCod', 'deposit'); ?>" >
+                                <input class="form-control-plaintext" value="<?php echo getBillByTenant($tenantsCod,'Deposit%','billings_amount') ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">First Rent</label>
-                                <input class="form-control<?php echo $edit; ?>" name="first_rent" type="text" value="<?php echo getTenantData($tenantsCod, 'tenantsCod', 'firstRent'); ?>" >
+                                <input class="form-control-plaintext" value="<?php echo getBillByTenant($tenantsCod,'First Rent%','billings_amount') ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Rent</label>
-                                <input class="form-control<?php echo $edit; ?>" name="rent" type="text" value="<?php echo getTenantData($tenantsCod, 'tenantsCod', 'rent'); ?>" >
+                                <input class="form-control-plaintext" name="rent" type="text" value="<?php echo getBillByTenant($tenantsCod,'Rent%','billings_amount') ?>" >
                             </div>
                         </div>
 

@@ -52,6 +52,20 @@ function getBill($idbillings,$rowName){
     mysqli_close($link);
 }
 
+function getBillByTenant($tenantscod,$billings_description,$rowNameReturn, $extraQuery = ''){
+    include "config/config.php";
+    $query = "SELECT * FROM rent_book WHERE (tenantscod = $tenantscod) AND (billings_description LIKE '$billings_description') $extraQuery";
+    $result = mysqli_query($link, $query);
+    if ($result) {
+        while ($row = mysqli_fetch_array($result)) {
+            return $row[$rowNameReturn];
+        }
+    } else {
+        echo '<center><div class="alert alert-danger" role="alert">Error: ' . mysqli_error($link) . '</div></center>';
+    }
+    mysqli_close($link);
+}
+
 function getBallanceBill($billings_tenantscod,$aditionalQuery){
     require "config/config.php";
     $result = mysqli_query($link, "SELECT SUM(billings_amount) AS balance from rent_book WHERE tenantscod = $billings_tenantscod $aditionalQuery");
