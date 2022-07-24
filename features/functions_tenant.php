@@ -41,7 +41,7 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
         strtotime($leaseStarts);
 
         
-        createBill($tenantscod, $idunit, 'First Rent '.date('F',strtotime($leaseStarts)), $firstRent, $leaseStarts);
+        createBill($tenantscod, $idunit, 'First Rent '.date('F',strtotime($leaseStarts)). ' (Prorate '.($remainingDays + 1).' Days)', $firstRent, $leaseStarts);
         createBill($tenantscod, $idunit, 'Deposit '.date('F',strtotime($leaseStarts)), $rent, $leaseStarts);
 
         // Create a new bill for each month of the lease term until it ends
@@ -54,9 +54,9 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
                 $fisrtDayOfTheLastRent = date('Y-m-01', strtotime($next_month));
                 $remainingDays = floor((strtotime($next_month) - strtotime($fisrtDayOfTheLastRent)) / (60 * 60 * 24));
                 $lastRent = $rentPerDay * ($remainingDays+1);
-                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)), $lastRent, $next_month);
+                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)) . ' ('.($remainingDays+1).' Days)', $lastRent, date('Y-m-01', strtotime($next_month)));
             } else {
-                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)), $rent, $next_month);
+                createBill($tenantscod, $idunit, 'Rent ' . date('F', strtotime($next_month)), $rent, date('Y-m-01', strtotime($next_month)));
                 $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
             }
             $recurring++;
