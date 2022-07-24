@@ -55,13 +55,47 @@ if ($_POST['save'] == 'update') {
 
 // Upload the documents
 if ($_POST['save'] == 'uploadAttachments') {
+    // Get tha file name and set variables
+    $fileName = $_POST['fileType'];
+    switch ($fileName) {
+        case 'ID':
+            $descriptionFile = 'ID of the Applicant';
+            $fileName = 'ID';
+            $categoryFile = 'profileID';
+            break;
+        case 'landlordReference':
+            $descriptionFile = 'Landlord Reference Letter';
+            $fileName = 'landlordReference';
+            $categoryFile = 'landlordReferenceLetter';
+            break;
+        case 'workReference':
+            $descriptionFile = 'Work Reference Letter';
+            $fileName = 'workReference';
+            $categoryFile = 'workReferenceLetter';
+            break;
+        case 'payslip':
+            $descriptionFile = 'Payslip';
+            $fileName = 'payslip';
+            $categoryFile = 'payslip';
+            break;
+        case 'bankStatements':
+            $descriptionFile = 'Bank Statements';
+            $fileName = 'bankStatements';
+            $categoryFile = 'bankStatements';
+            break;
+        case 'CRM':
+            $descriptionFile = 'Upload from CRM';
+            $fileName = 'CRM';
+            $categoryFile = 'manualUpload';
+            break;
+    }
     //Set profileID
     $profileID = $_POST['profileID'];
     //If user select a file for ID
     if ($_FILES['CRM']['name'] != null) {
         require "features/functions_upload.php";
         //Upload the file
-        if ($_FILES['CRM'] != null) uploadProfileAttachments($profileID, 'Upload from CRM', $_FILES['CRM'], 'CRM', 'manualUpload');
+        if ($_FILES['CRM'] != null) uploadProfileAttachments($profileID, $descriptionFile, $_FILES['CRM'], $fileName, $categoryFile);
     }
 };
 
@@ -74,6 +108,7 @@ if ($_POST['save'] == 'removeProfileAttachments') {
     $idprofileAttachments = $_POST['idprofileAttachments'];
     $fileNumber = $_POST['fileNumber'];
     $category = $_POST['category'];
+    //print_r($idprofileAttachments) ;
     removeProfileAttachments($profileID, $idprofileAttachments, $fileNumber, $category);
 };
 
@@ -123,14 +158,15 @@ $occupantsTotal = 0;
 
 // Set the applicant as a tenant if approved
 if ($_POST['setTenant'] != null) {
+    // Create new tenants profile
     modal(newTenant($property_code, $_POST["unitCodeTenant"], $_POST['setTenant'], $_POST['leaseStarts'], $_POST['moveInDate'], $_POST['leaseTerm']));
-    setTenantDataSafe('profileID',$profileID,'movein',$_POST['moveInDate']);
-    setTenantDataSafe('profileID',$profileID,'leaseStart',$_POST['leaseStarts']);
-    setTenantDataSafe('profileID',$profileID,'leaseTerm',$_POST['leaseTerm']);
-    // Set the leaseExpires date to the moveInDate + leaseTerm in months
-    $leaseExpire = date('Y-m-d', strtotime($_POST['leaseStarts'] . ' + ' . $_POST['leaseTerm'] . ' months'));
-    setTenantDataSafe('profileID',$profileID,'leaseExpire',$leaseExpire);
-
+    // Set details of the lease
+    setTenantDataSafe('profileID', $profileID, 'movein', $_POST['moveInDate']);
+    setTenantDataSafe('profileID', $profileID, 'leaseStart', $_POST['leaseStarts']);
+    setTenantDataSafe('profileID', $profileID, 'leaseTerm', $_POST['leaseTerm']);
+    // Define and set the leaseExpires date to the moveInDate + leaseTerm in months
+    $leaseExpire = date('Y-m-d', strtotime($_POST['leaseStarts'] . ' + ' . ($_POST['leaseTerm']-1) . ' months'));
+    setTenantDataSafe('profileID', $profileID, 'leaseExpire', $leaseExpire);
 }
 
 ?>
@@ -221,10 +257,21 @@ if ($_POST['setTenant'] != null) {
 
                                             <div class="row">
 
-                                                <div class="mb-3 col-md-8">
+                                            <div class="mb-3 col-md-3">
+                                                <select class="form-select" name="fileType" required>
+                                                    <option value="CRM">CRM</option>
+                                                    <option value="ID">ID of the Applicant</option>
+                                                    <option value="payslip">Payslip</option>
+                                                    <option value="workReference">Work Reference Letter</option>
+                                                    <option value="landlordReference">Landlord Reference Letter</option>
+                                                    <option value="bankStatements">Bank Statements</option>
+                                                </select>
+                                            </div>
+
+                                                <div class="col col-md-6">
                                                     <input type="file" id="CRM" class="form-control" name="CRM[]">
                                                 </div>
-                                                <div class="mb-3 col-sm-1">
+                                                <div class="col">
                                                     <button type="submit" class="btn btn-primary" name="save" value="uploadAttachments">Upload</button>
                                                 </div>
 
@@ -232,7 +279,9 @@ if ($_POST['setTenant'] != null) {
                                         </form>
                                     <?php } ?>
 
+                                    <form method="POST">
                                     <?php
+                                    $fileOrderNumber = 0;
                                     require "config/config.php";
                                     $query = "SELECT * FROM profileAttachments WHERE profileID = '$profileID'";
                                     $result = mysqli_query($link, $query);
@@ -252,7 +301,9 @@ if ($_POST['setTenant'] != null) {
                                                     </div>
                                                     <div class="col-auto">
                                                         <!-- Button -->
-                                                        <form method="POST">
+                                                        
+                                                            <input type="hidden" name="fileOrderNumber" value="<?php echo $fileOrderNumber; ?>">
+                                                            <!-- <input type="hidden" name="idprofileAttachments[]" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>"> -->
                                                             <input type="hidden" name="idprofileAttachments" value="<?php echo htmlspecialchars($row['idprofileAttachments']); ?>">
                                                             <input type="hidden" name="fileNumber" value="<?php echo htmlspecialchars($row['fileNumber']); ?>">
                                                             <input type="hidden" name="category" value="<?php echo htmlspecialchars($row['category']); ?>">
@@ -281,12 +332,13 @@ if ($_POST['setTenant'] != null) {
                                                                 </div>
                                                             </div>
 
-                                                        </form>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php } ?>
+                                    <?php $fileOrderNumber++; } ?>
+                                    </form>
                                 </ul>
 
                             </div>

@@ -3,7 +3,7 @@
 function createBill($tenantscod,$idunit,$billings_description,$billings_amount,$billings_invoice_date){
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
-    $sql = "INSERT INTO billings (tenantscod, idunit, billings_description, billings_amount , billings_invoice_date) VALUES (?, ?, ?, ? , ?)";
+    $sql = "INSERT INTO rent_book (tenantscod, idunit, billings_description, billings_amount , billings_invoice_date) VALUES (?, ?, ?, ? , ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
@@ -22,7 +22,7 @@ function createBill($tenantscod,$idunit,$billings_description,$billings_amount,$
 function setBill($idbillings,$rowName,$newData){
     require "config/config.php";
     //This is a safe way to prevent SQL injection, first add a placeholder ? instead of the real data
-    $sql = "UPDATE billings SET $rowName = ? WHERE (idbillings = ?)";
+    $sql = "UPDATE rent_book SET $rowName = ? WHERE (idbillings = ?)";
     //Start the prepare statement into the DB
     $stmt = mysqli_stmt_init($link);
     //Check if the SQL execute ok from the prepare statement, if so execute it and bind the data
@@ -40,7 +40,7 @@ function setBill($idbillings,$rowName,$newData){
 
 function getBill($idbillings,$rowName){
     include "config/config.php";
-    $query = "SELECT * FROM billings WHERE (idbillings = '$idbillings')";
+    $query = "SELECT * FROM rent_book WHERE (idbillings = '$idbillings')";
     $result = mysqli_query($link, $query);
     if ($result) {
         while ($row = mysqli_fetch_array($result)) {
@@ -54,7 +54,7 @@ function getBill($idbillings,$rowName){
 
 function getBallanceBill($billings_tenantscod,$aditionalQuery){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT SUM(billings_amount) AS balance from billings WHERE tenantscod = $billings_tenantscod $aditionalQuery");
+    $result = mysqli_query($link, "SELECT SUM(billings_amount) AS balance from rent_book WHERE tenantscod = $billings_tenantscod $aditionalQuery");
     $row = mysqli_fetch_assoc($result); 
     if($row['balance'] != NULL){
         return $row['balance'];
@@ -66,7 +66,7 @@ function getBallanceBill($billings_tenantscod,$aditionalQuery){
 
 function geNextBill($billings_tenantscod,$rowReturn,$aditionalQuery){
     require "config/config.php";
-    $result = mysqli_query($link, "SELECT * from billings WHERE tenantscod = $billings_tenantscod $aditionalQuery");
+    $result = mysqli_query($link, "SELECT * from rent_book WHERE tenantscod = $billings_tenantscod $aditionalQuery");
     $row = mysqli_fetch_assoc($result); 
     return $row[$rowReturn];
     mysqli_close($link);

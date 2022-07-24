@@ -40,18 +40,19 @@ function newTenant($propertyCode, $idunit, $profileID, $leaseStarts, $moveInDate
         // Convert into time stamp
         strtotime($leaseStarts);
 
-        createBill($tenantscod, $idunit, 'Deposit', $rent, $leaseStarts);
-        createBill($tenantscod, $idunit, 'First Rent', $firstRent, $leaseStarts);
+        
+        createBill($tenantscod, $idunit, 'First Rent '.date('F',strtotime($leaseStarts)), $firstRent, $leaseStarts);
+        createBill($tenantscod, $idunit, 'Deposit '.date('F',strtotime($leaseStarts)), $rent, $leaseStarts);
 
         // Create a new bill for each month of the lease term until it ends
         // First get the next month
         $next_month =  date('Y-m-d', strtotime($leaseStarts . ' + 1 months'));
         $recurring = 1;
         do {
-            createBill($tenantscod, $idunit, 'Rent #'.($recurring+1), $rent, $next_month);
+            createBill($tenantscod, $idunit, 'Rent '.date('F',strtotime($next_month)), $rent, $next_month);
             $next_month =  date('Y-m-d', strtotime($next_month . ' + 1 months'));
             $recurring++;
-        } while ($recurring <= $leaseTerm);
+        } while ($recurring < $leaseTerm);
 
         return '<center><div class="alert alert-success" role="alert">Tenant, Deposit and First Rent Created!</div></center>';
     }
