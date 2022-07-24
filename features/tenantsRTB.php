@@ -32,10 +32,10 @@ function modal($messageModal)
         </div>';
 }
 
-if ($_POST['save'] == true){
-    if ($_POST['RTBDateRegistered'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'RTBDateRegistered',$_POST['RTBDateRegistered']));
-    if ($_POST['RTBDateIssued'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'RTBDateIssued',$_POST['RTBDateIssued']));
-    if ($_POST['RTBNumber'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'RTBNumber',$_POST['RTBNumber']));
+if ($_POST['save'] == true) {
+    if ($_POST['RTBDateRegistered'] != null) echo modal(setTenantDataSafe('profileID', $profileID, 'RTBDateRegistered', $_POST['RTBDateRegistered']));
+    if ($_POST['RTBDateIssued'] != null) echo modal(setTenantDataSafe('profileID', $profileID, 'RTBDateIssued', $_POST['RTBDateIssued']));
+    if ($_POST['RTBNumber'] != null) echo modal(setTenantDataSafe('profileID', $profileID, 'RTBNumber', $_POST['RTBNumber']));
 }
 ?>
 
@@ -47,15 +47,23 @@ if ($_POST['save'] == true){
                 <div class="card-header">RTB Details</div>
                 <div class="card-body">
                     <form method="POST">
+                        <?php if (getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'tenancyType') == 'Contract') { ; ?>
+                        <div class="card-header text-center">
+                            <center>
+                        <div class="alert alert-warning" role="alert">
+                            This unit it's on short Fixed Term Tenancy/Contract  and does not require a RTB. <a href="https://www.rtb.ie/register-a-tenancy/is-your-property-exempt-from-registration" class="alert-link" target="_blank">More Details on RTB.ie</a>
+                        </div></center>
+                        </div>
+                        <?php } else { ; ?>
                         <div class="card-header">RTB Info</div>
                         <div class="row">
-                        <div class="col">
+                            <div class="col">
                                 <label class="small mb-1">Eir Code</label>
-                                <input class="form-control-plaintext" type="text" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?> " >
+                                <input class="form-control-plaintext" type="text" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?> ">
                             </div>
                             <div class="col">
-                            <label class="small mb-1">Status</label>
-                                <select class="form-control<?php echo $edit; ?>" name="RTBStatus" >
+                                <label class="small mb-1">Status</label>
+                                <select class="form-control<?php echo $edit; ?>" name="RTBStatus">
                                     <option selected><?php echo getTenantData($tenantsCod, 'tenantsCod', 'RTBStatus'); ?></option>
                                     <option value="Pending">Pending</option>
                                     <option value="Paid">Paid</option>
@@ -65,23 +73,24 @@ if ($_POST['save'] == true){
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Date Registered</label>
-                                <input class="form-control<?php echo $edit; ?>" name="RTBDateRegistered" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered'))?date('d-m-y',strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered')))):'';?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="RTBDateRegistered" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered')) ? date('d-m-y', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateRegistered')))) : ''; ?>">
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Date RTB Issued</label>
-                                <input class="form-control<?php echo $edit; ?>" name="RTBDateIssued" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued'))?date('d-m-y',strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued')))):'';?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="RTBDateIssued" type="date" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued')) ? date('d-m-y', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBDateIssued')))) : ''; ?>">
                             </div>
                             <div class="col">
                                 <label class="small mb-1">RTB Number</label>
-                                <input class="form-control<?php echo $edit; ?>" name="RTBNumber" type="text" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBNumber')); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="RTBNumber" type="text" value="<?php echo htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'RTBNumber')); ?>">
                             </div>
-                            
+
                         </div>
                         <br>
                         <br>
-                        <?php if(!$_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="edit" value="edit">Edit</button>'; ?>
+                        <?php if (!$_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="edit" value="edit">Edit</button>'; ?>
                         <button class="btn btn-success" type="submit" name="eircode" value="<?php echo getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'postal_code'); ?>">Check RTB</button>
-                        <?php if($_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="save" value="true">Save</button>'; ?>
+                        <?php if ($_POST['edit'] ?? null) echo '<button class="btn btn-primary" type="submit" name="save" value="true">Save</button>'; ?>
+                        <?php } ; ?>
                     </form>
                 </div>
             </div>
@@ -89,4 +98,6 @@ if ($_POST['save'] == true){
     </div>
 </div>
 
-<?php if(isset($_POST['eircode'])) {include 'features/RTB.php';} ?>
+<?php if (isset($_POST['eircode'])) {
+    include 'features/RTB.php';
+} ?>
