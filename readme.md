@@ -9,17 +9,27 @@ With this Web CRM it is possible to manage a high volume of enquiries that come 
 
 ## Features
 
-Dashboard: Summarize all the enquiries in one screen with the total number of enquiries, the number of enquiries waiting to be answered, the ones that has been already answered with the approval status or the ones that has being denied; It is a snapshot of the current state of the enquiries.
+Dashboard: Summarize all the enquiries in one screen with the total number of enquiries, the number of enquiries waiting to be answered, the ones that has been already answered with the approval status or the ones that has being denied; It is a snapshot of the current state of the enquiries, also it's possible to see the total of properties that has been added to the CRM, and the total of properties that has been rented.
 
-Enquiries: This feature will show a list of all the messages that come trhough Daft.ie in a specific mailbox, and the user can change the status of this message for approved or denied based on the message sent by the applicant; For each decision the CRM will send an automatic email to the sender of the enquiry with the outcome( If approved it will be possible to send a link for a third service to arrange a view for example and If it is denied it will send a denied message to the applicant);
+Enquiries: This feature will show a list of all the messages that come trhough Daft.ie, the user can send and autamitic replies to the message, inviting the applicant to proceend and create a profile uploading the required documents or inviting the applicant to view the property.
+
+Applicants: Here it'll be possible to see all the applicants that created their profiles and uploaded the required documents, the user can also send an email to the applicant with the message that he/she wants to send based on the templates to approve or deny. For those that has been approved the user can set has a tenant.
+
+Units: The user can see all the units that has been added to the CRM, and the user can add new units to the CRM.
+
+Tenants: Here it'll be possible to see all the tenants that have been added to the CRM.
 
 Reports: This feature enable the user to export an excels file with the list of all enquiries and status;
 
-Automail: This feature enables the user to change the template of the email that is send to the user when he applies, when he has been approved or denied;
+Templates: This feature enables the user to change the template of the email that is send to the user when he applies, when he has been approved or denied;
 
 Calendly: This feature enables the user to access a third party service to manage an agenda with the appointements for a view;
 
+RTB: The user can check if an Eircode ir registered in the RTB, if it is registered it'll be possible to see the property details from the RTB inside the CRM.
+
 ## Extra
+
+User ACL Control: This feature enables the user to control the access to the CRM, the user can control the access to the CRM by the user group, setting a group to view, or edit the content of the CRM.
 
 Profile: Manages the users profile such a name and picture in the CRM;
 
@@ -57,14 +67,22 @@ sudo phpenmod imap #To enable on PHP
 
 - Dashboard
 - Enquiries
+- Applications
+- Tenants
+- Units
 - Reports
-- Automail
+- Templates
 - Calendly
+- RTB
 
 ### User Menu
 
-- Profile
-- Settings
+- Agent
+- PRS Settings
+- Create Property
+- Property Settings
+- Fetching E-mails
+- System Settings
 - Logout
 
 ### Tables on MySQL
