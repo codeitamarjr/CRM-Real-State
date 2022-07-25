@@ -127,7 +127,9 @@ $data = json_decode($data, true);
                                                         </svg>
                                                         <div class="mt-3">
                                                             <h4>RTB Result</h4>
-                                                            <p class="text-secondary mb-1">This Eircode/Address<br>is registered on RTB</p>
+                                                            <div class="alert alert-success" role="alert">
+                                                                <p class="text-secondary mb-1">This Eircode/Address<br>is registered on RTB</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
