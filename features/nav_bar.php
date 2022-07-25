@@ -82,6 +82,9 @@
                         <?php }
                         if (userACL('system_settings') > 0) { ?>
                             <a class="dropdown-item" href="dashboard.php?access=system_settings"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;System Settings</a>
+                        <?php } 
+                        if (userACL('userACL') > 0) { ?>
+                            <a class="dropdown-item" href="dashboard.php?access=userACL"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;User Access Control</a>
                         <?php } ?>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
