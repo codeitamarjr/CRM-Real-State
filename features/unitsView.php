@@ -46,7 +46,9 @@ $result = mysqli_query($link, $query);
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Units
+            <?php if (userACL('unitsView') > 1) { ?>
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newUnit"> + Add New Unit</button>
+            <?php } ?>
 
             </p>
         </div>
