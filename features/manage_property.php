@@ -1,6 +1,13 @@
 <?php
 require "features/functions_unit.php";
 
+// Edit option
+if (isset($_POST['edit'])) {
+    $edit = '';
+} else {
+    $edit = '-plaintext';
+}
+
 if (isset($_POST['submit'])) {
     echo "<script>
     $(document).ready(function(){
@@ -112,7 +119,7 @@ if ($_FILES['picture']['name'] != null) {
                         <label class="form-label" style="margin: 0;">Property Logo</label>
                         <br>
                         <form method="POST" enctype="multipart/form-data">
-                            <input class="form-control" type="file" name="picture">
+                            <input class="form-control<?php echo $edit; ?>" type="file" name="picture">
                             <div class="mb-3"></div>
                             <button class="btn btn-primary btn-sm" type="submit" name="upload">Upload</button>
                         </form>
@@ -129,22 +136,24 @@ if ($_FILES['picture']['name'] != null) {
                         <div class="row gx-3 mb-3">
                             <div class="col-md-5">
                                 <label class="small mb-1">Office Name</label>
-                                <input class="form-control" type="text" name="officeName" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_name') ?>">
+                                <input class="form-control<?php echo $edit; ?>" type="text" name="officeName" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_name') ?>">
                             </div>
                             <div class="col-md-4">
                                 <label class="small mb-1">Office e-mail</label>
-                                <input class="form-control" type="email" name="officeEmail" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_email') ?>">
+                                <input class="form-control<?php echo $edit; ?>" type="email" name="officeEmail" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_email') ?>">
                             </div>
                             <div class="col-md-3">
                                 <label class="small mb-1">Office Phone Number</label>
-                                <input class="form-control" name="officePhone" type="tel" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_phone') ?>">
+                                <input class="form-control<?php echo $edit; ?>" name="officePhone" type="tel" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_phone') ?>">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="small mb-1">Office Full Address</label>
-                            <input class="form-control" name="officeAddress" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_address') ?>">
+                            <input class="form-control<?php echo $edit; ?>" name="officeAddress" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'office_address') ?>">
                         </div>
-                        <button class="btn btn-primary" type="submit" name="officeUpdate">Save changes</button>
+                        
+                        <?php if($_POST['edit'] ?? null) echo '<button type="submit" class="btn btn-primary float-end" name="officeUpdate">Update</button>'; ?>
+                       
                     </form>
                 </div>
             </div>
@@ -166,13 +175,13 @@ if ($_FILES['picture']['name'] != null) {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Property Name</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?>" name="propertyName">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?>" name="propertyName">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Property Type</label>
                                         <div class="form-group">
-                                            <select class="form-control" name="propertyType">
+                                            <select class="form-control<?php echo $edit; ?>" name="propertyType">
                                                 <option value="house" <?php if (getPropertyData($_SESSION["property_code"], 'property_type') === "house") {
                                                                             echo 'selected';
                                                                         } ?>>House</option>
@@ -185,14 +194,14 @@ if ($_FILES['picture']['name'] != null) {
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Units</label>
-                                        <input class="form-control" value="<?php echo totalUnits($_SESSION["property_code"], '');    ?>" name="units" disabled>
+                                        <input class="form-control<?php echo $edit; ?>" value="<?php echo totalUnits($_SESSION["property_code"], '');    ?>" name="units" disabled>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Property Full Address</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_address'); ?>" name="propertyAddress">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_address'); ?>" name="propertyAddress">
                                     </div>
                                 </div>
                             </div>
@@ -205,12 +214,12 @@ if ($_FILES['picture']['name'] != null) {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Deposit Bank</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_deposit_BANK'); ?>" name="depositBank">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_deposit_BANK'); ?>" name="depositBank">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Deposit IBAN</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_deposit_IBAN'); ?>" name="depositIBAN">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_deposit_IBAN'); ?>" name="depositIBAN">
                                     </div>
                                 </div>
                             </div>
@@ -219,12 +228,12 @@ if ($_FILES['picture']['name'] != null) {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Rent Bank</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_rent_BANK'); ?>" name="rentBank">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_rent_BANK'); ?>" name="rentBank">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Rent IBAN</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_rent_IBAN'); ?>" name="property_bank_rent_IBAN">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_bank_rent_IBAN'); ?>" name="property_bank_rent_IBAN">
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +250,7 @@ if ($_FILES['picture']['name'] != null) {
                                 </div>
                                 <div class="col-auto">
                                     <div class="custom-control custom-switch">
-                                        <select class="m_form-control" name="getting_email_time">
+                                        <select class="m_form-control<?php echo $edit; ?>" name="getting_email_time">
                                             <option selected value="<?php echo getPropertyData($_SESSION["property_code"], 'getting_email_time'); ?>"><?php echo getPropertyData($_SESSION["property_code"], 'getting_email_time'); ?></option>
                                             <option value="3">3</option>
                                             <option value="5">5</option>
@@ -260,21 +269,21 @@ if ($_FILES['picture']['name'] != null) {
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Host Name</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_hostname'); ?>" name="property_email_hostname">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_hostname'); ?>" name="property_email_hostname">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <label class="form-label">Email Port</label>
-                                    <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_port'); ?>" name="property_email_port">
+                                    <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_port'); ?>" name="property_email_port">
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">User/Email</label>
-                                        <input class="form-control" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_username'); ?>" name="property_email_username">
+                                        <input class="form-control<?php echo $edit; ?>" type="text" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_username'); ?>" name="property_email_username">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="mb-3"><label class="form-label">Password</label>
-                                        <input class="form-control" type="password" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_password'); ?>" name="property_email_password">
+                                        <input class="form-control<?php echo $edit; ?>" type="password" value="<?php echo getPropertyData($_SESSION["property_code"], 'property_email_password'); ?>" name="property_email_password">
                                     </div>
                                 </div>
                             </div>
@@ -298,7 +307,7 @@ if ($_FILES['picture']['name'] != null) {
                                         <div class="col">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon3">https://calendly.com/</span>
-                                                <input type="text" class="form-control" aria-describedby="basic-addon3" name=calendly value="<?php echo getPropertyData($_SESSION["property_code"], 'property_calendly'); ?>">
+                                                <input type="text" class="form-control<?php echo $edit; ?>" aria-describedby="basic-addon3" name=calendly value="<?php echo getPropertyData($_SESSION["property_code"], 'property_calendly'); ?>">
                                             </div>
                                         </div>
                                     </div>
@@ -307,7 +316,9 @@ if ($_FILES['picture']['name'] != null) {
                             <!-- End Calendly Section -->
 
                             <div class="mb-3">
-                                <button class="btn btn-primary btn-sm" type="submit" name="submit">Update</button>
+
+                            <?php if (userACL('manage_property') > 1) { if(!$_POST['edit'] ?? null) echo '<button type="submit" class="btn btn-primary float-end" name="edit" value="edit">Edit</button>'; }?>
+                            <?php if($_POST['edit'] ?? null) echo '<button type="submit" class="btn btn-primary float-end" name="submit">Update</button>'; ?>
                             </div>
                         </form>
                     </div>

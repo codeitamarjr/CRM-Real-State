@@ -11,9 +11,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
 // Load configs and functions
-require "features/functions_user.php";
-require "features/functions_messages.php";
-require "features/functions_property.php";
+require_once "features/functions_user.php";
+require_once "features/functions_messages.php";
+require_once "features/functions_property.php";
+require_once "features/functions_ACL.php";
 
 //set the variable GLOBAL agent_prs_code
 $agent_prs_code = $_SESSION["agent_prs_code"];
@@ -47,7 +48,7 @@ if (!$_GET['message_id']) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?php if (isset($_GET['access'])) echo $_GET['title'].' '.ucfirst($_GET['access']);
+    <title><?php if (isset($_GET['access'])) echo $_GET['title'] . ' ' . ucfirst($_GET['access']);
             else echo 'Dashboard'; ?> | <?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?> - Real Enquiries</title>
     <meta name="description" content="Customer Relationship Management for Real State Agents">
     <link rel="icon" type="image/x-icon" href="assets/img/fav_logo_size_invert.jpg">
@@ -76,31 +77,50 @@ if (!$_GET['message_id']) {
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link <?php if ($content == null) {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php"><i class="fas fa-tachometer-alt" style="font-size: 20px;"></i><span>Dashboard</span></a></li>
+                                                            } ?>" href="dashboard.php">
+                            <i class="fas fa-tachometer-alt" style="font-size: 20px;"></i><span>Dashboard</span></a>
+                    </li>
+                    <?php  if (userACL('enquiries') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'enquiries') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=enquiries"><i class="fa fa-list" style="font-size: 20px;"></i><span>Enquiries</span></a></li>
+                                                            } ?>" href="dashboard.php?access=enquiries"><i class="fa fa-list" style="font-size: 20px;"></i><span>Enquiries</span></a>
+                    </li>
+                    <?php }; if (userACL('applications') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'applications') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=applications"><i class="fa fa-address-card" style="font-size: 20px;"></i><span>Applications</span></a></li>
+                                                            } ?>" href="dashboard.php?access=applications"><i class="fa fa-address-card" style="font-size: 20px;"></i><span>Applications</span></a>
+                    </li>
+                    <?php }; if (userACL('tenantsView') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'tenantsView') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=tenantsView"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a></li>
+                                                            } ?>" href="dashboard.php?access=tenantsView"><i class="fa fa-list" style="font-size: 20px;"></i><span>Tenants</span></a>
+                    </li>
+                    <?php }; if (userACL('unitsView') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'unitsView') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=unitsView"><i class="fa fa-building-o" style="font-size: 20px;"></i><span>Units</span></a></li>
+                                                            } ?>" href="dashboard.php?access=unitsView"><i class="fa fa-building-o" style="font-size: 20px;"></i><span>Units</span></a>
+                    </li>
+                    <?php }; if (userACL('report') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'report') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=report"><i class="fa fa-file-excel-o" style="font-size: 20px;"></i><span>Reports</span></a></li>
+                                                            } ?>" href="dashboard.php?access=report"><i class="fa fa-file-excel-o" style="font-size: 20px;"></i><span>Reports</span></a>
+                    </li>
+                    <?php }; if (userACL('automail') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'automail') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=automail"><i class="icon ion-email" style="font-size: 20px;"></i><span>Templates</span></a></li>
+                                                            } ?>" href="dashboard.php?access=automail"><i class="icon ion-email" style="font-size: 20px;"></i><span>Templates</span></a>
+                    </li>
+                    <?php }; if (userACL('calendly') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'calendly') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar" style="font-size: 20px;"></i><span>Calendly</span></a></li>
+                                                            } ?>" href="dashboard.php?access=calendly"><i class="fa fa-calendar" style="font-size: 20px;"></i><span>Calendly</span></a>
+                    </li>
+                    <?php }; if (userACL('RTB') > 0) { ?>
                     <li class="nav-item"><a class="nav-link <?php if ($content == 'RTB') {
                                                                 echo 'active';
-                                                            } ?>" href="dashboard.php?access=RTB"><img src="/assets/img/RTB-Logo.png" class="img-fluid img-thumbnail" alt="RTB" width="22px"><span> RTB</span></a></li>
+                                                            } ?>" href="dashboard.php?access=RTB"><img src="/assets/img/RTB-Logo.png" class="img-fluid img-thumbnail" alt="RTB" width="22px"><span> RTB</span></a>
+                                                            </li>
+                    <?php };?>
                 </ul>
             </div>
         </nav>
