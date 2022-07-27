@@ -143,6 +143,43 @@ $property_codeNavSelector = $_SESSION["property_code"];
         </div>
 
         <div class="col-md-6 col-xl-3 mb-4">
+        <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                    <span>Tenants</span>
+                                </div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>
+                                        <?php echo totalTenants($_SESSION["property_code"], "AND status = 'Tenant'") ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1">
+                                    <span>Future</span>
+                                </div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>
+                                    <?php echo totalTenants($_SESSION["property_code"], "AND status = 'Future'") ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0"><?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?></h6>
@@ -160,25 +197,6 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     <div class="text-center small mt-4">
                         <span class="me-2">
                             <i class="fas fa-circle text-primary"></i>&nbsp;Rented</span><span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Future</span><span class="me-2"><i class="fas fa-circle text-info"></i>&nbsp;Notice</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card shadow py-2">
-                    <div class="card-body">
-                        <div class="row align-items-center no-gutters">
-                            <div class="col me-2">
-                                <div class="text-uppercase text-primary fw-bold text-xs mb-1">
-                                    <span>Tenants</span>
-                                </div>
-                                <div class="text-dark fw-bold h5 mb-0"><span>
-                                        <?php echo totalTenants($_SESSION["property_code"], "AND status = 'Tenant'") ?>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
-                        </div>
                     </div>
                 </div>
             </div>
