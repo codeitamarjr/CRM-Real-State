@@ -156,7 +156,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
+                            <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
+                            <div class="col-auto"><i class="fas fa-building fa-2x text-gray-300"></i></div>
                         </div>
                     </div>
                 </div>
