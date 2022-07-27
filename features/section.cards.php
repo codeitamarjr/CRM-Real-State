@@ -125,7 +125,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
                     <?php
                     //List all the properties from an agent
                     require 'config/config.php';
-                    $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code'";
+                    $select = "SELECT * FROM property WHERE property_prs_code = '$agent_prs_code' ORDER BY property_name ASC";
                     $result = mysqli_query($link, $select);
                     while ($row = mysqli_fetch_array($result)) {
                         $totalAvaiable = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tenant WHERE propertyCode = " . $row['property_code'] . ""));
@@ -142,7 +142,7 @@ $property_codeNavSelector = $_SESSION["property_code"];
             </div>
         </div>
 
-        <div class="col-lg-5 col-xl-4">
+        <div class="col-md-6 col-xl-3 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="text-primary fw-bold m-0"><?php echo getPropertyData($_SESSION["property_code"], 'property_name'); ?></h6>
@@ -155,11 +155,30 @@ $property_codeNavSelector = $_SESSION["property_code"];
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
-                        <canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Rented&quot;,&quot;Future&quot;,&quot;Notice&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;<?php echo totalTenants($_SESSION["property_code"],"AND status = 'Tenant'") ?>&quot;,&quot;<?php echo totalTenants($_SESSION["property_code"],"AND status = 'Future'") ?>&quot;,&quot;<?php echo totalTenants($_SESSION["property_code"],"AND status = 'Notice'") ?>&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas>
+                        <canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Rented&quot;,&quot;Future&quot;,&quot;Notice&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;<?php echo totalTenants($_SESSION["property_code"], "AND status = 'Tenant'") ?>&quot;,&quot;<?php echo totalTenants($_SESSION["property_code"], "AND status = 'Future'") ?>&quot;,&quot;<?php echo totalTenants($_SESSION["property_code"], "AND status = 'Notice'") ?>&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:false,&quot;labels&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}},&quot;title&quot;:{&quot;fontStyle&quot;:&quot;normal&quot;}}}"></canvas>
                     </div>
                     <div class="text-center small mt-4">
                         <span class="me-2">
                             <i class="fas fa-circle text-primary"></i>&nbsp;Rented</span><span class="me-2"><i class="fas fa-circle text-success"></i>&nbsp;Future</span><span class="me-2"><i class="fas fa-circle text-info"></i>&nbsp;Notice</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="card shadow py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1">
+                                    <span>Tenants</span>
+                                </div>
+                                <div class="text-dark fw-bold h5 mb-0"><span>
+                                        <?php echo totalTenants($_SESSION["property_code"], "AND status = 'Tenant'") ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-exclamation-circle fa-2x text-gray-300"></i></div>
+                        </div>
                     </div>
                 </div>
             </div>

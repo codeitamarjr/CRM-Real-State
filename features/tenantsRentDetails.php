@@ -40,10 +40,7 @@ if (isset($_POST['save'])) {
     if ($_POST['leaseStart'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'leaseStart',$_POST['leaseStart']));
     if ($_POST['leaseTerm'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'leaseTerm',$_POST['leaseTerm']));
     if ($_POST['leaseExpire'] != null) echo modal(setTenantDataSafe('profileID',$profileID,'leaseExpire',$_POST['leaseExpire']));
-
-
 }
-
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -56,14 +53,14 @@ if (isset($_POST['save'])) {
                         <div class="card-header">Property Details</div>
                         <div class="mb-3">
                             <label class="small mb-1">Full Addres of the Property</label>
-                            <input class="form-control<?php echo $edit; ?>-plaintext" type="text" placeholder="<?php echo getPropertyData(getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'property_code'), 'property_address');?>">
+                            <input class="form-control-plaintext" type="text" placeholder="<?php echo getPropertyData(getUnit(getTenantData($tenantsCod, 'tenantscod', 'idunit'), 'idunit', 'property_code'), 'property_address');?>">
                         </div>
                         <br>
                         <div class="card-header">Lease Info</div>
                         <div class="row">
                             <div class="col">
                                 <label class="small mb-1">Status</label>
-                                <select class="form-control<?php echo $edit; ?><?php echo $edit; ?>" name="status" >
+                                <select class="form-control<?php echo $edit; ?>" name="status" >
                                     <option selected><?php echo getTenantData($tenantsCod, 'tenantsCod', 'status'); ?></option>
                                     <option value="Future">Future</option>
                                     <option value="Tenant">Tenant</option>
@@ -73,19 +70,19 @@ if (isset($_POST['save'])) {
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Move-in</label>
-                                <input class="form-control<?php echo $edit; ?><?php echo $edit; ?>" name="movein" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'movein')))); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="movein" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'movein')))); ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Lease Starts</label>
-                                <input class="form-control<?php echo $edit; ?><?php echo $edit; ?>" name="leaseStart" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'leaseStart')))); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="leaseStart" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'leaseStart')))); ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Lease Term</label>
-                                <input class="form-control<?php echo $edit; ?><?php echo $edit; ?>" name="leaseTerm" type="text" value="<?php echo getTenantData($tenantsCod, 'tenantsCod', 'leaseTerm'); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="leaseTerm" type="text" value="<?php echo getTenantData($tenantsCod, 'tenantsCod', 'leaseTerm'); ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Lease To</label>
-                                <input class="form-control<?php echo $edit; ?><?php echo $edit; ?>" name="leaseExpire" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'leaseExpire')))); ?>" >
+                                <input class="form-control<?php echo $edit; ?>" name="leaseExpire" type="date" value="<?php echo date('Y-m-d', strtotime(htmlspecialchars(getTenantData($tenantsCod, 'tenantsCod', 'leaseExpire')))); ?>" >
                             </div>
                         </div>
 
@@ -94,15 +91,15 @@ if (isset($_POST['save'])) {
                         <div class="row">
                             <div class="col">
                                 <label class="small mb-1">Deposit</label>
-                                <input class="form-control<?php echo $edit; ?>-plaintext" value="<?php echo getBillByTenant($tenantsCod,'Deposit%','billings_amount') ?>" >
+                                <input class="form-control-plaintext" value="<?php echo getBillByTenant($tenantsCod,'Deposit%','billings_amount') ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">First Rent</label>
-                                <input class="form-control<?php echo $edit; ?>-plaintext" value="<?php echo getBillByTenant($tenantsCod,'First Rent%','billings_amount') ?>" >
+                                <input class="form-control-plaintext" value="<?php echo getBillByTenant($tenantsCod,'First Rent%','billings_amount') ?>" >
                             </div>
                             <div class="col">
                                 <label class="small mb-1">Rent</label>
-                                <input class="form-control<?php echo $edit; ?>-plaintext" name="rent" type="text" value="<?php echo getBillByTenant($tenantsCod,'Rent%','billings_amount') ?>" >
+                                <input class="form-control-plaintext" value="<?php echo getBillByTenant($tenantsCod,'Rent%','billings_amount') ?>" >
                             </div>
                         </div>
 
