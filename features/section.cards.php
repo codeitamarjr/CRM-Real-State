@@ -6,10 +6,6 @@ $property_codeNavSelector = $_SESSION["property_code"];
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <div class="container-fluid">
-    <div class="d-sm-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-dark mb-0">Dashboard</h3>
-    </div>
-
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card shadow border-start-info py-2">

@@ -1,14 +1,5 @@
 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
     <div class="container-fluid">
-        <!-- Search Bar -->
-        <form method="GET" class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" id="search_form">
-            <input type="hidden" name="access" value="search">
-            <div class="input-group">
-                <input class="bg-light form-control border-0 small" name="search" type="text" placeholder="Search for . . . ">
-                <button class="btn btn-primary py-0" type="submit" form="search_form" value="Submit" name="submit-search"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <!-- Search Bar Ends -->
 
         <ul class="navbar-nav flex-nowrap ms-auto">
             <li class="nav-item dropdown no-arrow mx-1">
