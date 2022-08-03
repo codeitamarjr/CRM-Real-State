@@ -89,11 +89,14 @@
                             <tbody>
                                 <?php
                                 require "config/config.php";
+                                
                                 $query = "SELECT * FROM rent_book WHERE tenantsCod = $tenantsCod ORDER BY billings_invoice_date DESC";
                                 $result = mysqli_query($link, $query);
                                 while ($row = mysqli_fetch_array($result)) {
                                     $mysqDateTime = htmlspecialchars($row['billings_invoice_date']);
                                     $dateFormated = date('Y-m-d', strtotime($mysqDateTime));
+                                    $dateFormatedDayMonth = date('Y-m', strtotime($dateFormated));
+                                    $descriptionFirstWord = strtok($row['billings_description'], " ");
 
                                     echo '<tr data-bs-toggle="modal" data-bs-target="#billingDetails' . htmlspecialchars($row['idbillings']) . '" class="showsRow">';
                                     echo "<td>#" . htmlspecialchars($row['idbillings']) . "</td>
@@ -111,6 +114,23 @@
                                     }
                                     echo "\">" . htmlspecialchars($row['billings_status']) . "</span></td>
                             </tr>";
+                            
+                                // Add table for bank deposit
+                                $query2 = "SELECT * FROM property_management.bank_deposit WHERE dateTransaction LIKE '$dateFormatedDayMonth%' AND description LIKE '$descriptionFirstWord%'";
+                                $result2 = mysqli_query($link, $query2);
+                                while ($row2 = mysqli_fetch_array($result2)) {
+                                    echo '<tr>
+                                    <td> Bank #' . htmlspecialchars($row2['id']) . '</td>
+                                    <td>' . htmlspecialchars($row2['description']) . '</td>';
+                                    echo "<td>" . htmlspecialchars($row2['dateTransaction']) . "</td>
+                                    <td>" . htmlspecialchars($row2['ammount']) . "</td>
+                                    <td>" . htmlspecialchars($row2['status']) . "</td>
+                                    <tr>";
+                                    
+                                }
+                                // Clean variables
+                                $dateFormated = $dateFormatedDayMonth = $descriptionFirstWord = 'null';
+
                                 ?>
                                     <!-- Modal Billing Details -->
                                     <div class="modal fade" id="billingDetails<?php echo htmlspecialchars($row['idbillings']); ?>" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
@@ -176,7 +196,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 <?php
                                 }
                                 ?>
